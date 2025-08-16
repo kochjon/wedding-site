@@ -158,31 +158,32 @@
       </div>
     </div>
   </section>
-
+  
   <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4">Rückmeldung</h2>
+    <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="Answer">Rückmeldung</h2>
     <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="flex flex-col gap-4">
-      <input type="hidden" name="form-name" value="rsvp">
-      <label>
-        Ja, ich komme
-        <input type="radio" name="attendance" value="yes" required>
-      </label>
-      <label>
-        Nein, ich bin verhindert
-        <input type="radio" name="attendance" value="no">
-      </label>
-      <label>
-        Essen:
-        <select name="meal" class="border px-2 py-1 rounded">
-            <option value="meat">Fleisch</option>
-          <option value="vegetarian">Vegetarisch</option>
-          <option value="vegan">Vegan</option>
-        </select>
-      </label>
-      <label class="flex items-center gap-2">
-        <input type="checkbox" id="allergiesCheckbox"> Allergien
-        <input type="text" id="allergiesInput" placeholder="Bitte eintragen" class="border px-2 py-1 rounded hidden">
-      </label>
+      <label data-de="Name:" data-en="Name:">Name:</label>
+      <input type="text" placeholder="Max Mustermann" class="border p-2 rounded" />
+
+      <label data-de="Teilnahme:" data-en="Attendance:">Teilnahme:</label>
+      <select class="border p-2 rounded">
+        <option value="ja" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
+        <option value="nein" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert</option>
+      </select>
+
+      <label data-de="Essen:" data-en="Food:">Essen:</label>
+      <select class="border p-2 rounded">
+        <option value="fleisch" data-de="Fleisch" data-en="Meat">Fleisch</option>
+        <option value="vegetarisch" data-de="Vegetarisch" data-en="Vegetarian">Vegetarisch</option>
+        <option value="vegan" data-de="Vegan" data-en="Vegan">Vegan</option>
+      </select>
+
+      <div class="flex items-center gap-2">
+        <input type="checkbox" id="allergyCheck" onclick="toggleAllergies()" />
+        <label for="allergyCheck" data-de="Allergien" data-en="Allergies">Allergien</label>
+        <input type="text" id="allergyBox" class="border p-2 rounded" style="display:none;" placeholder="Bitte eintragen" />
+      </div>
+
       <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded mt-2">Absenden</button>
     </form>
   </section>
