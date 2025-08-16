@@ -120,7 +120,7 @@
   <section class="text-center py-10">
     <h1 class="text-5xl font-serif mb-4" data-de="Hochzeit Yeli & Joni" data-en="Wedding Yeli & Joni">Hochzeit Yeli & Joni</h1>
     <p class="text-xl mb-6" data-de="Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein" data-en="Together with their families, they warmly invite you to their wedding">Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein</p>
-    <p class="text-lg font-medium mb-8" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Zurich, Switzerland">September XX 2026 · Zürich, Schweiz</p>
+    <p class="text-lg font-medium mb-8" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
 
     <div class="slideshow-container">
       <!-- Bilder werden dynamisch aus images/slideshow geladen -->
@@ -161,7 +161,8 @@
 
   <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="RSVP">Rückmeldung</h2>
-    <form class="flex flex-col gap-4 text-left max-w-md mx-auto">
+	<form name="rsvp" method="POST" data-netlify="true" class="flex flex-col gap-4">
+    <!-- <form class="flex flex-col gap-4 text-left max-w-md mx-auto"> -->
       <label data-de="Name:" data-en="Name:">Name:</label>
       <input type="text" placeholder="Max Mustermann" class="border p-2 rounded" />
 
