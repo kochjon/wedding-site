@@ -161,7 +161,7 @@
 
   <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4">Rückmeldung</h2>
-    <form name="rsvp" method="POST" data-netlify="true" netlify action="thank-you.html" class="flex flex-col gap-4">
+    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you" class="flex flex-col gap-4">
       <input type="hidden" name="form-name" value="rsvp">
       <label>
         Ja, ich komme
@@ -174,7 +174,7 @@
       <label>
         Essen:
         <select name="meal" class="border px-2 py-1 rounded">
-          <option value="meat">Fleisch</option>
+            <option value="meat">Fleisch</option>
           <option value="vegetarian">Vegetarisch</option>
           <option value="vegan">Vegan</option>
         </select>
