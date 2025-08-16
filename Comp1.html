@@ -1,0 +1,27 @@
+    <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+    <h2 class="text-3xl mb-4">Rückmeldung</h2>
+    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you" class="flex flex-col gap-4">
+      <input type="hidden" name="form-name" value="rsvp">
+      <label>
+        Ja, ich komme
+        <input type="radio" name="attendance" value="yes" required>
+      </label>
+      <label>
+        Nein, ich bin verhindert
+        <input type="radio" name="attendance" value="no">
+      </label>
+      <label>
+        Essen:
+        <select name="meal" class="border px-2 py-1 rounded">
+            <option value="meat">Fleisch</option>
+          <option value="vegetarian">Vegetarisch</option>
+          <option value="vegan">Vegan</option>
+        </select>
+      </label>
+      <label class="flex items-center gap-2">
+        <input type="checkbox" id="allergiesCheckbox"> Allergien
+        <input type="text" id="allergiesInput" placeholder="Bitte eintragen" class="border px-2 py-1 rounded hidden">
+      </label>
+      <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded mt-2">Absenden</button>
+    </form>
+  </section>
