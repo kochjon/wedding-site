@@ -9,7 +9,30 @@
     .lang-switch { position: absolute; top: 20px; right: 20px; }
     .slideshow-container { position: relative; width: 100%; max-width: 600px; margin: auto; overflow: hidden; }
     .slide { width: 100%; height: 300px; object-fit: cover; border-radius: 0.5rem; display: none; }
-    .slide.active { display: block; }
+    #geschenke {
+      position: relative;
+      background-image: url('images/background.jpeg');
+      background-size: cover;
+      background-position: center;
+    }
+    #geschenke::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5); /* Abdunklung */
+      z-index: 0;
+    }
+    #geschenke .content {
+      position: relative;
+      z-index: 1;
+    }
+    .details-img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
   </style>
   <script>
     let currentLang = 'de';
@@ -60,10 +83,20 @@
 
     function showSlides() {
       const slides = document.getElementsByClassName("slide");
+      if (slides.length === 0) return;
       for (let i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
       slideIndex = (slideIndex + 1) % slides.length;
       slides[slideIndex].style.display = "block";
-      setTimeout(showSlides, 3000);
+      setTimeout(showSlides, 4000);
+    }
+
+    function copyIBAN() {
+      const ibanText = document.getElementById("ibanText").innerText;
+      navigator.clipboard.writeText(ibanText).then(() => {
+        alert("IBAN kopiert: " + ibanText);
+      }).catch(err => {
+        alert("Fehler beim Kopieren");
+      });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -98,6 +131,7 @@
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschichte')" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</button>
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'details')" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</button>
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'rsvp')" data-de="Rückmeldung" data-en="RSVP">Rückmeldung</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschenke')" data-de="Geschenke" data-en="Gifts">Geschenke</button>
   </div>
 
   <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
@@ -113,14 +147,14 @@
         <p data-de="Kirche Buchberg-Rüdlingen" data-en="Church Buchberg-Rüdlingen">Kirche Buchberg-Rüdlingen</p>
         <p data-de="Dorfstrasse 2" data-en="Dorfstrasse 2">Dorfstrasse 2</p>
         <p data-de="8455 Rüdlingen" data-en="8455 Rüdlingen">8455 Rüdlingen</p>
-        <img src="images/kirche.jpeg" alt="Kirche Bild" class="mt-4 rounded shadow w-full max-h-64 object-cover" />
+        <img src="images/kirche.jpeg" alt="Kirche Bild" class="details-img mt-4" />
       </div>
       <div class="md:w-1/2">
         <p class="font-semibold" data-de="Adresse Empfang" data-en="Reception Address">Adresse Empfang</p>
         <p>TBD</p>
         <p>TBD</p>
         <p>TBD</p>
-        <img src="images/empfang.jpeg" alt="Empfang Bild" class="mt-4 rounded shadow w-full max-h-64 object-cover" />
+        <img src="images/empfang.jpeg" alt="Empfang Bild" class="details-img mt-4" />
       </div>
     </div>
   </section>
@@ -153,5 +187,26 @@
       <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded mt-2">Absenden</button>
     </form>
   </section>
+
+  <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
+    <div class="content">
+      <h2 class="text-3xl mb-4" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
+      <div class="flex flex-col items-center gap-6 p-6 rounded-lg shadow bg-transparent">
+        <div>
+          <h3 class="text-xl font-semibold mb-2" data-de="TWINT" data-en="TWINT">TWINT</h3>
+          <img src="images/qrcode.png" alt="QR Code" class="w-48 h-48 object-contain mx-auto" />
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold mb-2" data-de="Bankverbindung" data-en="Bank Details">Bankverbindung</h3>
+          <div class="flex items-center gap-2 justify-center">
+            <p id="ibanText" class="text-lg font-medium" data-de="IBAN XX XXXX XXXX" data-en="IBAN XX XXXX XXXX">IBAN XX XXXX XXXX</p>
+            <button onclick="copyIBAN()" class="bg-gray-200 px-2 py-1 rounded text-sm">📋</button>
+          </div>
+          <p class="text-lg" data-de="Bank Cler" data-en="Bank Cler">Bank Cler</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </body>
 </html>
