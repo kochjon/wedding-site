@@ -33,6 +33,10 @@
         el.placeholder = currentLang === 'de' ? el.getAttribute('data-de-placeholder') : el.getAttribute('data-en-placeholder');
       });
     }
+    function toggleAllergies() {
+      const allergyBox = document.getElementById('allergyBox');
+      allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
+    }
   </script>
 </head>
 <body class="bg-gradient-to-b from-pink-50 to-white text-gray-800 relative">
@@ -89,9 +93,24 @@
       <input type="text" data-de-placeholder="Name" data-en-placeholder="Name" class="border px-3 py-2 rounded" />
       <input type="email" data-de-placeholder="E-Mail" data-en-placeholder="Email" class="border px-3 py-2 rounded" />
       <select data-de-placeholder="Teilnahme" data-en-placeholder="Attendance" class="border px-3 py-2 rounded">
-        <option value="yes" data-de="Ja" data-en="Yes">Ja</option>
-        <option value="no" data-de="Nein" data-en="No">Nein</option>
+        <option value="yes" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
+        <option value="no" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert</option>
       </select>
+      <div class="text-left">
+        <label class="font-semibold mb-1 block" data-de="Essen:" data-en="Food:">Essen:</label>
+        <select class="border px-3 py-2 rounded w-full">
+          <option value="meat" data-de="Fleisch" data-en="Meat">Fleisch</option>
+          <option value="vegetarian" data-de="Vegetarisch" data-en="Vegetarian">Vegetarisch</option>
+          <option value="vegan" data-de="Vegan" data-en="Vegan">Vegan</option>
+        </select>
+      </div>
+      <div class="text-left flex items-start space-x-2">
+        <label class="inline-flex items-center mt-2">
+          <input type="checkbox" id="allergyCheck" class="mr-2" onclick="toggleAllergies()" />
+          <span data-de="Allergien" data-en="Allergies">Allergien</span>
+        </label>
+        <textarea id="allergyBox" class="border px-3 py-2 rounded hidden flex-1" data-de-placeholder="Bitte Allergien eintragen" data-en-placeholder="Please specify allergies"></textarea>
+      </div>
       <textarea data-de-placeholder="Nachricht" data-en-placeholder="Message" class="border px-3 py-2 rounded"></textarea>
       <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 transition">Senden</button>
     </form>
