@@ -162,17 +162,18 @@
  <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="Answer">Rückmeldung</h2>
     <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="flex flex-col gap-4">
-      <label data-de="Name:" data-en="Name:">Name:</label>
-      <input type="text" name="Name" placeholder="Max Mustermann" class="border p-2 rounded" />
+      <label data-de="Name:" data-en="Name:">Name:
+		<input type="text" name="Name" placeholder="Max Mustermann" class="border p-2 rounded" />
+		</label>
 
       <label data-de="Teilnahme:" data-en="Attendance:">Teilnahme:</label>
       <select class="border p-2 rounded">
         <option 
-			value="ja" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme
+			value="yes" name="attendance" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme
 			<!--<input type="radio" name="attendance" value="yes" required>-->
 		</option>
         <option 
-			value="nein" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert
+			value="no" name="attendance" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert
 		</option>
 	  </select>
 
