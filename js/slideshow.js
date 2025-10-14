@@ -1,16 +1,16 @@
 // js/slideshow.js
-// Autoplay-Slideshow mit Fade-Übergang + manueller Steuerung (Pfeile).
+// Autoplay-Slideshow mit Fade + manueller Steuerung (Pfeile) – robust gegen "leere" Frames.
 // Initialisiert alle Container mit [data-slideshow].
 //
-// Konfiguration per data-Attributen am Container:
-//  - data-index-json="images/slideshow/index.json"         (JSON-Array mit Dateinamen oder URLs)
+// Daten-Attribute am Container:
+//  - data-index-json="images/slideshow/index.json"          (JSON-Array mit Dateinamen/URLs)
 //  - data-fallback="images/a.jpg,images/b.jpg,images/c.jpg" (CSV-Fallback, falls JSON fehlt)
 //  - data-interval="4000"   (ms; Standard 4000)
-//  - data-height="350"      (px; Höhe der Slides; Standard 350)
-//  - data-radius="16"       (px; Border-Radius; Standard 16)
-//  - data-fit="cover|contain" (object-fit; Standard cover)
-//  - data-controls="true"   (Pfeile anzeigen; Standard off)
-//  - data-indicators="true" (Dots anzeigen; Standard off)
+//  - data-height="350"      (px; Standard 350)
+//  - data-radius="16"       (px; Standard 16)
+//  - data-fit="cover|contain" (Standard cover)
+//  - data-controls="true"   (Pfeile anzeigen)
+//  - data-indicators="true" (Dots anzeigen)
 
 (function () {
   "use strict";
@@ -31,7 +31,6 @@
   }
 
   function applyBaseStyles(container, { radius }) {
-    // Grundlayout, falls kein Tailwind vorhanden ist
     container.style.position = container.style.position || "relative";
     container.style.width = container.style.width || "100%";
     container.style.overflow = container.style.overflow || "hidden";
@@ -44,6 +43,8 @@
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
+    img.decoding = "async"; // schnelleres Rendering
+    // img.loading = "eager"; // falls gewünscht, sonst Browser-Default
     img.className = (img.className || "").concat(" slide").trim();
     Object.assign(img.style, {
       width: "100%",
@@ -70,7 +71,7 @@
         images = list.map(name =>
           /^https?:\/\//.test(name)
             ? name
-            : indexJson.replace(/\/[^/]*$/, `/${name}`) // gleiches Verzeichnis wie index.json
+            : indexJson.replace(/\/[^/]*$/, `/${name}`)
         );
       } catch (e) {
         console.warn(`[slideshow] Konnte ${indexJson} nicht laden – Fallback wird genutzt:`, e);
@@ -81,7 +82,7 @@
     }
     if (!images.length) return;
 
-    // Stacking-Ebene vorbereiten
+    // Bühne (Stack) für absolute Slides
     const stage = document.createElement("div");
     Object.assign(stage.style, {
       position: "relative",
@@ -132,8 +133,8 @@
     const prev = mkBtn("‹");
     const next = mkBtn("›");
 
-    prev.addEventListener("click", () => api.prev());
-    next.addEventListener("click", () => api.next());
+    prev.addEventListener("click", () => api.prev(true));
+    next.addEventListener("click", () => api.next(true));
 
     wrap.appendChild(prev);
     wrap.appendChild(next);
@@ -168,12 +169,11 @@
         cursor: "pointer",
         padding: "0"
       });
-      d.addEventListener("click", () => api.go(i, /*fromUser*/ true));
+      d.addEventListener("click", () => api.go(i, true));
       dots.appendChild(d);
       btns.push(d);
     });
 
-    // UI-Update wenn Slide wechselt
     api.onChange = (i) => {
       btns.forEach((b, idx) => {
         b.style.background = idx === i ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.95)";
@@ -189,29 +189,64 @@
 
     let index = 0;
     let timerId = null;
+    let isTransitioning = false;
 
-    const show = (i) => {
-      slides.forEach(s => (s.style.opacity = "0"));
-      slides[i].style.opacity = "1";
-      index = i;
-      api.onChange?.(index);
+    // Transition: halte alte Folie sichtbar, bis neue geladen ist
+    const crossfadeTo = (targetIndex) => {
+      if (isTransitioning || targetIndex === index) return;
+      const prev = slides[index];
+      const next = slides[targetIndex];
+      if (!next) return;
+
+      isTransitioning = true;
+
+      const doFade = () => {
+        // Z-Order: neue drüber, alte drunter
+        prev && (prev.style.zIndex = "1");
+        next.style.zIndex = "2";
+
+        // Neue einblenden, alte erst danach ausblenden
+        next.style.opacity = "1";
+        // eine Frame später altes rausfaden (verhindert "leere" Frames)
+        requestAnimationFrame(() => {
+          prev && (prev.style.opacity = "0");
+        });
+
+        index = targetIndex;
+        isTransitioning = false;
+        api.onChange?.(index);
+      };
+
+      // Wenn das Bild schon bereit ist, sofort überblenden
+      if (next.complete) {
+        doFade();
+      } else {
+        // warten bis geladen, dann überblenden – alte Folie bleibt solange sichtbar
+        const onReady = () => {
+          next.removeEventListener("load", onReady);
+          next.removeEventListener("error", onReady); // selbst bei Fehler weiter
+          doFade();
+        };
+        next.addEventListener("load", onReady);
+        next.addEventListener("error", onReady);
+      }
     };
 
     const next = (fromUser = false) => {
       const i = (index + 1) % slides.length;
-      show(i);
+      crossfadeTo(i);
       if (fromUser) restart();
     };
 
     const prev = (fromUser = false) => {
       const i = (index - 1 + slides.length) % slides.length;
-      show(i);
+      crossfadeTo(i);
       if (fromUser) restart();
     };
 
     const go = (i, fromUser = false) => {
       if (i < 0 || i >= slides.length) return;
-      show(i);
+      crossfadeTo(i);
       if (fromUser) restart();
     };
 
@@ -231,17 +266,14 @@
 
     const api = {
       get index() { return index; },
-      next: () => next(true),
-      prev: () => prev(true),
-      go,
-      start,
-      stop,
-      restart,
+      next, prev, go, start, stop, restart,
       onChange: null
     };
 
-    // Initial anzeigen + starten
-    show(0);
+    // Initial sichtbar machen
+    slides.forEach(s => (s.style.opacity = "0"));
+    slides[0].style.opacity = "1";
+    slides[0].style.zIndex = "2";
     start();
 
     // Aufräumen, falls Container entfernt wird
@@ -253,7 +285,6 @@
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
-    // Exponieren (falls du später darauf zugreifen willst)
     container.__slideshow = api;
     return api;
   }
@@ -269,11 +300,9 @@
     applyBaseStyles(container, opts);
     await buildSlides(container, opts);
 
-    // Autoplay + Fade
     const api = createApi(container, interval);
     if (!api) return;
 
-    // Manuelle Steuerung (Pfeile) und optional Dots
     addControls(container, api);
     addIndicators(container, api);
   }
