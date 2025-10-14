@@ -18,11 +18,67 @@
   </style>
   <script>
     let currentLang = 'de', slideIndex = 0;
-    function openTab(evt, tabName){document.querySelectorAll(".tabcontent").forEach(t=>t.classList.add("hidden"));document.querySelectorAll(".tablink").forEach(b=>b.classList.remove("border-b-2","border-red-600","text-red-600"));document.getElementById(tabName).classList.remove("hidden");evt.currentTarget.classList.add("border-b-2","border-red-600","text-red-600");}
-    function switchLanguage(lang){currentLang=lang;document.querySelectorAll('[data-de]').forEach(el=>{el.textContent=currentLang==='de'?el.getAttribute('data-de'):el.getAttribute('data-en');});document.querySelectorAll('[data-de-placeholder]').forEach(el=>{el.placeholder=currentLang==='de'?el.getAttribute('data-de-placeholder'):el.getAttribute('data-en-placeholder');});}
-    async function loadSlideshowImages(){const c=document.querySelector('.slideshow-container');try{const r=await fetch('images/slideshow/index.json');if(!r.ok)throw new Error();const imgs=await r.json();imgs.forEach((img,i)=>{const e=document.createElement('img');e.src=`images/slideshow/${img}`;e.className='slide';if(i===0)e.style.display='block';c.appendChild(e);});}catch{['image1.jpg','image2.jpg','image3.jpg'].forEach((img,i)=>{const e=document.createElement('img');e.src=`images/${img}`;e.className='slide';if(i===0)e.style.display='block';c.appendChild(e);});}showSlides();}
-    function showSlides(){const s=document.getElementsByClassName("slide");if(s.length===0)return;for(let i=0;i<s.length;i++)s[i].style.display="none";slideIndex=(slideIndex+1)%s.length;s[slideIndex].style.display="block";setTimeout(showSlides,4000);}
-    document.addEventListener("DOMContentLoaded",()=>{document.querySelector(".tablink").click();loadSlideshowImages();});
+
+    function openTab(tabName, btnEl) {
+      // Inhalte schalten
+      document.querySelectorAll(".tabcontent").forEach(t => t.classList.add("hidden"));
+      const active = document.getElementById(tabName);
+      if (active) active.classList.remove("hidden");
+      // Tab-Stil aktualisieren
+      document.querySelectorAll(".tablink")
+        .forEach(b => b.classList.remove("border-b-2","border-red-600","text-red-600"));
+      if (btnEl) btnEl.classList.add("border-b-2","border-red-600","text-red-600");
+    }
+
+    function switchLanguage(lang){
+      currentLang = lang;
+      document.querySelectorAll('[data-de]').forEach(el=>{
+        el.textContent = currentLang==='de' ? el.getAttribute('data-de') : el.getAttribute('data-en');
+      });
+      document.querySelectorAll('[data-de-placeholder]').forEach(el=>{
+        el.placeholder = currentLang==='de' ? el.getAttribute('data-de-placeholder') : el.getAttribute('data-en-placeholder');
+      });
+    }
+
+    async function loadSlideshowImages(){
+      const c = document.querySelector('.slideshow-container');
+      try{
+        const r = await fetch('images/slideshow/index.json');
+        if(!r.ok) throw new Error();
+        const imgs = await r.json();
+        imgs.forEach((img,i)=>{
+          const e = document.createElement('img');
+          e.src = `images/slideshow/${img}`;
+          e.className = 'slide';
+          if(i===0) e.style.display='block';
+          c.appendChild(e);
+        });
+      }catch{
+        ['image1.jpg','image2.jpg','image3.jpg'].forEach((img,i)=>{
+          const e = document.createElement('img');
+          e.src = `images/${img}`;
+          e.className = 'slide';
+          if(i===0) e.style.display='block';
+          c.appendChild(e);
+        });
+      }
+      showSlides();
+    }
+
+    function showSlides(){
+      const s = document.getElementsByClassName("slide");
+      if(s.length===0) return;
+      for(let i=0;i<s.length;i++) s[i].style.display="none";
+      slideIndex = (slideIndex+1)%s.length;
+      s[slideIndex].style.display="block";
+      setTimeout(showSlides, 4000);
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      const checkBtn = document.getElementById('tab-checkin');
+      openTab('rsvp', checkBtn);
+      loadSlideshowImages();
+    });
   </script>
 </head>
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans relative min-h-screen">
@@ -33,29 +89,34 @@
     </select>
   </div>
 
+  <!-- Header -->
   <section class="text-center py-12 bg-white shadow-sm border-b border-red-200 relative">
     <h1 class="text-5xl font-light tracking-wide mb-4 text-red-700 flex justify-center items-center gap-3">
       <span data-de="Yeli & Joni – Trauung" data-en="Yeli & Joni – Ceremony">Yeli & Joni – Trauung</span>
       <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
     </h1>
-    <p class="text-lg text-gray-600 mb-4" data-de="Bitte tragt eure Rückmeldung für die Trauung ein." data-en="Please provide your response for the ceremony.">Bitte tragt eure Rückmeldung für die Trauung ein.</p>
+    <p class="text-lg text-gray-600 mb-4" data-de="Bitte tragt eure Rückmeldung für die Trauung ein." data-en="Please provide your response for the ceremony.">
+      Bitte tragt eure Rückmeldung für die Trauung ein.
+    </p>
     <div class="slideshow-container mt-8"></div>
   </section>
 
+  <!-- Tabs -->
   <div class="flex justify-center space-x-8 mt-6 border-b border-gray-200">
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschichte')" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'details')" data-de="Details" data-en="Details">Details</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'rsvp')" data-de="Check-In" data-en="Check-In">Check-In</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschenke')" data-de="Geschenke" data-en="Gifts">Geschenke</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab('geschichte', this)" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab('details', this)" data-de="Details" data-en="Details">Details</button>
+    <button id="tab-checkin" class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab('rsvp', this)" data-de="Check-In" data-en="Check-In">Check-In</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab('geschenke', this)" data-de="Geschenke" data-en="Gifts">Geschenke</button>
   </div>
 
-  <!-- Inhalte (wie Startseite, optional) -->
+  <!-- Unsere Geschichte -->
   <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</h2>
     <p class="text-gray-600 mb-6" data-de="Hier beginnt unsere Liebesgeschichte..." data-en="Here begins our love story...">Hier beginnt unsere Liebesgeschichte...</p>
     <img src="images/worldmap.png" alt="Weltkarte" class="mx-auto rounded-lg shadow-md max-w-2xl w-full" />
   </section>
 
+  <!-- Details -->
   <section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
     <div class="flex flex-col md:flex-row justify-center gap-12 text-left">
@@ -72,7 +133,7 @@
     </div>
   </section>
 
-  <!-- Check-In: Nur Name + Zu/Absage -->
+  <!-- Check-In (Trauung: Name + Zu/Absage) -->
   <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Check-In Trauung" data-en="Ceremony Check-In">Check-In Trauung</h2>
     <form name="trauung" method="POST" data-netlify="true" action="/thank-you.html" class="bg-white shadow rounded-xl p-8 flex flex-col gap-4 border border-gray-200 max-w-xl mx-auto">
@@ -86,6 +147,7 @@
     <a href="index.html" class="inline-block mt-6 text-red-700 underline" data-de="Zur Startseite" data-en="Back to Home">Zur Startseite</a>
   </section>
 
+  <!-- Geschenke -->
   <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
     <div class="content">
       <h2 class="text-3xl mb-4 text-red-100" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
