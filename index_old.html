@@ -6,63 +6,14 @@
   <title>Yeli & Joni – Hochzeit</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .lang-switch {
-      position: absolute;
-      top: 20px;
-      right: 100px;
-      z-index: 10;
-    }
-    .swiss-logo {
-      position: absolute;
-      top: 18px;
-      right: 20px;
-      height: 36px;
-      width: auto;
-      z-index: 10;
-    }
-    .slideshow-container {
-      position: relative;
-      width: 100%;
-      max-width: 700px;
-      margin: 2rem auto;
-      overflow: hidden;
-      border-radius: 1rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    }
-    .slide {
-      width: 100%;
-      height: 350px;
-      object-fit: cover;
-      display: none;
-      border-radius: 1rem;
-    }
-    #geschenke {
-      position: relative;
-      background-image: url('images/background.jpeg');
-      background-size: cover;
-      background-position: center;
-    }
-    #geschenke::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.55);
-      z-index: 0;
-    }
-    #geschenke .content {
-      position: relative;
-      z-index: 1;
-    }
-    .details-img {
-      width: 100%;
-      max-height: 250px;
-      object-fit: cover;
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+    .lang-switch { position: absolute; top: 20px; right: 100px; z-index: 10; }
+    .swiss-logo { position: absolute; top: 18px; right: 20px; height: 36px; width: auto; z-index: 10; }
+    .slideshow-container { position: relative; width: 100%; max-width: 700px; margin: 2rem auto; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .slide { width: 100%; height: 350px; object-fit: cover; display: none; border-radius: 1rem; }
+    #geschenke { position: relative; background-image: url('images/background.jpeg'); background-size: cover; background-position: center; }
+    #geschenke::before { content: ""; position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.55); z-index: 0; }
+    #geschenke .content { position: relative; z-index: 1; }
+    .details-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 0.75rem; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
   </style>
 
   <script>
@@ -105,7 +56,6 @@
           container.appendChild(imageElement);
         });
       } catch {
-        // Fallback: Bilder direkt aus dem Ordner images
         const fallbackImages = ['image1.jpg','image2.jpg','image3.jpg'];
         fallbackImages.forEach((img, i) => {
           const imageElement = document.createElement('img');
@@ -129,11 +79,7 @@
 
     function copyIBAN() {
       const ibanText = document.getElementById("ibanText").innerText;
-      navigator.clipboard.writeText(ibanText).then(() => {
-        alert("IBAN kopiert: " + ibanText);
-      }).catch(() => {
-        alert("Fehler beim Kopieren");
-      });
+      navigator.clipboard.writeText(ibanText).then(() => { alert("IBAN kopiert: " + ibanText); }).catch(() => { alert("Fehler beim Kopieren"); });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -144,9 +90,7 @@
 </head>
 
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans relative min-h-screen">
-
-  <!-- Sprachumschalter + SWISS Logo -->
-  <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none'; console.error('Swiss logo not found')" />
+  <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none';" />
   <div class="lang-switch">
     <select onchange="switchLanguage(this.value)" class="border border-gray-300 bg-white px-3 py-1 rounded shadow-sm">
       <option value="de">Deutsch</option>
@@ -160,14 +104,8 @@
       <span data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
       <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
     </h1>
-    <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">
-      Herzlich willkommen zur schönsten Reise eures Lebens.
-    </p>
-    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">
-      September XX 2026 · Schaffhausen, Schweiz
-    </p>
-
-    <!-- Diashow -->
+    <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
+    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
     <div class="slideshow-container mt-8"></div>
   </section>
 
@@ -179,13 +117,14 @@
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschenke')" data-de="Geschenke" data-en="Gifts">Geschenke</button>
   </div>
 
-  <!-- Inhalte -->
+  <!-- Unsere Geschichte -->
   <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</h2>
     <p class="text-gray-600 mb-6" data-de="Hier beginnt unsere Liebesgeschichte..." data-en="Here begins our love story...">Hier beginnt unsere Liebesgeschichte...</p>
     <img src="images/worldmap.png" alt="Weltkarte" class="mx-auto rounded-lg shadow-md max-w-2xl w-full" />
   </section>
 
+  <!-- Details -->
   <section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
     <div class="flex flex-col md:flex-row justify-center gap-12 text-left">
@@ -206,28 +145,25 @@
     </div>
   </section>
 
+  <!-- Check-In (Hinweis + Bild + Test-Buttons) -->
   <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
     <h2 class="text-3xl mb-4 text-red-700" data-de="Check-In" data-en="Check-In">Check-In</h2>
-    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="bg-white shadow rounded-xl p-8 flex flex-col gap-4 border border-gray-200">
-      <input type="text" name="Name" class="border p-3 rounded" data-de-placeholder="Name eingeben" data-en-placeholder="Enter your name" placeholder="Name eingeben" />
-      <select class="border p-3 rounded">
-        <option value="yes" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
-        <option value="no" data-de="Leider verhindert" data-en="No, I cannot attend">Leider verhindert</option>
-      </select>
-      <select class="border p-3 rounded">
-        <option value="fleisch" data-de="Fleisch" data-en="Meat">Fleisch</option>
-        <option value="vegetarisch" data-de="Vegetarisch" data-en="Vegetarian">Vegetarisch</option>
-        <option value="vegan" data-de="Vegan" data-en="Vegan">Vegan</option>
-      </select>
-      <div class="flex items-center gap-2">
-        <input type="checkbox" id="allergyCheck" onclick="toggleAllergies()" />
-        <label for="allergyCheck" data-de="Allergien" data-en="Allergies">Allergien</label>
-        <input type="text" id="allergyBox" class="border p-2 rounded hidden" placeholder="Bitte eintragen" />
-      </div>
-      <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Check-In abschließen</button>
-    </form>
+
+    <p class="text-gray-700 mb-6" data-de="Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung." data-en="Please scan the QR code on your invitation to check in.">
+      Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung.
+    </p>
+
+    <img src="images/Boardingpass.jpeg" alt="Boarding Pass" class="mx-auto rounded-lg shadow-md max-w-xl w-full mb-8" />
+
+    <!-- Test-Buttons (nur während Entwicklung) -->
+    <div class="flex flex-col md:flex-row justify-center gap-4 mt-4">
+      <a href="trauung.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Trauung Test" data-en="Ceremony Test">Trauung Test</a>
+      <a href="feier.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Feier Test" data-en="Reception Test">Feier Test</a>
+    </div>
+    <p class="text-sm text-gray-400 mt-3 italic">(Diese Buttons sind nur für Testzwecke sichtbar)</p>
   </section>
 
+  <!-- Geschenke -->
   <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
     <div class="content">
       <h2 class="text-3xl mb-4 text-red-100" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
@@ -247,6 +183,5 @@
       </div>
     </div>
   </section>
-
 </body>
 </html>

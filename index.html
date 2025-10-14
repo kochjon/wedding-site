@@ -106,7 +106,18 @@
     </h1>
     <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
     <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
-    <div class="slideshow-container mt-8"></div>
+    <!-- <div class="slideshow-container mt-8"></div> -->
+	<div
+	  class="slideshow-container"
+	  data-slideshow
+	  data-index-json="images/slideshow/index.json"
+	  data-fallback="images/image1.jpg,images/image2.jpg,images/image3.jpg"
+	  data-interval="4000"
+	  data-height="350"
+	  data-radius="16"
+	  data-fit="cover">
+	</div>
+
   </section>
 
   <!-- Tabs -->
@@ -183,5 +194,6 @@
       </div>
     </div>
   </section>
+  <script src="js/slideshow.js" defer></script>
 </body>
 </html>
