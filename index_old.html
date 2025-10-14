@@ -3,12 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yeli & Joni - Hochzeitseinladung</title>
+  <title>Yeli & Joni – Hochzeit</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .lang-switch { position: absolute; top: 20px; right: 20px; }
-    .slideshow-container { position: relative; width: 100%; max-width: 600px; margin: auto; overflow: hidden; }
-    .slide { width: 100%; height: 300px; object-fit: cover; border-radius: 0.5rem; display: none; }
+    .lang-switch {
+      position: absolute;
+      top: 20px;
+      right: 100px;
+      z-index: 10;
+    }
+    .swiss-logo {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      height: 36px;
+      width: auto;
+      z-index: 10;
+    }
+    .slideshow-container {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      margin: 2rem auto;
+      overflow: hidden;
+      border-radius: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .slide {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      display: none;
+      border-radius: 1rem;
+    }
     #geschenke {
       position: relative;
       background-image: url('images/background.jpeg');
@@ -18,8 +45,11 @@
     #geschenke::before {
       content: "";
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5); /* Abdunklung */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.55);
       z-index: 0;
     }
     #geschenke .content {
@@ -28,24 +58,22 @@
     }
     .details-img {
       width: 100%;
-      max-height: 300px;
+      max-height: 250px;
       object-fit: cover;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
   </style>
+
   <script>
     let currentLang = 'de';
     let slideIndex = 0;
 
     function openTab(evt, tabName) {
-      const tabs = document.querySelectorAll(".tabcontent");
-      tabs.forEach(tab => { tab.classList.add("hidden"); });
-      const buttons = document.querySelectorAll(".tablink");
-      buttons.forEach(btn => btn.classList.remove("border-b-2", "border-pink-500", "text-pink-600"));
-      const currentTab = document.getElementById(tabName);
-      currentTab.classList.remove("hidden");
-      evt.currentTarget.classList.add("border-b-2", "border-pink-500", "text-pink-600");
+      document.querySelectorAll(".tabcontent").forEach(tab => tab.classList.add("hidden"));
+      document.querySelectorAll(".tablink").forEach(btn => btn.classList.remove("border-b-2","border-red-600","text-red-600"));
+      document.getElementById(tabName).classList.remove("hidden");
+      evt.currentTarget.classList.add("border-b-2","border-red-600","text-red-600");
     }
 
     function switchLanguage(lang) {
@@ -67,6 +95,7 @@
       const container = document.querySelector('.slideshow-container');
       try {
         const response = await fetch('images/slideshow/index.json');
+        if (!response.ok) throw new Error();
         const images = await response.json();
         images.forEach((img, i) => {
           const imageElement = document.createElement('img');
@@ -75,16 +104,24 @@
           if (i === 0) imageElement.style.display = 'block';
           container.appendChild(imageElement);
         });
-        showSlides();
-      } catch (e) {
-        console.error('Fehler beim Laden der Slideshow-Bilder:', e);
+      } catch {
+        // Fallback: Bilder direkt aus dem Ordner images
+        const fallbackImages = ['image1.jpg','image2.jpg','image3.jpg'];
+        fallbackImages.forEach((img, i) => {
+          const imageElement = document.createElement('img');
+          imageElement.src = `images/${img}`;
+          imageElement.className = 'slide';
+          if (i === 0) imageElement.style.display = 'block';
+          container.appendChild(imageElement);
+        });
       }
+      showSlides();
     }
 
     function showSlides() {
       const slides = document.getElementsByClassName("slide");
       if (slides.length === 0) return;
-      for (let i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+      for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
       slideIndex = (slideIndex + 1) % slides.length;
       slides[slideIndex].style.display = "block";
       setTimeout(showSlides, 4000);
@@ -94,144 +131,122 @@
       const ibanText = document.getElementById("ibanText").innerText;
       navigator.clipboard.writeText(ibanText).then(() => {
         alert("IBAN kopiert: " + ibanText);
-      }).catch(err => {
+      }).catch(() => {
         alert("Fehler beim Kopieren");
       });
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".tablink").click();
-      document.querySelectorAll('[data-de-placeholder]').forEach(el => {
-        el.placeholder = currentLang === 'de' ? el.getAttribute('data-de-placeholder') : el.getAttribute('data-en-placeholder');
-      });
       loadSlideshowImages();
     });
   </script>
 </head>
-<body class="bg-gradient-to-b from-pink-50 to-white text-gray-800 relative">
 
+<body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans relative min-h-screen">
+
+  <!-- Sprachumschalter + SWISS Logo -->
+  <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none'; console.error('Swiss logo not found')" />
   <div class="lang-switch">
-    <select onchange="switchLanguage(this.value)" class="border px-2 py-1 rounded">
+    <select onchange="switchLanguage(this.value)" class="border border-gray-300 bg-white px-3 py-1 rounded shadow-sm">
       <option value="de">Deutsch</option>
       <option value="en">English</option>
     </select>
   </div>
 
-  <section class="text-center py-10">
-    <h1 class="text-5xl font-serif mb-4" data-de="Hochzeit Check-In Yeli & Joni" data-en="Wedding Check-In Yeli & Joni">Hochzeit Check-In Yeli & Joni</h1>
-    <p class="text-xl mb-6" data-de="Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein" data-en="Together with their families, they warmly invite you to their wedding">Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein</p>
-    <p class="text-lg font-medium mb-8" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
+  <!-- Header -->
+  <section class="text-center py-12 bg-white shadow-sm border-b border-red-200 relative">
+    <h1 class="text-5xl font-light tracking-wide mb-4 text-red-700 flex justify-center items-center gap-3">
+      <span data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
+      <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
+    </h1>
+    <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">
+      Herzlich willkommen zur schönsten Reise eures Lebens.
+    </p>
+    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">
+      September XX 2026 · Schaffhausen, Schweiz
+    </p>
 
-    <div class="slideshow-container">
-      <!-- Bilder werden dynamisch aus images/slideshow geladen -->
-    </div>
+    <!-- Diashow -->
+    <div class="slideshow-container mt-8"></div>
   </section>
 
-  <div class="flex justify-center space-x-8 border-b mb-8">
+  <!-- Tabs -->
+  <div class="flex justify-center space-x-8 mt-6 border-b border-gray-200">
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschichte')" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'details')" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'rsvp')" data-de="Rückmeldung" data-en="RSVP">Rückmeldung</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'details')" data-de="Details" data-en="Details">Details</button>
+    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'rsvp')" data-de="Check-In" data-en="Check-In">Check-In</button>
     <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschenke')" data-de="Geschenke" data-en="Gifts">Geschenke</button>
   </div>
 
+  <!-- Inhalte -->
   <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</h2>
-    <p data-de="Hier beginnt unsere Liebesgeschichte..." data-en="Here begins our love story...">Hier beginnt unsere Liebesgeschichte...</p>
+    <h2 class="text-3xl mb-4 text-red-700" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</h2>
+    <p class="text-gray-600 mb-6" data-de="Hier beginnt unsere Liebesgeschichte..." data-en="Here begins our love story...">Hier beginnt unsere Liebesgeschichte...</p>
+    <img src="images/worldmap.png" alt="Weltkarte" class="mx-auto rounded-lg shadow-md max-w-2xl w-full" />
   </section>
 
   <section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
+    <h2 class="text-3xl mb-4 text-red-700" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
     <div class="flex flex-col md:flex-row justify-center gap-12 text-left">
       <div class="md:w-1/2">
-        <p class="font-semibold" data-de="Kirche" data-en="Church">Kirche</p>
-        <p data-de="Kirche Buchberg-Rüdlingen" data-en="Church Buchberg-Rüdlingen">Kirche Buchberg-Rüdlingen</p>
-        <p data-de="Dorfstrasse 2" data-en="Dorfstrasse 2">Dorfstrasse 2</p>
-        <p data-de="8455 Rüdlingen" data-en="8455 Rüdlingen">8455 Rüdlingen</p>
-        <img src="images/kirche.jpeg" alt="Kirche Bild" class="details-img mt-4" />
+        <p class="font-semibold text-gray-700" data-de="Kirche" data-en="Church">Kirche</p>
+        <p>Kirche Buchberg-Rüdlingen</p>
+        <p>Dorfstrasse 2</p>
+        <p>8455 Rüdlingen</p>
+        <img src="images/kirche.jpeg" alt="Kirche" class="details-img mt-4" />
       </div>
       <div class="md:w-1/2">
-        <p class="font-semibold" data-de="Adresse Empfang" data-en="Reception Address">Adresse Empfang</p>
-        <p>TBD</p>
-        <p>TBD</p>
-        <p>TBD</p>
-        <img src="images/empfang.jpeg" alt="Empfang Bild" class="details-img mt-4" />
+        <p class="font-semibold text-gray-700" data-de="Empfang" data-en="Reception">Empfang</p>
+        <p>Bergtrotte Osterfingen</p>
+        <p>Trottenweg 38</p>
+        <p>8218 Osterfingen</p>
+        <img src="images/empfang.jpeg" alt="Empfang" class="details-img mt-4" />
       </div>
     </div>
   </section>
-  
- <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="Answer">Rückmeldung</h2>
-    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="flex flex-col gap-4">
-      <label data-de="Name:" data-en="Name:">Name:
-		<input type="text" name="Name" placeholder="Max Mustermann" class="border p-2 rounded" />
-		</label>
 
-      <label data-de="Teilnahme:" data-en="Attendance:">Teilnahme:</label>
-      <select class="border p-2 rounded">
-        <option 
-			value="yes" name="attendance" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme
-			<!--<input type="radio" name="attendance" value="yes" required>-->
-		</option>
-        <option 
-			value="no" name="attendance" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert
-		</option>
-	  </select>
-
-      <label data-de="Essen:" data-en="Food:">Essen:</label>
-      <select class="border p-2 rounded">
+  <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+    <h2 class="text-3xl mb-4 text-red-700" data-de="Check-In" data-en="Check-In">Check-In</h2>
+    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="bg-white shadow rounded-xl p-8 flex flex-col gap-4 border border-gray-200">
+      <input type="text" name="Name" class="border p-3 rounded" data-de-placeholder="Name eingeben" data-en-placeholder="Enter your name" placeholder="Name eingeben" />
+      <select class="border p-3 rounded">
+        <option value="yes" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
+        <option value="no" data-de="Leider verhindert" data-en="No, I cannot attend">Leider verhindert</option>
+      </select>
+      <select class="border p-3 rounded">
         <option value="fleisch" data-de="Fleisch" data-en="Meat">Fleisch</option>
         <option value="vegetarisch" data-de="Vegetarisch" data-en="Vegetarian">Vegetarisch</option>
         <option value="vegan" data-de="Vegan" data-en="Vegan">Vegan</option>
       </select>
-
       <div class="flex items-center gap-2">
         <input type="checkbox" id="allergyCheck" onclick="toggleAllergies()" />
         <label for="allergyCheck" data-de="Allergien" data-en="Allergies">Allergien</label>
-        <input type="text" id="allergyBox" class="border p-2 rounded" style="display:none;" placeholder="Bitte eintragen" />
+        <input type="text" id="allergyBox" class="border p-2 rounded hidden" placeholder="Bitte eintragen" />
       </div>
-
-      <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded mt-2">Absenden</button>
+      <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Check-In abschließen</button>
     </form>
   </section>
 
   <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
     <div class="content">
-      <h2 class="text-3xl mb-4" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
-      <div class="flex flex-col items-center gap-6 p-6 rounded-lg shadow bg-transparent">
+      <h2 class="text-3xl mb-4 text-red-100" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
+      <div class="flex flex-col items-center gap-6 p-6 rounded-lg bg-black/40 backdrop-blur-md shadow">
         <div>
           <h3 class="text-xl font-semibold mb-2" data-de="TWINT" data-en="TWINT">TWINT</h3>
-          <img src="images/qrcode.png" alt="QR Code" class="w-48 h-48 object-contain mx-auto" />
+          <img src="images/qrcode.png" alt="QR Code" class="w-40 h-40 object-contain mx-auto" />
         </div>
         <div>
           <h3 class="text-xl font-semibold mb-2" data-de="Bankverbindung" data-en="Bank Details">Bankverbindung</h3>
           <div class="flex items-center gap-2 justify-center">
             <p id="ibanText" class="text-lg font-medium" data-de="IBAN XX XXXX XXXX" data-en="IBAN XX XXXX XXXX">IBAN XX XXXX XXXX</p>
-            <button onclick="copyIBAN()" class="bg-gray-200 px-2 py-1 rounded text-sm">📋</button>
+            <button onclick="copyIBAN()" class="bg-white/80 px-2 py-1 rounded text-sm">📋</button>
           </div>
           <p class="text-lg" data-de="Bank Cler" data-en="Bank Cler">Bank Cler</p>
         </div>
       </div>
     </div>
   </section>
-  
-	<script>
-    const tabs = document.querySelectorAll('.tablink');
-    const contents = document.querySelectorAll('.tabcontent');
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => {
-        contents.forEach(c => c.classList.add('hidden'));
-        contents[i].classList.remove('hidden');
-      });
-    });
-
-    function switchLanguage(lang) { alert('Language switched to ' + lang); }
-
-    const checkbox = document.getElementById('allergiesCheckbox');
-    const input = document.getElementById('allergiesInput');
-    checkbox.addEventListener('change', () => {
-      input.classList.toggle('hidden', !checkbox.checked);
-    });
-  </script>
 
 </body>
 </html>

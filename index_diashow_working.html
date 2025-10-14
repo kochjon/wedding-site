@@ -118,9 +118,9 @@
   </div>
 
   <section class="text-center py-10">
-    <h1 class="text-5xl font-serif mb-4" data-de="Hochzeit Yeli & Joni" data-en="Wedding Yeli & Joni">Yeli & Joni</h1>
+    <h1 class="text-5xl font-serif mb-4" data-de="Hochzeit Check-In Yeli & Joni" data-en="Wedding Check-In Yeli & Joni">Hochzeit Check-In Yeli & Joni</h1>
     <p class="text-xl mb-6" data-de="Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein" data-en="Together with their families, they warmly invite you to their wedding">Gemeinsam mit ihren Familien laden sie herzlich zu ihrer Hochzeit ein</p>
-    <p class="text-lg font-medium mb-8" data-de="September XX 2026 · Zürich, Schweiz" data-en="September XX 2026 · Zurich, Switzerland">September XX 2026 · Zürich, Schweiz</p>
+    <p class="text-lg font-medium mb-8" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
 
     <div class="slideshow-container">
       <!-- Bilder werden dynamisch aus images/slideshow geladen -->
@@ -158,18 +158,24 @@
       </div>
     </div>
   </section>
-
-  <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="RSVP">Rückmeldung</h2>
-    <form class="flex flex-col gap-4 text-left max-w-md mx-auto">
-      <label data-de="Name:" data-en="Name:">Name:</label>
-      <input type="text" placeholder="Max Mustermann" class="border p-2 rounded" />
+  
+ <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+    <h2 class="text-3xl mb-4" data-de="Rückmeldung" data-en="Answer">Rückmeldung</h2>
+    <form name="rsvp" method="POST" data-netlify="true" action="/thank-you.html" class="flex flex-col gap-4">
+      <label data-de="Name:" data-en="Name:">Name:
+		<input type="text" name="Name" placeholder="Max Mustermann" class="border p-2 rounded" />
+		</label>
 
       <label data-de="Teilnahme:" data-en="Attendance:">Teilnahme:</label>
       <select class="border p-2 rounded">
-        <option value="ja" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
-        <option value="nein" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert</option>
-      </select>
+        <option 
+			value="yes" name="attendance" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme
+			<!--<input type="radio" name="attendance" value="yes" required>-->
+		</option>
+        <option 
+			value="no" name="attendance" data-de="Nein, ich bin verhindert" data-en="No, I cannot attend">Nein, ich bin verhindert
+		</option>
+	  </select>
 
       <label data-de="Essen:" data-en="Food:">Essen:</label>
       <select class="border p-2 rounded">
@@ -207,6 +213,25 @@
       </div>
     </div>
   </section>
+  
+	<script>
+    const tabs = document.querySelectorAll('.tablink');
+    const contents = document.querySelectorAll('.tabcontent');
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        contents.forEach(c => c.classList.add('hidden'));
+        contents[i].classList.remove('hidden');
+      });
+    });
+
+    function switchLanguage(lang) { alert('Language switched to ' + lang); }
+
+    const checkbox = document.getElementById('allergiesCheckbox');
+    const input = document.getElementById('allergiesInput');
+    checkbox.addEventListener('change', () => {
+      input.classList.toggle('hidden', !checkbox.checked);
+    });
+  </script>
 
 </body>
 </html>
