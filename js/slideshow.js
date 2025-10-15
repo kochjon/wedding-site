@@ -1,10 +1,9 @@
 // js/slideshow.js
-// Lightweight Slideshow – vanilla JS, no dependencies.
-
 (function () {
   "use strict";
 
   const SLIDE_CLASS = "js-slideshow-slide";
+  const VISIBLE_CLASS = "is-visible";
   const TIMER_SYMBOL = Symbol("slideshowTimer");
 
   function parseCsvList(str) {
@@ -14,13 +13,14 @@
       .filter(Boolean);
   }
 
-  function applyBaseStyles(container, { radius }) {
-    // Sanfte Defaults, falls Tailwind-Klassen fehlen
-    if (!container.style.position) container.style.position = "relative";
-    if (!container.style.width) container.style.width = "100%";
-    if (!container.style.overflow) container.style.overflow = "hidden";
-    if (!container.style.borderRadius) container.style.borderRadius = `${radius}px`;
-    if (!container.style.boxShadow) container.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+  function applyBaseStyles(container, { height, radius }) {
+    const cs = container.style;
+    if (!cs.position) cs.position = "relative";
+    if (!cs.width) cs.width = "100%";
+    if (!cs.overflow) cs.overflow = "hidden";
+    if (!cs.borderRadius) cs.borderRadius = `${radius}px`;
+    if (!cs.boxShadow) cs.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+    if (!cs.height) cs.height = `${height}px`;
   }
 
   function createSlide(src, { height, radius, fit }) {
@@ -28,39 +28,55 @@
     img.src = src;
     img.alt = "";
     img.classList.add(SLIDE_CLASS);
-    img.style.width = "100%";
-    img.style.height = `${height}px`;
-    img.style.objectFit = fit;
-    img.style.display = "none";
-    img.style.borderRadius = `${radius}px`;
+    const s = img.style;
+    s.position = "absolute";
+    s.inset = "0";
+    s.width = "100%";
+    s.height = "100%";
+    s.objectFit = fit;
+    s.borderRadius = `${radius}px`;
+    s.opacity = "0";
+    s.transition = "opacity 250ms ease";
+    s.pointerEvents = "none";
+    img.setAttribute("aria-hidden", "true");
     return img;
+  }
+
+  function setVisible(slides, newIndex) {
+    slides.forEach((el, i) => {
+      if (i === newIndex) {
+        el.style.opacity = "1";
+        el.removeAttribute("aria-hidden");
+        el.classList.add(VISIBLE_CLASS);
+        el.style.pointerEvents = "";
+      } else {
+        el.style.opacity = "0";
+        el.setAttribute("aria-hidden", "true");
+        el.classList.remove(VISIBLE_CLASS);
+        el.style.pointerEvents = "none";
+      }
+    });
   }
 
   function startRotation(container, interval) {
     const slides = Array.from(container.querySelectorAll(`.${SLIDE_CLASS}`));
     if (!slides.length) return;
 
-    // Falls bereits ein Timer läuft, zuerst stoppen (Schutz gegen Doppelinit)
     if (container[TIMER_SYMBOL]) {
       clearInterval(container[TIMER_SYMBOL]);
       container[TIMER_SYMBOL] = null;
     }
 
-    // Zeige zunächst die erste Folie
     let index = 0;
-    slides.forEach(s => (s.style.display = "none"));
-    slides[0].style.display = "block";
+    setVisible(slides, index);
 
-    // Rotation
     const timerId = setInterval(() => {
-      slides[index].style.display = "none";
       index = (index + 1) % slides.length;
-      slides[index].style.display = "block";
+      setVisible(slides, index);
     }, interval);
 
     container[TIMER_SYMBOL] = timerId;
 
-    // Sauber aufräumen, falls Container entfernt wird
     const observer = new MutationObserver(() => {
       if (!document.body.contains(container)) {
         if (container[TIMER_SYMBOL]) clearInterval(container[TIMER_SYMBOL]);
@@ -90,7 +106,7 @@
         images = list.map(name =>
           /^https?:\/\//.test(name)
             ? name
-            : indexJson.replace(/\/[^/]*$/, `/${name}`) // same folder as index.json
+            : indexJson.replace(/\/[^/]*$/, `/${name}`)
         );
       } catch (e) {
         console.warn(`[slideshow] Fallback aktiv – konnte ${indexJson} nicht laden:`, e);
@@ -103,18 +119,15 @@
 
     if (!images.length) return;
 
-    // Vor Neubau evtl. vorhandene Slides dieser Slideshow entfernen
     container.querySelectorAll(`.${SLIDE_CLASS}`).forEach(n => n.remove());
 
-    images.forEach((src, i) => {
+    images.forEach(src => {
       const slide = createSlide(src, opts);
-      if (i === 0) slide.style.display = "block";
       container.appendChild(slide);
     });
   }
 
   async function initContainer(container) {
-    // Schutz: nicht mehrfach initialisieren
     if (container.dataset.slideshowInitialized === "1") return;
     container.dataset.slideshowInitialized = "1";
 
