@@ -25,7 +25,6 @@
   }
 
   function createSlide(src, { radius, fit }) {
-	s.zIndex = "1";
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
@@ -41,6 +40,7 @@
     s.opacity = "0";
     s.transition = "opacity 250ms ease";
     s.pointerEvents = "none";
+	s.zIndex = "1";
 
     img.setAttribute("aria-hidden", "true");
     return img;
