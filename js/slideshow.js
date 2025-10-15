@@ -5,6 +5,7 @@
   const SLIDE_CLASS = "js-slideshow-slide";
   const VISIBLE_CLASS = "is-visible";
   const TIMER_SYMBOL = Symbol("slideshowTimer");
+  const STATE_SYMBOL = Symbol("slideshowState");
 
   function parseCsvList(str) {
     return (str || "")
@@ -18,26 +19,28 @@
     if (!cs.position) cs.position = "relative";
     if (!cs.width) cs.width = "100%";
     if (!cs.overflow) cs.overflow = "hidden";
-    if (!cs.borderRadius) cs.borderRadius = `${radius}px`;
+    if (!cs.borderRadius) cs.borderRadius = radius + "px";
     if (!cs.boxShadow) cs.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
-    if (!cs.height) cs.height = `${height}px`;
+    if (!cs.height) cs.height = height + "px";
   }
 
-  function createSlide(src, { height, radius, fit }) {
+  function createSlide(src, { radius, fit }) {
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
     img.classList.add(SLIDE_CLASS);
+
     const s = img.style;
     s.position = "absolute";
     s.inset = "0";
     s.width = "100%";
     s.height = "100%";
     s.objectFit = fit;
-    s.borderRadius = `${radius}px`;
+    s.borderRadius = radius + "px";
     s.opacity = "0";
     s.transition = "opacity 250ms ease";
     s.pointerEvents = "none";
+
     img.setAttribute("aria-hidden", "true");
     return img;
   }
@@ -58,8 +61,27 @@
     });
   }
 
+  function showSlide(container, index) {
+    const state = container[STATE_SYMBOL];
+    const slides = state.slides;
+    if (!slides.length) return;
+    state.index = (index + slides.length) % slides.length;
+    setVisible(slides, state.index);
+  }
+
+  function nextSlide(container) {
+    const state = container[STATE_SYMBOL];
+    showSlide(container, state.index + 1);
+  }
+
+  function prevSlide(container) {
+    const state = container[STATE_SYMBOL];
+    showSlide(container, state.index - 1);
+  }
+
   function startRotation(container, interval) {
-    const slides = Array.from(container.querySelectorAll(`.${SLIDE_CLASS}`));
+    const state = container[STATE_SYMBOL];
+    const slides = state.slides;
     if (!slides.length) return;
 
     if (container[TIMER_SYMBOL]) {
@@ -67,16 +89,12 @@
       container[TIMER_SYMBOL] = null;
     }
 
-    let index = 0;
-    setVisible(slides, index);
+    setVisible(slides, state.index);
 
-    const timerId = setInterval(() => {
-      index = (index + 1) % slides.length;
-      setVisible(slides, index);
-    }, interval);
-
+    const timerId = setInterval(() => nextSlide(container), interval);
     container[TIMER_SYMBOL] = timerId;
 
+    // Beobachten, ob Container entfernt wird
     const observer = new MutationObserver(() => {
       if (!document.body.contains(container)) {
         if (container[TIMER_SYMBOL]) clearInterval(container[TIMER_SYMBOL]);
@@ -89,7 +107,7 @@
 
   async function fetchJsonArray(url) {
     const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error("JSON is not an array");
     return data;
@@ -106,10 +124,10 @@
         images = list.map(name =>
           /^https?:\/\//.test(name)
             ? name
-            : indexJson.replace(/\/[^/]*$/, `/${name}`)
+            : indexJson.replace(/\/[^/]*$/, "/" + name)
         );
       } catch (e) {
-        console.warn(`[slideshow] Fallback aktiv – konnte ${indexJson} nicht laden:`, e);
+        console.warn("[slideshow] Fallback aktiv – konnte " + indexJson + " nicht laden:", e);
       }
     }
 
@@ -117,14 +135,42 @@
       images = parseCsvList(fallbackCsv);
     }
 
-    if (!images.length) return;
+    if (!images.length) return [];
 
-    container.querySelectorAll(`.${SLIDE_CLASS}`).forEach(n => n.remove());
-
-    images.forEach(src => {
+    container.querySelectorAll("." + SLIDE_CLASS).forEach(n => n.remove());
+    const slides = images.map(src => {
       const slide = createSlide(src, opts);
       container.appendChild(slide);
+      return slide;
     });
+    return slides;
+  }
+
+  function setupButtons(container) {
+    const prevBtn = container.querySelector(".slideshow-prev");
+    const nextBtn = container.querySelector(".slideshow-next");
+    if (!prevBtn && !nextBtn) return;
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        prevSlide(container);
+        restartTimer(container);
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        nextSlide(container);
+        restartTimer(container);
+      });
+    }
+  }
+
+  function restartTimer(container) {
+    const state = container[STATE_SYMBOL];
+    if (container[TIMER_SYMBOL]) {
+      clearInterval(container[TIMER_SYMBOL]);
+      container[TIMER_SYMBOL] = setInterval(() => nextSlide(container), state.interval);
+    }
   }
 
   async function initContainer(container) {
@@ -137,9 +183,12 @@
     const fit = (container.getAttribute("data-fit") || "cover").toLowerCase();
 
     const opts = { interval, height, radius, fit };
-
     applyBaseStyles(container, opts);
-    await buildSlides(container, opts);
+
+    const slides = await buildSlides(container, opts);
+    container[STATE_SYMBOL] = { index: 0, slides, interval };
+
+    setupButtons(container);
     startRotation(container, interval);
   }
 
