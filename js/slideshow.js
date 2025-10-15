@@ -148,6 +148,11 @@
   }
 
   function setupButtons(container) {
+	  // Container muss Bezugspunkt sein
+	  if (getComputedStyle(container).position === "static") {
+		container.style.position = "relative";
+	  }
+
 	  let prevBtn = container.querySelector(".slideshow-prev");
 	  let nextBtn = container.querySelector(".slideshow-next");
 
@@ -167,6 +172,10 @@
 		container.appendChild(nextBtn);
 	  }
 
+	  // WICHTIG: Kein Submit-Button!
+	  prevBtn.type = "button";
+	  nextBtn.type = "button";
+
 	  // Basisstyles direkt am Element (robust gegen fehlendes CSS)
 	  [prevBtn, nextBtn].forEach((btn) => {
 		const s = btn.style;
@@ -181,20 +190,26 @@
 		s.height = "40px";
 		s.borderRadius = "50%";
 		s.cursor = "pointer";
-		s.zIndex = "2";          // <-- über den Slides
+		s.zIndex = "2";
 		s.display = "inline-flex";
 		s.alignItems = "center";
 		s.justifyContent = "center";
 		s.userSelect = "none";
 	  });
+	  // Links/rechts innen am Rand
 	  prevBtn.style.left = "10px";
 	  nextBtn.style.right = "10px";
 
-	  prevBtn.addEventListener("click", () => {
+	  // Klick-Handler (Default unterdrücken + Wechsel + Timer-Reset)
+	  prevBtn.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 		prevSlide(container);
 		restartTimer(container);
 	  });
-	  nextBtn.addEventListener("click", () => {
+	  nextBtn.addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 		nextSlide(container);
 		restartTimer(container);
 	  });
