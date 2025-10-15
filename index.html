@@ -42,7 +42,7 @@
       allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
     }
 
-    async function loadSlideshowImages() {
+    /*async function loadSlideshowImages() {
       const container = document.querySelector('.slideshow-container');
       try {
         const response = await fetch('images/slideshow/index.json');
@@ -75,7 +75,7 @@
       slideIndex = (slideIndex + 1) % slides.length;
       slides[slideIndex].style.display = "block";
       setTimeout(showSlides, 4000);
-    }
+    }*/
 
     function copyIBAN() {
       const ibanText = document.getElementById("ibanText").innerText;
@@ -84,7 +84,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".tablink").click();
-      loadSlideshowImages();
+      //loadSlideshowImages();
     });
   </script>
 </head>
@@ -116,6 +116,7 @@
 	  data-radius="16"
 	  data-fit="cover"
 	>  
+	
 	  <!-- Buttons direkt IN den Slideshow-Container -->
 	  <button class="slideshow-prev" aria-label="Vorheriges Bild">‹</button>
 	  <button class="slideshow-next" aria-label="Nächstes Bild">›</button>
