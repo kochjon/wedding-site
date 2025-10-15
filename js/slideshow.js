@@ -1,16 +1,11 @@
 // js/slideshow.js
 // Lightweight Slideshow – vanilla JS, no dependencies.
-// Initialisiert alle Container mit [data-slideshow].
-// Konfigurierbar per data-Attributen:
-//  - data-index-json="images/slideshow/index.json"  (Liste der Bilder als JSON Array)
-//  - data-fallback="images/a.jpg,images/b.jpg,images/c.jpg"  (CSV-Liste, falls JSON fehlt)
-//  - data-interval="4000"   (ms; Standard 4000)
-//  - data-height="350"      (px; CSS-Höhe der Slides)
-//  - data-radius="16"       (px; Border-Radius)
-//  - data-fit="cover|contain" (object-fit; Standard cover)
 
 (function () {
   "use strict";
+
+  const SLIDE_CLASS = "js-slideshow-slide";
+  const TIMER_SYMBOL = Symbol("slideshowTimer");
 
   function parseCsvList(str) {
     return (str || "")
@@ -19,20 +14,20 @@
       .filter(Boolean);
   }
 
-  function applyBaseStyles(container, { height, radius }) {
+  function applyBaseStyles(container, { radius }) {
     // Sanfte Defaults, falls Tailwind-Klassen fehlen
-    container.style.position = container.style.position || "relative";
-    container.style.width = container.style.width || "100%";
-    container.style.overflow = container.style.overflow || "hidden";
-    container.style.borderRadius = container.style.borderRadius || `${radius}px`;
-    container.style.boxShadow = container.style.boxShadow || "0 4px 8px rgba(0,0,0,0.15)";
+    if (!container.style.position) container.style.position = "relative";
+    if (!container.style.width) container.style.width = "100%";
+    if (!container.style.overflow) container.style.overflow = "hidden";
+    if (!container.style.borderRadius) container.style.borderRadius = `${radius}px`;
+    if (!container.style.boxShadow) container.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
   }
 
   function createSlide(src, { height, radius, fit }) {
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
-    img.className = (img.className || "").concat(" slide").trim();
+    img.classList.add(SLIDE_CLASS);
     img.style.width = "100%";
     img.style.height = `${height}px`;
     img.style.objectFit = fit;
@@ -42,8 +37,14 @@
   }
 
   function startRotation(container, interval) {
-    const slides = Array.from(container.querySelectorAll(".slide"));
+    const slides = Array.from(container.querySelectorAll(`.${SLIDE_CLASS}`));
     if (!slides.length) return;
+
+    // Falls bereits ein Timer läuft, zuerst stoppen (Schutz gegen Doppelinit)
+    if (container[TIMER_SYMBOL]) {
+      clearInterval(container[TIMER_SYMBOL]);
+      container[TIMER_SYMBOL] = null;
+    }
 
     // Zeige zunächst die erste Folie
     let index = 0;
@@ -57,10 +58,13 @@
       slides[index].style.display = "block";
     }, interval);
 
+    container[TIMER_SYMBOL] = timerId;
+
     // Sauber aufräumen, falls Container entfernt wird
     const observer = new MutationObserver(() => {
       if (!document.body.contains(container)) {
-        clearInterval(timerId);
+        if (container[TIMER_SYMBOL]) clearInterval(container[TIMER_SYMBOL]);
+        container[TIMER_SYMBOL] = null;
         observer.disconnect();
       }
     });
@@ -84,7 +88,7 @@
       try {
         const list = await fetchJsonArray(indexJson);
         images = list.map(name =>
-          name.match(/^https?:\/\//)
+          /^https?:\/\//.test(name)
             ? name
             : indexJson.replace(/\/[^/]*$/, `/${name}`) // same folder as index.json
         );
@@ -97,8 +101,10 @@
       images = parseCsvList(fallbackCsv);
     }
 
-    // Wenn immer noch leer, abbrechen (nichts zu zeigen)
     if (!images.length) return;
+
+    // Vor Neubau evtl. vorhandene Slides dieser Slideshow entfernen
+    container.querySelectorAll(`.${SLIDE_CLASS}`).forEach(n => n.remove());
 
     images.forEach((src, i) => {
       const slide = createSlide(src, opts);
@@ -108,6 +114,10 @@
   }
 
   async function initContainer(container) {
+    // Schutz: nicht mehrfach initialisieren
+    if (container.dataset.slideshowInitialized === "1") return;
+    container.dataset.slideshowInitialized = "1";
+
     const interval = parseInt(container.getAttribute("data-interval") || "4000", 10);
     const height = parseInt(container.getAttribute("data-height") || "350", 10);
     const radius = parseInt(container.getAttribute("data-radius") || "16", 10);
@@ -132,7 +142,7 @@
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initAll);
+    document.addEventListener("DOMContentLoaded", initAll, { once: true });
   } else {
     initAll();
   }
