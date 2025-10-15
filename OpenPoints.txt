@@ -1,0 +1,3 @@
+- Content on Story page
+- Layout and purpos of Gift page
+- Connection of correct IBAN (With QR code) on gift page
