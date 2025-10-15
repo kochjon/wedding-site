@@ -25,6 +25,7 @@
   }
 
   function createSlide(src, { radius, fit }) {
+	s.zIndex = "1";
     const img = document.createElement("img");
     img.src = src;
     img.alt = "";
@@ -147,23 +148,57 @@
   }
 
   function setupButtons(container) {
-    const prevBtn = container.querySelector(".slideshow-prev");
-    const nextBtn = container.querySelector(".slideshow-next");
-    if (!prevBtn && !nextBtn) return;
+	  let prevBtn = container.querySelector(".slideshow-prev");
+	  let nextBtn = container.querySelector(".slideshow-next");
 
-    if (prevBtn) {
-      prevBtn.addEventListener("click", () => {
-        prevSlide(container);
-        restartTimer(container);
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener("click", () => {
-        nextSlide(container);
-        restartTimer(container);
-      });
-    }
-  }
+	  // Falls keine Buttons vorhanden sind: automatisch erzeugen
+	  if (!prevBtn) {
+		prevBtn = document.createElement("button");
+		prevBtn.className = "slideshow-prev";
+		prevBtn.setAttribute("aria-label", "Vorheriges Bild");
+		prevBtn.textContent = "‹";
+		container.appendChild(prevBtn);
+	  }
+	  if (!nextBtn) {
+		nextBtn = document.createElement("button");
+		nextBtn.className = "slideshow-next";
+		nextBtn.setAttribute("aria-label", "Nächstes Bild");
+		nextBtn.textContent = "›";
+		container.appendChild(nextBtn);
+	  }
+
+	  // Basisstyles direkt am Element (robust gegen fehlendes CSS)
+	  [prevBtn, nextBtn].forEach((btn) => {
+		const s = btn.style;
+		s.position = "absolute";
+		s.top = "50%";
+		s.transform = "translateY(-50%)";
+		s.background = "rgba(0,0,0,0.4)";
+		s.color = "#fff";
+		s.border = "none";
+		s.fontSize = "24px";
+		s.width = "40px";
+		s.height = "40px";
+		s.borderRadius = "50%";
+		s.cursor = "pointer";
+		s.zIndex = "2";          // <-- über den Slides
+		s.display = "inline-flex";
+		s.alignItems = "center";
+		s.justifyContent = "center";
+		s.userSelect = "none";
+	  });
+	  prevBtn.style.left = "10px";
+	  nextBtn.style.right = "10px";
+
+	  prevBtn.addEventListener("click", () => {
+		prevSlide(container);
+		restartTimer(container);
+	  });
+	  nextBtn.addEventListener("click", () => {
+		nextSlide(container);
+		restartTimer(container);
+	  });
+	}
 
   function restartTimer(container) {
     const state = container[STATE_SYMBOL];
