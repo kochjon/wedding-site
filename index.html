@@ -9,6 +9,10 @@
     .lang-switch { position: absolute; top: 20px; right: 100px; z-index: 10; }
     .slideshow-container { position: relative; width: 100%; max-width: 700px; margin: 2rem auto; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .slide { width: 100%; height: 350px; object-fit: cover; display: none; border-radius: 1rem; }
+	
+	/* Mobile tab bar: Scrollbar verstecken für iOS/Android/Webkit/Firefox */
+	.no-scrollbar::-webkit-scrollbar { display: none; }
+	.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 
   <script>
@@ -141,13 +145,44 @@
 
   </section>
 
-  <!-- Tabs -->
-  <div class="flex justify-center space-x-8 mt-6 border-b border-gray-200">
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschichte')" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'details')" data-de="Details" data-en="Details">Details</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'rsvp')" data-de="Check-In" data-en="Check-In">Check-In</button>
-    <button class="tablink py-2 text-lg transition-colors duration-300" onclick="openTab(event, 'geschenke')" data-de="Geschenke" data-en="Gifts">Geschenke</button>
-  </div>
+	<!-- Tabs -->
+	<div class="mt-6 border-b border-gray-200">
+	  <div class="flex gap-3 overflow-x-auto no-scrollbar px-4 pb-2 md:justify-center md:gap-8 md:overflow-visible md:px-0 md:pb-0">
+		
+		<button
+		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
+		  onclick="openTab(event, 'geschichte')"
+		  data-de="Unsere Geschichte"
+		  data-en="Our Story">
+		  Unsere Geschichte
+		</button>
+
+		<button
+		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
+		  onclick="openTab(event, 'details')"
+		  data-de="Details"
+		  data-en="Details">
+		  Details
+		</button>
+
+		<button
+		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
+		  onclick="openTab(event, 'rsvp')"
+		  data-de="Check-In"
+		  data-en="Check-In">
+		  Check-In
+		</button>
+
+		<button
+		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
+		  onclick="openTab(event, 'geschenke')"
+		  data-de="Geschenke"
+		  data-en="Gifts">
+		  Geschenke
+		</button>
+
+	  </div>
+	</div>
 
   <!-- Unsere Geschichte -->
   <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
