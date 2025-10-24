@@ -89,7 +89,7 @@
 </head>
 
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans relative min-h-screen">
-  <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none';" />
+  <!-- <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none';" /> -->
   <div class="lang-switch">
     <select onchange="switchLanguage(this.value)" class="border border-gray-300 bg-white px-3 py-1 rounded shadow-sm">
       <option value="de">Deutsch</option>
@@ -189,25 +189,19 @@
     <p class="text-sm text-gray-400 mt-3 italic">(Diese Buttons sind nur für Testzwecke sichtbar)</p>
   </section>
 
-  <!-- Geschenke -->
-  <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
-    <div class="content">
-      <h2 class="text-3xl mb-4 text-red-100" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
-      <div class="flex flex-col items-center gap-6 p-6 rounded-lg bg-black/40 backdrop-blur-md shadow">
-        <div>
-          <h3 class="text-xl font-semibold mb-2" data-de="TWINT" data-en="TWINT">TWINT</h3>
-          <img src="images/qrcode.png" alt="QR Code" class="w-40 h-40 object-contain mx-auto" />
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold mb-2" data-de="Bankverbindung" data-en="Bank Details">Bankverbindung</h3>
-          <div class="flex items-center gap-2 justify-center">
-            <p id="ibanText" class="text-lg font-medium" data-de="IBAN XX XXXX XXXX" data-en="IBAN XX XXXX XXXX">IBAN XX XXXX XXXX</p>
-            <button onclick="copyIBAN()" class="bg-white/80 px-2 py-1 rounded text-sm">📋</button>
-          </div>
-          <p class="text-lg" data-de="Bank Cler" data-en="Bank Cler">Bank Cler</p>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- Geschenke -->
+	<section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center text-white">
+	  <div class="content">
+		<h2 class="text-3xl mb-6 text-red-100" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
+
+		<p class="text-lg mb-8 leading-relaxed max-w-2xl mx-auto"
+		   data-de='Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.'
+		   data-en='As we are already completely happy, we have no wishes for gifts. However, if you would still like to give something, you are welcome to contribute to our "little" world trip or bring something small to the wedding.'>
+		  Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.
+		</p>
+
+		<img src="images/Geschenke.jpg" alt="Geschenke" class="mx-auto rounded-lg shadow-lg max-w-full w-full md:w-3/4" />
+	  </div>
+	</section>
 </body>
 </html>
