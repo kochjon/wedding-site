@@ -6,27 +6,7 @@
   <title>Yeli & Joni – Hochzeit</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .lang-switch {
-	  position: absolute;
-	  top: 20px;
-	  right: 100px;
-	  z-index: 10;
-	}
 
-	/* Mobilgeräte */
-	@media (max-width: 768px) {
-	  .lang-switch {
-		position: static;              /* aus der absoluten Position lösen */
-		display: flex;
-		justify-content: center;       /* mittig ausrichten */
-		margin-top: 1rem;              /* etwas Luft nach oben */
-		margin-bottom: -1rem;          /* optisch dichter am Header halten */
-	  }
-	  .lang-switch select {
-		font-size: 0.9rem;
-		padding: 0.4rem 1rem;
-	  }
-	}
     .slideshow-container { position: relative; width: 100%; max-width: 700px; margin: 2rem auto; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
     .slide { width: 100%; height: 350px; object-fit: cover; display: none; border-radius: 1rem; }
 	
@@ -143,20 +123,21 @@
 </head>
 
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans relative min-h-screen">
-  <!-- <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none';" /> -->
-  <div class="lang-switch">
-    <select onchange="switchLanguage(this.value)" class="border border-gray-300 bg-white px-3 py-1 rounded shadow-sm">
-      <option value="de">Deutsch</option>
-      <option value="en">English</option>
-    </select>
-  </div>
+
 
   <!-- Header -->
   <section class="text-center py-12 bg-white shadow-sm border-b border-red-200 relative">
-    <h1 class="text-5xl font-light tracking-wide mb-4 text-red-700 flex justify-center items-center gap-3">
-      <span data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
-      <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
-    </h1>
+	<h1 class="flex flex-wrap justify-center items-center gap-3 mb-4 text-red-700">
+	  <span class="text-4xl sm:text-5xl font-light tracking-wide" data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
+	  <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
+
+	  <!-- Sprachwahl direkt rechts neben dem Titel -->
+	  <select onchange="switchLanguage(this.value)"
+			  class="ml-2 border border-gray-300 bg-white text-gray-700 text-sm px-2 py-1 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+		<option value="de">DE</option>
+		<option value="en">EN</option>
+	  </select>
+	</h1>
     <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
     <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
 	<div
