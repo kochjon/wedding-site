@@ -206,23 +206,29 @@
   </section>
 
 	<!-- Geschenke -->
-	<section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+	<section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center relative">
 	  <h2 class="text-3xl mb-6 text-red-700" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
 
-	  <p class="text-gray-700 mb-8 leading-relaxed max-w-2xl mx-auto"
-		 data-de='Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.'
-		 data-en='As we are already completely happy, we have no wishes for gifts. However, if you would still like to give something, you are welcome to contribute to our "little" world trip or bring something small to the wedding.'>
-		Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.
-	  </p>
+	  <div class="relative w-full md:w-3/4 mx-auto">
+		<!-- Das Bild -->
+		<img
+		  src="images/Geschenke.jpg"
+		  alt="Geschenke"
+		  class="details-img w-full rounded-lg shadow-md"
+		/>
 
-	  <img
-		src="images/Geschenke.jpg"
-		alt="Geschenke"
-		class="details-img mx-auto max-w-full w-full md:w-3/4 mb-10"
-	  />
+		<!-- Text-Overlay -->
+		<div class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-lg px-6">
+		  <p class="text-white text-lg leading-relaxed max-w-lg"
+			 data-de='Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.'
+			 data-en='As we are already completely happy, we have no wishes for gifts. However, if you would still like to give something, you are welcome to contribute to our "little" world trip or bring something small to the wedding.'>
+			Da wir bereits wunschlos glücklich sind, haben wir keinerlei Geschenkewünsche. Wer dennoch etwas geben möchte, darf uns einen Beitrag an unsere "kleine" Weltreise spenden oder etwas an die Hochzeit mitbringen.
+		  </p>
+		</div>
+	  </div>
 
 	  <!-- Kopierfelder -->
-	  <div class="space-y-6">
+	  <div class="space-y-6 mt-10">
 		<!-- IBAN -->
 		<div>
 		  <p class="text-gray-800 font-semibold mb-2" data-de="IBAN" data-en="IBAN">IBAN</p>
@@ -254,5 +260,6 @@
 		</div>
 	  </div>
 	</section>
+
 </body>
 </html>
