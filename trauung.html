@@ -183,14 +183,45 @@
 	  </div>
 	</div>
 	
-    <form name="trauung" method="POST" data-netlify="true" action="/thank-you.html" class="bg-white shadow rounded-xl p-8 flex flex-col gap-4 border border-gray-200 max-w-xl mx-auto">
-      <input type="text" name="Name" class="border p-3 rounded" data-de-placeholder="Name eingeben" data-en-placeholder="Enter your name" placeholder="Name eingeben" required />
-      <select name="attendance" class="border p-3 rounded" required>
-        <option value="yes" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
-        <option value="no" data-de="Leider verhindert" data-en="No, I cannot attend">Leider verhindert</option>
-      </select>
-      <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Antwort absenden</button>
-    </form>
+	<form name="trauung"
+		  method="POST"
+		  data-netlify="true"
+		  netlify-honeypot="bot-field"
+		  action="/thank-you.html"
+		  class="bg-white shadow rounded-xl p-8 flex flex-col gap-4 border border-gray-200 max-w-xl mx-auto">
+
+	  <!-- Wichtig für Netlify: Zuordnung zum Formular -->
+	  <input type="hidden" name="form-name" value="trauung" />
+
+	  <!-- Honeypot gegen Spam (wird versteckt via Tailwind "hidden") -->
+	  <div class="hidden">
+		<label>Do not fill this out if you're human:
+		  <input name="bot-field" />
+		</label>
+	  </div>
+
+	  <!-- Deine echten Felder -->
+	  <input
+		type="text"
+		name="Name"
+		class="border p-3 rounded"
+		data-de-placeholder="Name eingeben"
+		data-en-placeholder="Enter your name"
+		placeholder="Name eingeben"
+		required
+	  />
+
+	  <select name="attendance" class="border p-3 rounded" required>
+		<option value="yes" data-de="Ja, ich komme" data-en="Yes, I will attend">Ja, ich komme</option>
+		<option value="no" data-de="Leider verhindert" data-en="No, I cannot attend">Leider verhindert</option>
+	  </select>
+
+	  <button type="submit"
+			  class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">
+		Antwort absenden
+	  </button>
+	</form>
+	
     <a href="index.html" class="inline-block mt-6 text-red-700 underline" data-de="Zur Startseite" data-en="Back to Home">Zur Startseite</a>
   </section>
 
