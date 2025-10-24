@@ -19,12 +19,48 @@
     let currentLang = 'de';
     let slideIndex = 0;
 
-    function openTab(evt, tabName) {
-      document.querySelectorAll(".tabcontent").forEach(tab => tab.classList.add("hidden"));
-      document.querySelectorAll(".tablink").forEach(btn => btn.classList.remove("border-b-2","border-red-600","text-red-600"));
-      document.getElementById(tabName).classList.remove("hidden");
-      evt.currentTarget.classList.add("border-b-2","border-red-600","text-red-600");
-    }
+	  function openTab(evt, tabName) {
+		// Alle Inhalte verstecken
+		document.querySelectorAll(".tabcontent").forEach(tab => {
+		  tab.classList.add("hidden");
+		});
+
+		// Gewählten Inhalt zeigen
+		const activeSection = document.getElementById(tabName);
+		if (activeSection) {
+		  activeSection.classList.remove("hidden");
+		}
+
+		// Alle Tabs optisch zurücksetzen
+		document.querySelectorAll(".tablink").forEach(btn => {
+		  btn.classList.remove(
+			"text-red-600",
+			"bg-red-600",
+			"bg-red-100",
+			"text-white",
+			"border-red-600"
+		  );
+		  btn.classList.add(
+			"text-gray-600",
+			"md:text-gray-700",
+			"bg-gray-100",
+			"md:bg-transparent",
+			"border-transparent"
+		  );
+		});
+
+		// Aktiven Tab hervorheben
+		const clicked = evt.currentTarget;
+
+		// Basis-Zurücknahme für den aktiven Button
+		clicked.classList.remove("text-gray-600","md:text-gray-700","bg-gray-100","md:bg-transparent","border-transparent");
+
+		// Mobile Style (Pill aktiv): roter Hintergrund + weiße Schrift
+		clicked.classList.add("bg-red-600","text-white","md:bg-transparent","md:text-red-600");
+
+		// Desktop Style (underline aktiv): rote Unterstreichung
+		clicked.classList.add("border-red-600","text-red-600");
+	  }
 
     function switchLanguage(lang) {
       currentLang = lang;
@@ -40,41 +76,6 @@
       const allergyBox = document.getElementById('allergyBox');
       allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
     }
-
-    /*async function loadSlideshowImages() {
-      const container = document.querySelector('.slideshow-container');
-      try {
-        const response = await fetch('images/slideshow/index.json');
-        if (!response.ok) throw new Error();
-        const images = await response.json();
-        images.forEach((img, i) => {
-          const imageElement = document.createElement('img');
-          imageElement.src = `images/slideshow/${img}`;
-          imageElement.className = 'slide';
-          if (i === 0) imageElement.style.display = 'block';
-          container.appendChild(imageElement);
-        });
-      } catch {
-        const fallbackImages = ['image1.jpg','image2.jpg','image3.jpg'];
-        fallbackImages.forEach((img, i) => {
-          const imageElement = document.createElement('img');
-          imageElement.src = `images/${img}`;
-          imageElement.className = 'slide';
-          if (i === 0) imageElement.style.display = 'block';
-          container.appendChild(imageElement);
-        });
-      }
-      showSlides();
-    }
-
-    function showSlides() {
-      const slides = document.getElementsByClassName("slide");
-      if (slides.length === 0) return;
-      for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
-      slideIndex = (slideIndex + 1) % slides.length;
-      slides[slideIndex].style.display = "block";
-      setTimeout(showSlides, 4000);
-    }*/
 
 	function copyText(elementId) {
 	  const el = document.getElementById(elementId);
