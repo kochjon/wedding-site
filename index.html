@@ -20,47 +20,60 @@
     let slideIndex = 0;
 
 	  function openTab(evt, tabName) {
-		// Alle Inhalte verstecken
-		document.querySelectorAll(".tabcontent").forEach(tab => {
-		  tab.classList.add("hidden");
-		});
+	  // Alle Inhalte ausblenden
+	  document.querySelectorAll(".tabcontent").forEach(tab => {
+		tab.classList.add("hidden");
+	  });
 
-		// Gewählten Inhalt zeigen
-		const activeSection = document.getElementById(tabName);
-		if (activeSection) {
-		  activeSection.classList.remove("hidden");
-		}
-
-		// Alle Tabs optisch zurücksetzen
-		document.querySelectorAll(".tablink").forEach(btn => {
-		  btn.classList.remove(
-			"text-red-600",
-			"bg-red-600",
-			"bg-red-100",
-			"text-white",
-			"border-red-600"
-		  );
-		  btn.classList.add(
-			"text-gray-600",
-			"md:text-gray-700",
-			"bg-gray-100",
-			"md:bg-transparent",
-			"border-transparent"
-		  );
-		});
-
-		// Aktiven Tab hervorheben
-		const clicked = evt.currentTarget;
-
-		// Basis-Zurücknahme für den aktiven Button
-		clicked.classList.remove("text-gray-600","md:text-gray-700","bg-gray-100","md:bg-transparent","border-transparent");
-
-		// Mobile Style (Pill aktiv): roter Hintergrund + weiße Schrift
-		clicked.classList.add("bg-red-600","text-white","md:bg-transparent","md:text-red-600");
-
-		// Desktop Style (underline aktiv): rote Unterstreichung
-		clicked.classList.add("border-red-600","text-red-600");
+	  // Gewählten Inhalt anzeigen
+	  const activeSection = document.getElementById(tabName);
+	  if (activeSection) {
+		activeSection.classList.remove("hidden");
 	  }
+
+	  // Alle Tabs zurück in "inaktiv"-Zustand
+	  document.querySelectorAll(".tablink").forEach(btn => {
+		btn.classList.remove(
+		  // aktive Styles, die wir entfernen
+		  "bg-red-600",
+		  "text-white",
+		  "md:text-red-600",
+		  "border-red-600"
+		);
+		btn.classList.add(
+		  // inaktive Styles
+		  "bg-gray-100",
+		  "text-gray-600",
+		  "md:bg-transparent",
+		  "md:text-gray-700",
+		  "border-transparent"
+		);
+	  });
+
+	  // Geklickten Tab "aktiv" stylen
+	  const clicked = evt.currentTarget;
+
+	  // erst inaktive Klassen beim aktiven Button entfernen
+	  clicked.classList.remove(
+		"bg-gray-100",
+		"text-gray-600",
+		"md:bg-transparent",
+		"md:text-gray-700",
+		"border-transparent"
+	  );
+
+	  // dann aktive Klassen hinzufügen
+	  clicked.classList.add(
+		// Mobile aktiv:
+		"bg-red-600",
+		"text-white",
+		// Desktop aktiv:
+		"md:bg-transparent",
+		"md:text-red-600",
+		// Unterstreichung unten für Desktop (und ok für Mobile)
+		"border-red-600"
+	  );
+	}
 
     function switchLanguage(lang) {
       currentLang = lang;
