@@ -72,10 +72,30 @@
       setTimeout(showSlides, 4000);
     }*/
 
-    function copyIBAN() {
-      const ibanText = document.getElementById("ibanText").innerText;
-      navigator.clipboard.writeText(ibanText).then(() => { alert("IBAN kopiert: " + ibanText); }).catch(() => { alert("Fehler beim Kopieren"); });
-    }
+	function copyText(elementId) {
+	  const el = document.getElementById(elementId);
+	  const text = el.innerText.trim();
+
+	  // Moderne Clipboard API mit Fallback
+	  if (navigator.clipboard && window.isSecureContext) {
+		navigator.clipboard.writeText(text)
+		  .then(() => alert("Kopiert: " + text))
+		  .catch(() => alert("Fehler beim Kopieren"));
+	  } else {
+		// Fallback für ältere Browser
+		const textarea = document.createElement("textarea");
+		textarea.value = text;
+		document.body.appendChild(textarea);
+		textarea.select();
+		try {
+		  document.execCommand("copy");
+		  alert("Kopiert: " + text);
+		} catch {
+		  alert("Fehler beim Kopieren");
+		}
+		document.body.removeChild(textarea);
+	  }
+	}
 
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".tablink").click();
@@ -198,17 +218,21 @@
 	  <img
 		src="images/Geschenke.jpg"
 		alt="Geschenke"
-		class="details-img mx-auto max-w-full w-full md:w-3/4 mb-8"
+		class="details-img mx-auto max-w-full w-full md:w-3/4 mb-10"
 	  />
 
 	  <!-- Kopierfelder -->
 	  <div class="space-y-6">
 		<!-- IBAN -->
 		<div>
-		  <p class="text-gray-800 font-semibold mb-1" data-de="IBAN" data-en="IBAN">IBAN</p>
+		  <p class="text-gray-800 font-semibold mb-2" data-de="IBAN" data-en="IBAN">IBAN</p>
 		  <div class="flex justify-center items-center gap-2">
-			<span id="ibanText" class="text-gray-700 select-all">CH3408440259315192001</span>
-			<button onclick="copyText('ibanText')" class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded-full shadow transition">
+			<div id="ibanText"
+				 class="bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-800 select-all shadow-sm">
+			  CH3408440259315192001
+			</div>
+			<button onclick="copyText('ibanText')"
+					class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
 			  📋
 			</button>
 		  </div>
@@ -216,10 +240,14 @@
 
 		<!-- Adresse -->
 		<div>
-		  <p class="text-gray-800 font-semibold mb-1" data-de="Adresse" data-en="Address">Adresse</p>
+		  <p class="text-gray-800 font-semibold mb-2" data-de="Adresse" data-en="Address">Adresse</p>
 		  <div class="flex justify-center items-center gap-2">
-			<span id="addressText" class="text-gray-700 select-all">Jonas Koch, Altweg 25, 8450 Rüdlingen</span>
-			<button onclick="copyText('addressText')" class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded-full shadow transition">
+			<div id="addressText"
+				 class="bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-800 select-all shadow-sm">
+			  Jonas Koch, Altweg 25, 8450 Rüdlingen
+			</div>
+			<button onclick="copyText('addressText')"
+					class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
 			  📋
 			</button>
 		  </div>
