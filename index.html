@@ -13,6 +13,19 @@
 	/* Mobile tab bar: Scrollbar verstecken für iOS/Android/Webkit/Firefox */
 	.no-scrollbar::-webkit-scrollbar { display: none; }
 	.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+	
+	/* Startzustand: leicht transparent & nach unten versetzt */
+	.timeline-card {
+	  opacity: 0;
+	  transform: translateY(30px);
+	  transition: opacity 0.8s ease, transform 0.8s ease;
+	}
+
+	/* Sobald sichtbar */
+	.timeline-card.visible {
+	  opacity: 1;
+	  transform: translateY(0);
+	}
   </style>
 
   <script>
@@ -157,6 +170,67 @@
 	});
 </script>
 
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	  const cards = Array.from(document.querySelectorAll(".timeline-card"));
+	  const dots = Array.from(document.querySelectorAll(".timeline-dot"));
+	  const line = document.querySelector(".timeline-line");
+	  const wrapper = document.querySelector(".timeline-wrapper");
+
+	  if (!cards.length || !dots.length || !line || !wrapper) return;
+
+	  // ---- Funktion: Punkte & Linie neu ausrichten ----
+	  function positionTimeline() {
+		const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+		const isMobile = window.innerWidth < 768;
+		const centers = [];
+
+		cards.forEach((card, i) => {
+		  const target = isMobile ? card.querySelector("div.bg-white\\/70") : card;
+		  if (!target) return;
+		  const rect = target.getBoundingClientRect();
+		  const center = rect.top + window.scrollY - wrapperTop + rect.height / 2;
+		  centers.push(center);
+		  if (dots[i]) dots[i].style.top = center + "px";
+		});
+
+		if (centers.length >= 2) {
+		  const firstCenter = centers[0];
+		  const lastCenter = centers[centers.length - 1];
+		  line.style.left = "50%";
+		  line.style.transform = "translateX(-50%)";
+		  line.style.top = firstCenter + "px";
+		  line.style.height = lastCenter - firstCenter + "px";
+		}
+	  }
+
+	  // Initiale Ausrichtung leicht verzögert (nach Fade-in CSS fertig)
+	  setTimeout(positionTimeline, 900);
+
+	  // Re-Run bei Resize oder Orientation-Change
+	  window.addEventListener("resize", () => {
+		clearTimeout(window._timelineResizeTimer);
+		window._timelineResizeTimer = setTimeout(positionTimeline, 300);
+	  });
+
+	  // ---- Scroll-Fade-in Animation ----
+	  const observer = new IntersectionObserver(
+		(entries) => {
+		  entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+			  entry.target.classList.add("visible");
+			  observer.unobserve(entry.target);
+			  // Nach kurzer Zeit: Punkte neu ausrichten, falls sich Höhe ändert
+			  setTimeout(positionTimeline, 400);
+			}
+		  });
+		},
+		{ threshold: 0.2 }
+	  );
+
+	  cards.forEach((card) => observer.observe(card));
+	});
+</script>
 
 </head>
 
