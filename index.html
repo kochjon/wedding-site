@@ -204,8 +204,9 @@
 		}
 	  }
 
-	  // Initiale Ausrichtung leicht verzögert (nach Fade-in CSS fertig)
-	  setTimeout(positionTimeline, 900);
+		// Warten bis alle CSS-Fade-Ins beendet sind (Dauer = 800 ms laut CSS)
+		window.addEventListener("load", () => setTimeout(positionTimeline, 1000));
+
 
 	  // Re-Run bei Resize oder Orientation-Change
 	  window.addEventListener("resize", () => {
@@ -221,7 +222,7 @@
 			  entry.target.classList.add("visible");
 			  observer.unobserve(entry.target);
 			  // Nach kurzer Zeit: Punkte neu ausrichten, falls sich Höhe ändert
-			  setTimeout(positionTimeline, 400);
+			  setTimeout(positionTimeline, 900);
 			}
 		  });
 		},
