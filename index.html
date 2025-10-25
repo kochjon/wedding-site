@@ -121,49 +121,42 @@
     });
   </script>
   
-  <script>
+<script>
 	document.addEventListener("DOMContentLoaded", () => {
-	  // alle Boxen (rechte Seite)
 	  const cards = Array.from(document.querySelectorAll(".timeline-card"));
-	  // alle Punkte (linke Seite)
 	  const dots = Array.from(document.querySelectorAll(".timeline-dot"));
-	  // die vertikale Linie
 	  const line = document.querySelector(".timeline-line");
-
-	  if (!cards.length || !dots.length || !line) return;
-
-	  // Sicherstellen: gleiche Anzahl Punkte wie Cards
-	  // (falls mehr Punkte im HTML sind, nur so viele wie Cards verwenden)
-	  const count = Math.min(cards.length, dots.length);
-
-	  // Wir holen die Timeline-Wrapper-Top-Position als Referenz
-	  // damit wir relative Offsets setzen können
 	  const wrapper = document.querySelector(".timeline-wrapper");
+
+	  if (!cards.length || !dots.length || !line || !wrapper) return;
+
 	  const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+	  const isMobile = window.innerWidth < 768;
 
-	  // Für jede Card: Mittelpunkt berechnen und den zugehörigen Punkt dort positionieren
 	  const centers = [];
-	  for (let i = 0; i < count; i++) {
-		const card = cards[i];
-		const rect = card.getBoundingClientRect();
-		const cardTop = rect.top + window.scrollY - wrapperTop;
-		const cardCenter = cardTop + rect.height / 2;
-		centers.push(cardCenter);
 
-		const dot = dots[i];
-		dot.style.top = cardCenter + "px";
+	  cards.forEach((card, i) => {
+		// auf Mobile: Textbox (letztes Kind) ist maßgebend
+		const target = isMobile ? card.querySelector("div.bg-white\\/70") : card;
+		const rect = target.getBoundingClientRect();
+		const center = rect.top + window.scrollY - wrapperTop + rect.height / 2;
+		centers.push(center);
+
+		if (dots[i]) dots[i].style.top = center + "px";
+	  });
+
+	  // Linie: von Mitte 1. bis Mitte letzter Card
+	  if (centers.length >= 2) {
+		const firstCenter = centers[0];
+		const lastCenter = centers[centers.length - 1];
+		line.style.left = "50%";
+		line.style.transform = "translateX(-50%)";
+		line.style.top = firstCenter + "px";
+		line.style.height = lastCenter - firstCenter + "px";
 	  }
-
-	  // Linie von Mitte der ersten Box bis Mitte der letzten Box
-	  const firstCenter = centers[0];
-	  const lastCenter = centers[centers.length - 1];
-
-	  line.style.left = "50%";
-	  line.style.transform = "translateX(-50%)";
-	  line.style.top = firstCenter + "px";
-	  line.style.height = (lastCenter - firstCenter) + "px";
 	});
-	</script>
+</script>
+
 
 </head>
 
