@@ -210,64 +210,78 @@
     Hier beginnt unsere Liebesgeschichte...
   </p>
 
-  <div class="relative pl-12">
-
-    <!-- Linie: jetzt exakt unter den Punkten ausgerichtet -->
-    <div class="absolute left-[15px] -translate-x-1/2 top-[36px] bottom-[36px] w-[2px] bg-red-500 transform"></div>
+  <!-- Gesamte Timeline -->
+  <div class="space-y-16">
 
     <!-- 1. Station -->
-    <div class="relative flex items-center mb-16">
-      <!-- Punkt -->
-      <div class="absolute left-[15px] -translate-x-1/2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10 transform"></div>
+    <div class="flex items-start">
+      <!-- linke Spalte: Linie + Punkt teilen dieselben coords -->
+      <div class="relative w-12 flex-shrink-0">
+        <!-- vertikale Linie: startet ab Mitte des ersten und endet Mitte des letzten -->
+        <!-- top-[36px] und bottom-[36px] bitte bei Bedarf feinjustieren -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-[36px] bottom-[36px] w-[2px] bg-red-500"></div>
 
-      <!-- Text -->
-      <div class="ml-10 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4 flex-1">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+        <!-- Punkt dieser Station -->
+        <div class="absolute left-1/2 top-[36px] -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10"></div>
+      </div>
+
+      <!-- rechte Spalte: Textbox -->
+      <div class="flex-1 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6">
+        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
           2019 · Erstes Treffen
         </p>
-        <p class="text-gray-700 text-sm leading-relaxed">
+        <p class="text-gray-700 text-base leading-relaxed">
           Hier kannst du eure erste Begegnung beschreiben.
         </p>
       </div>
     </div>
 
     <!-- 2. Station -->
-    <div class="relative flex items-center mb-16">
-      <div class="absolute left-[15px] -translate-x-1/2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10 transform"></div>
+    <div class="flex items-start">
+      <!-- linke Spalte teilt dieselbe Breite/Achse wie oben -->
+      <div class="relative w-12 flex-shrink-0">
+        <!-- Punkt dieser Station -->
+        <div class="absolute left-1/2 top-[36px] -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10"></div>
+      </div>
 
-      <div class="ml-10 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4 flex-1">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+      <div class="flex-1 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6">
+        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
           2020 · Erstes Abenteuer
         </p>
-        <p class="text-gray-700 text-sm leading-relaxed">
+        <p class="text-gray-700 text-base leading-relaxed">
           Beschreibe euer erstes gemeinsames Abenteuer oder einen besonderen Moment.
         </p>
       </div>
     </div>
 
     <!-- 3. Station -->
-    <div class="relative flex items-center mb-16">
-      <div class="absolute left-[15px] -translate-x-1/2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10 transform"></div>
+    <div class="flex items-start">
+      <div class="relative w-12 flex-shrink-0">
+        <div class="absolute left-1/2 top-[36px] -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10"></div>
+      </div>
 
-      <div class="ml-10 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4 flex-1">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+      <div class="flex-1 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6">
+        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
           2022 · Zusammengezogen
         </p>
-        <p class="text-gray-700 text-sm leading-relaxed">
+        <p class="text-gray-700 text-base leading-relaxed">
           Ein kleiner Text über euer gemeinsames Zuhause oder wichtige Schritte.
         </p>
       </div>
     </div>
 
     <!-- 4. Station -->
-    <div class="relative flex items-center mb-4">
-      <div class="absolute left-[15px] -translate-x-1/2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10 transform"></div>
+    <div class="flex items-start">
+      <div class="relative w-12 flex-shrink-0">
+        <!-- letzter Punkt -->
+        <div class="absolute left-1/2 top-[36px] -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md z-10"></div>
+      </div>
 
-      <div class="ml-10 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4 flex-1">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+      <div class="flex-1 bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6">
+        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
           2025 · Verlobung 💍
         </p>
-        <p class="text-gray-700 text-sm leading-relaxed">
+        <p class="text-gray-700 text-base leading-relaxed">
           Hier kannst du den Antrag, den Ort und die Emotionen beschreiben.
         </p>
       </div>
