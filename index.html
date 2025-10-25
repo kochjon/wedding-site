@@ -199,12 +199,107 @@
 	  </div>
 	</div>
 
-  <!-- Unsere Geschichte -->
-  <section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-    <h2 class="text-3xl mb-4 text-red-700" data-de="Unsere Geschichte" data-en="Our Story">Unsere Geschichte</h2>
-    <p class="text-gray-600 mb-6" data-de="Hier beginnt unsere Liebesgeschichte..." data-en="Here begins our love story...">Hier beginnt unsere Liebesgeschichte...</p>
-    <img src="images/worldmap.png" alt="Weltkarte" class="mx-auto rounded-lg shadow-md max-w-2xl w-full" />
-  </section>
+	<!-- Unsere Geschichte -->
+	<section id="geschichte" class="tabcontent hidden p-8 max-w-3xl mx-auto">
+	  <h2 class="text-3xl mb-4 text-red-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
+		Unsere Geschichte
+	  </h2>
+	  <p class="text-gray-600 mb-10 text-center"
+		 data-de="Hier beginnt unsere Liebesgeschichte..."
+		 data-en="Here begins our love story...">
+		Hier beginnt unsere Liebesgeschichte...
+	  </p>
+
+	  <div class="relative flex flex-col md:flex-row md:items-start gap-10">
+
+		<!-- TIMELINE (links) -->
+		<div class="relative pl-8 md:pl-10">
+		  <!-- vertikale Linie -->
+		  <div class="absolute left-3 top-0 bottom-0 w-[2px] bg-red-300 md:left-4"></div>
+
+		  <!-- 1. Halt -->
+		  <div class="relative mb-10">
+			<!-- Punkt -->
+			<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md md:left-1"></div>
+
+			<!-- Text daneben -->
+			<div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4">
+			  <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+				2019 · Erstes Treffen
+			  </p>
+			  <p class="text-gray-700 text-sm leading-relaxed">
+				Hier kannst du eure erste Begegnung beschreiben. Wo wart ihr? Was ist passiert?
+				(Diesen Text kannst du einfach frei anpassen.)
+			  </p>
+			</div>
+		  </div>
+
+		  <!-- 2. Halt -->
+		  <div class="relative mb-10">
+			<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md md:left-1"></div>
+			<div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4">
+			  <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+				2020 · Das erste Abenteuer
+			  </p>
+			  <p class="text-gray-700 text-sm leading-relaxed">
+				Hier könnt ihr z.B. den ersten Urlaub, Roadtrip oder ein wichtiges Erlebnis erzählen.
+			  </p>
+			</div>
+		  </div>
+
+		  <!-- 3. Halt -->
+		  <div class="relative mb-10">
+			<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md md:left-1"></div>
+			<div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4">
+			  <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+				2022 · Zusammengezogen
+			  </p>
+			  <p class="text-gray-700 text-sm leading-relaxed">
+				Erzähl hier kurz vom gemeinsamen Zuhause, erster Schlüssel usw.
+			  </p>
+			</div>
+		  </div>
+
+		  <!-- 4. Halt -->
+		  <div class="relative mb-10">
+			<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md md:left-1"></div>
+			<div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4">
+			  <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+				2025 · Verlobung 💍
+			  </p>
+			  <p class="text-gray-700 text-sm leading-relaxed">
+				Antrag? Ring? Ort? Emotionen? Hier rein 😍
+			  </p>
+			</div>
+		  </div>
+
+		  <!-- weiterer Halt (Kopieren für neue Steps)
+		  <div class="relative mb-10">
+			<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md md:left-1"></div>
+			<div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-4">
+			  <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-1">
+				YYYY · Titel
+			  </p>
+			  <p class="text-gray-700 text-sm leading-relaxed">
+				Euer Text hier.
+			  </p>
+			</div>
+		  </div>
+		  -->
+
+		</div>
+
+		<!-- WELTKARTE (rechts bei Desktop / unten bei Mobile) -->
+		<div class="flex-1 md:pt-2">
+		  <img
+			src="images/worldmap.png"
+			alt="Weltkarte"
+			class="mx-auto rounded-lg shadow-md w-full max-w-xl"
+		  />
+		</div>
+
+	  </div>
+	</section>
 
 <!-- Details -->
 <section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
