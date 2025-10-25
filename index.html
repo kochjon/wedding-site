@@ -256,71 +256,87 @@
     Hier beginnt unsere Liebesgeschichte...
   </p>
 
-  <!-- Timeline Layout -->
+  <!-- Timeline -->
   <div class="flex timeline-wrapper">
 
-    <!-- Linke Spalte: Linie + Punkte (wird per JS positioniert) -->
+    <!-- Linke Spalte: Linie + Punkte -->
     <div class="relative w-12 flex-shrink-0">
-
-      <!-- eine vertikale Linie (Position/Höhe wird per JS gesetzt) -->
       <div class="absolute w-[2px] bg-red-500 timeline-line"></div>
 
-      <!-- Punkte (werden per JS vertikal gesetzt) -->
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot"
-           style="left: 50%;"></div>
-
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot"
-           style="left: 50%;"></div>
-
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot"
-           style="left: 50%;"></div>
-
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot"
-           style="left: 50%;"></div>
+      <!-- Punkte (werden per JS positioniert) -->
+      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
     </div>
 
-    <!-- Rechte Spalte: die Boxen -->
+    <!-- Rechte Spalte -->
     <div class="flex-1 space-y-16">
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 timeline-card">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-          2019 · Erstes Treffen
-        </p>
-        <p class="text-gray-700 text-base leading-relaxed">
-          Hier kannst du eure erste Begegnung beschreiben.
-        </p>
+      <!-- 1 -->
+      <div class="flex items-center gap-6 timeline-card md:flex-row flex-col md:text-left text-center">
+        <img src="images/story-2019.jpg"
+             alt="Erstes Treffen"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            2019 · Erstes Treffen
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Hier kannst du eure erste Begegnung beschreiben.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 timeline-card">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-          2020 · Erstes Abenteuer
-        </p>
-        <p class="text-gray-700 text-base leading-relaxed">
-          Beschreibe euer erstes gemeinsames Abenteuer oder einen besonderen Moment.
-        </p>
+      <!-- 2 -->
+      <div class="flex items-center gap-6 timeline-card md:flex-row flex-col md:text-left text-center">
+        <img src="images/story-2020.jpg"
+             alt="Erstes Abenteuer"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            2020 · Erstes Abenteuer
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Beschreibe euer erstes gemeinsames Abenteuer oder einen besonderen Moment.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 timeline-card">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-          2022 · Zusammengezogen
-        </p>
-        <p class="text-gray-700 text-base leading-relaxed">
-          Ein kleiner Text über euer gemeinsames Zuhause oder wichtige Schritte.
-        </p>
+      <!-- 3 -->
+      <div class="flex items-center gap-6 timeline-card md:flex-row flex-col md:text-left text-center">
+        <img src="images/story-2022.jpg"
+             alt="Zusammengezogen"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            2022 · Zusammengezogen
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Ein kleiner Text über euer gemeinsames Zuhause oder wichtige Schritte.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 timeline-card">
-        <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-          2025 · Verlobung 💍
-        </p>
-        <p class="text-gray-700 text-base leading-relaxed">
-          Hier kannst du den Antrag, den Ort und die Emotionen beschreiben.
-        </p>
+      <!-- 4 -->
+      <div class="flex items-center gap-6 timeline-card md:flex-row flex-col md:text-left text-center">
+        <img src="images/story-2025.jpg"
+             alt="Verlobung"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            2025 · Verlobung 💍
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Hier kannst du den Antrag, den Ort und die Emotionen beschreiben.
+          </p>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+
 
 <!-- Details -->
 <section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
