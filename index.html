@@ -179,49 +179,65 @@
 
 	  if (!cards.length || !dots.length || !line || !wrapper) return;
 
-	  // ---- Funktion: Punkte & Linie neu ausrichten ----
+	  // Feinjustierung der vertikalen Wahrnehmung.
+	  // Positive Werte verschieben nach UNTEN, negative nach OBEN.
+	  const VISUAL_OFFSET_PX = -6;
+
 	  function positionTimeline() {
 		const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
 		const isMobile = window.innerWidth < 768;
 		const centers = [];
 
 		cards.forEach((card, i) => {
+		  // Auf Mobile: nimm die Textbox (die weiße Karte)
+		  // Auf Desktop: nimm die ganze Reihe (Bild + Text)
 		  const target = isMobile ? card.querySelector("div.bg-white\\/70") : card;
 		  if (!target) return;
+
 		  const rect = target.getBoundingClientRect();
-		  const center = rect.top + window.scrollY - wrapperTop + rect.height / 2;
+		  const center =
+			rect.top + window.scrollY - wrapperTop + rect.height / 2 + VISUAL_OFFSET_PX;
+
 		  centers.push(center);
-		  if (dots[i]) dots[i].style.top = center + "px";
+
+		  if (dots[i]) {
+			dots[i].style.top = center + "px";
+		  }
 		});
 
 		if (centers.length >= 2) {
 		  const firstCenter = centers[0];
 		  const lastCenter = centers[centers.length - 1];
+
 		  line.style.left = "50%";
 		  line.style.transform = "translateX(-50%)";
+
+		  // Linie soll durch die Punkte gehen -> gleicher Offset
 		  line.style.top = firstCenter + "px";
-		  line.style.height = lastCenter - firstCenter + "px";
+		  line.style.height = (lastCenter - firstCenter) + "px";
 		}
 	  }
 
-		// Warten bis alle CSS-Fade-Ins beendet sind (Dauer = 800 ms laut CSS)
-		window.addEventListener("load", () => setTimeout(positionTimeline, 1000));
+	  // Warten bis alles gerendert/animiert ist
+	  window.addEventListener("load", () => {
+		setTimeout(positionTimeline, 1000);
+	  });
 
-
-	  // Re-Run bei Resize oder Orientation-Change
+	  // Bei Resize / Orientation Change neu ausrichten (mit debounce)
 	  window.addEventListener("resize", () => {
 		clearTimeout(window._timelineResizeTimer);
 		window._timelineResizeTimer = setTimeout(positionTimeline, 300);
 	  });
 
-	  // ---- Scroll-Fade-in Animation ----
+	  // Intersection Observer für Fade-in
 	  const observer = new IntersectionObserver(
 		(entries) => {
 		  entries.forEach((entry) => {
 			if (entry.isIntersecting) {
 			  entry.target.classList.add("visible");
 			  observer.unobserve(entry.target);
-			  // Nach kurzer Zeit: Punkte neu ausrichten, falls sich Höhe ändert
+
+			  // nach dem Einblenden nochmal nachjustieren
 			  setTimeout(positionTimeline, 900);
 			}
 		  });
@@ -230,6 +246,47 @@
 	  );
 
 	  cards.forEach((card) => observer.observe(card));
+	});
+</script>
+
+<script>
+// --- Restart-Funktion für den Fade-in bei Tab-Wechsel ---
+	function resetTimelineAnimation() {
+	  const cards = document.querySelectorAll(".timeline-card");
+	  if (!cards.length) return;
+
+	  // Sichtbarkeit zurücksetzen
+	  cards.forEach(card => card.classList.remove("visible"));
+
+	  // Kleines Delay, um CSS-Rücksetzung wirken zu lassen
+	  setTimeout(() => {
+		// Neue Observer-Instanz, um Animation erneut auszulösen
+		const observer = new IntersectionObserver(
+		  (entries) => {
+			entries.forEach((entry) => {
+			  if (entry.isIntersecting) {
+				entry.target.classList.add("visible");
+				observer.unobserve(entry.target);
+			  }
+			});
+		  },
+		  { threshold: 0.2 }
+		);
+		cards.forEach(card => observer.observe(card));
+	  }, 100);
+	}
+
+	// --- Beobachte Reiterwechsel ---
+	document.addEventListener("DOMContentLoaded", () => {
+	  const tabs = document.querySelectorAll(".tablinks");
+	  tabs.forEach(btn => {
+		btn.addEventListener("click", () => {
+		  const target = btn.getAttribute("data-target");
+		  if (target === "geschichte") {
+			resetTimelineAnimation();
+		  }
+		});
+	  });
 	});
 </script>
 
