@@ -133,7 +133,7 @@
       //loadSlideshowImages();
     });
   </script>
-  
+
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
 	  const cards = Array.from(document.querySelectorAll(".timeline-card"));
@@ -142,7 +142,7 @@
 	  const wrapper = document.querySelector(".timeline-wrapper");
 
 	  if (!cards.length || !dots.length || !line || !wrapper) return;
-
+    
 	  const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
 	  const isMobile = window.innerWidth < 768;
 
@@ -167,17 +167,6 @@
 		line.style.top = firstCenter + "px";
 		line.style.height = lastCenter - firstCenter + "px";
 	  }
-	});
-</script>
-
-<script>
-	document.addEventListener("DOMContentLoaded", () => {
-	  const cards = Array.from(document.querySelectorAll(".timeline-card"));
-	  const dots = Array.from(document.querySelectorAll(".timeline-dot"));
-	  const line = document.querySelector(".timeline-line");
-	  const wrapper = document.querySelector(".timeline-wrapper");
-
-	  if (!cards.length || !dots.length || !line || !wrapper) return;
 
 	  // Feinjustierung der vertikalen Wahrnehmung.
 	  // Positive Werte verschieben nach UNTEN, negative nach OBEN.
