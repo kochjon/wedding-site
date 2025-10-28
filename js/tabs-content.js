@@ -2,7 +2,6 @@
 
 // "Unsere Geschichte"
 const contentGeschichte = `
-<section id="geschichte" class="tabcontent hidden p-8 max-w-4xl mx-auto">
   <h2 class="text-3xl mb-4 text-red-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
     Unsere Geschichte
   </h2>
@@ -92,17 +91,16 @@ const contentGeschichte = `
 
     </div>
   </div>
-</section>
 `;
+
 
 
 // "Details"
 const contentDetails = `
-<section class="tabcontent p-8 max-w-3xl mx-auto text-center">
-  <h2 class="text-3xl mb-4 text-red-700" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
+  <h2 class="text-3xl mb-4 text-red-700 text-center" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
 
   <div class="flex flex-col md:flex-row justify-center gap-12 text-left">
-    <div class="md:w-1/2">
+    <div class="md:w-1/2 text-center md:text-left">
       <p class="font-semibold text-gray-700" data-de="Kirche" data-en="Church">Kirche</p>
       <p>Kirche Buchberg-Rüdlingen</p>
       <p>Dorfstrasse 2</p>
@@ -111,7 +109,7 @@ const contentDetails = `
       <p class="mt-2">Besammlung 13:30, Start Trauung 14:00</p>
     </div>
 
-    <div class="md:w-1/2">
+    <div class="md:w-1/2 text-center md:text-left">
       <p class="font-semibold text-gray-700" data-de="Empfang" data-en="Reception">Empfang</p>
       <p>Bergtrotte Osterfingen</p>
       <p>Trottenweg 38</p>
@@ -120,14 +118,13 @@ const contentDetails = `
       <p class="mt-2">Transport vom Apéro möglich, Shuttlebus nach Schaffhausen Bahnhof am Abend</p>
     </div>
   </div>
-</section>
 `;
+
 
 
 // "Geschenke"
 const contentGeschenke = `
-<section class="tabcontent p-8 max-w-3xl mx-auto text-center relative">
-  <h2 class="text-3xl mb-6 text-red-700" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
+  <h2 class="text-3xl mb-6 text-red-700 text-center" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
 
   <div class="relative w-full md:w-3/4 mx-auto rounded-lg overflow-hidden shadow-lg">
     <img
@@ -149,7 +146,7 @@ const contentGeschenke = `
       <p class="text-gray-800 font-semibold mb-2" data-de="IBAN" data-en="IBAN">IBAN</p>
       <div class="flex justify-center items-center gap-2">
         <div id="ibanText"
-             class="bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-8 00 select-all shadow-sm">
+             class="bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-800 select-all shadow-sm">
           CH3408440259315192001
         </div>
         <button onclick="copyText('ibanText')"
@@ -173,7 +170,6 @@ const contentGeschenke = `
       </div>
     </div>
   </div>
-</section>
 `;
 
 

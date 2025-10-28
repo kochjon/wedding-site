@@ -110,27 +110,7 @@
 <script>
 // --- Restart-Funktion für den Fade-in bei Tab-Wechsel ---
 	function resetTimelineAnimation() {
-	  if (!cards.length) return;
-
-	  // Sichtbarkeit zurücksetzen
-	  cards.forEach(card => card.classList.remove("visible"));
-
-	  // Kleines Delay, um CSS-Rücksetzung wirken zu lassen
-	  setTimeout(() => {
-		// Neue Observer-Instanz, um Animation erneut auszulösen
-		const observer = new IntersectionObserver(
-		  (entries) => {
-			entries.forEach((entry) => {
-			  if (entry.isIntersecting) {
-				entry.target.classList.add("visible");
-				observer.unobserve(entry.target);
-			  }
-			});
-		  },
-		  { threshold: 0.2 }
-		);
-		cards.forEach(card => observer.observe(card));
-	  }, 100);
+		//No content yet
 	}
 </script>
 
@@ -235,19 +215,15 @@
 
 <!-- Dynamisches Script calling -->
 
-<!-- Geschichte -->
-<section id="geschichte" class="tabcontent hidden"></section>
+<section id="geschichte" class="tabcontent hidden p-8 max-w-4xl mx-auto"></section>
 
-<!-- Details -->
-<section id="details" class="tabcontent hidden"></section>
+<section id="details" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center"></section>
 
-<!-- Geschenke -->
-<section id="geschenke" class="tabcontent hidden"></section>
-
+<section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center relative"></section>
 
 	
-	<script src="js/globals.js"></script>
-	<script src="js/tabs-content.js"></script>
+<script src="js/globals.js"></script>
+<script src="js/tabs-content.js"></script>
 	
 <script>
   function openTab(evt, tabName) {
@@ -256,13 +232,13 @@
       tab.classList.add("hidden");
     });
 
-    // Gewählten Inhalt anzeigen
+    // Ziel-Section sichtbar machen
     const activeSection = document.getElementById(tabName);
     if (activeSection) {
       activeSection.classList.remove("hidden");
     }
 
-    // Alle Tabs zurück in "inaktiv"-Zustand
+    // Alle Tab-Buttons auf "inaktiv" setzen
     document.querySelectorAll(".tablink").forEach(btn => {
       btn.classList.remove(
         "bg-red-600",
@@ -279,7 +255,7 @@
       );
     });
 
-    // Aktuellen Button aktiv stylen
+    // Geklickten Button aktiv stylen
     const clicked = evt.currentTarget;
     clicked.classList.remove(
       "bg-gray-100",
@@ -296,17 +272,18 @@
       "border-red-600"
     );
 
-    // Dynamisch laden, außer rsvp (das ist statisch im HTML)
+    // Dynamischen Inhalt laden (aber Check-In ist statisch, also auslassen)
     if (tabName !== "rsvp") {
       injectTabContent(tabName, tabName);
     }
   }
 
-  // Seite starten
   document.addEventListener("DOMContentLoaded", () => {
+    // NICHT vorgängig injecten!
+    // Wir simulieren nur den Klick auf den ersten Tab.
     const firstBtn = document.querySelector(".tablink");
     if (firstBtn) {
-      firstBtn.click(); // das löst openTab aus, und DAMIT auch injectTabContent für "geschichte"
+      firstBtn.click();
     }
   });
 </script>
