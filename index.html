@@ -28,82 +28,56 @@
 	}
   </style>
 
-  <script>
-    let currentLang = 'de';
-    let slideIndex = 0;
-	
-	 
+<script>
+  let currentLang = 'de';
+  let slideIndex = 0;
 
-	  // Geklickten Tab "aktiv" stylen
-	  const clicked = evt.currentTarget;
-
-	  // erst inaktive Klassen beim aktiven Button entfernen
-	  clicked.classList.remove(
-		"bg-gray-100",
-		"text-gray-600",
-		"md:bg-transparent",
-		"md:text-gray-700",
-		"border-transparent"
-	  );
-
-	  // dann aktive Klassen hinzufügen
-	  clicked.classList.add(
-		// Mobile aktiv:
-		"bg-red-600",
-		"text-white",
-		// Desktop aktiv:
-		"md:bg-transparent",
-		"md:text-red-600",
-		// Unterstreichung unten für Desktop (und ok für Mobile)
-		"border-red-600"
-	  );
-	}
-
-    function switchLanguage(lang) {
-      currentLang = lang;
-      document.querySelectorAll('[data-de]').forEach(el => {
-        el.textContent = currentLang === 'de' ? el.getAttribute('data-de') : el.getAttribute('data-en');
-      });
-      document.querySelectorAll('[data-de-placeholder]').forEach(el => {
-        el.placeholder = currentLang === 'de' ? el.getAttribute('data-de-placeholder') : el.getAttribute('data-en-placeholder');
-      });
-    }
-
-    function toggleAllergies() {
-      const allergyBox = document.getElementById('allergyBox');
-      allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
-    }
-
-	function copyText(elementId) {
-	  const el = document.getElementById(elementId);
-	  const text = el.innerText.trim();
-
-	  // Moderne Clipboard API mit Fallback
-	  if (navigator.clipboard && window.isSecureContext) {
-		navigator.clipboard.writeText(text)
-		  .then(() => alert("Kopiert: " + text))
-		  .catch(() => alert("Fehler beim Kopieren"));
-	  } else {
-		// Fallback für ältere Browser
-		const textarea = document.createElement("textarea");
-		textarea.value = text;
-		document.body.appendChild(textarea);
-		textarea.select();
-		try {
-		  document.execCommand("copy");
-		  alert("Kopiert: " + text);
-		} catch {
-		  alert("Fehler beim Kopieren");
-		}
-		document.body.removeChild(textarea);
-	  }
-	}
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelector(".tablink").click();
-      //loadSlideshowImages();
+  function switchLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-de]').forEach(el => {
+      el.textContent = currentLang === 'de'
+        ? el.getAttribute('data-de')
+        : el.getAttribute('data-en');
     });
-  </script>
+    document.querySelectorAll('[data-de-placeholder]').forEach(el => {
+      el.placeholder = currentLang === 'de'
+        ? el.getAttribute('data-de-placeholder')
+        : el.getAttribute('data-en-placeholder');
+    });
+  }
+
+  function toggleAllergies() {
+    const allergyBox = document.getElementById('allergyBox');
+    allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
+  }
+
+  function copyText(elementId) {
+    const el = document.getElementById(elementId);
+    const text = el.innerText.trim();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(() => alert("Kopiert: " + text))
+        .catch(() => alert("Fehler beim Kopieren"));
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        alert("Kopiert: " + text);
+      } catch {
+        alert("Fehler beim Kopieren");
+      }
+      document.body.removeChild(textarea);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // optional: Sprache initial anwenden
+    switchLanguage('de');
+  });
+</script>
 
 
 
@@ -132,8 +106,8 @@
 		<option value="en">EN</option>
 	  </select>
 	</h1>
-    <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zur schönsten Reise eures Lebens." data-en="Welcome to the most beautiful journey of your life.">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
-    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">September XX 2026 · Schaffhausen, Schweiz</p>
+       <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zu unserer Hochzeit" data-en="Welcome to our wedding">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
+    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September 12 2026 · Schaffhausen, Schweiz" data-en="September 12 2026 · Schaffhausen, Switzerland">September 12 2026 · Schaffhausen, Schweiz</p>
 	<div
 	  class="slideshow-container"
 	  data-slideshow
