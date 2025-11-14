@@ -33,7 +33,7 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/story-2019.jpg"
              alt="Erstes Treffen"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2019 · Erstes Treffen
@@ -48,7 +48,7 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/story-2020.jpg"
              alt="Erstes Abenteuer"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2020 · Erstes Abenteuer
@@ -63,7 +63,7 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/story-2022.jpg"
              alt="Zusammengezogen"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2022 · Zusammengezogen
@@ -78,7 +78,7 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/story-2025.jpg"
              alt="Verlobung"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-110 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2025 · Verlobung 💍
@@ -106,7 +106,7 @@ const contentDetails = `
       <p>Dorfstrasse 2</p>
       <p>8455 Rüdlingen</p>
       <img src="images/kirche.jpeg" alt="Kirche" class="details-img mt-4" />
-      <p class="mt-2">Besammlung 13:30, Start Trauung 14:00</p>
+      <p class="mt-2" data-de="Besammlung 13:30, Start Trauung 14:00" data-en="Gathering at 1:30 p.m., wedding ceremony begins at 2:00 p.m.">Besammlung 13:30, Start Trauung 14:00</p>
     </div>
 
     <div class="md:w-1/2 text-center md:text-left">
@@ -115,7 +115,7 @@ const contentDetails = `
       <p>Trottenweg 38</p>
       <p>8218 Osterfingen</p>
       <img src="images/empfang.jpeg" alt="Empfang" class="details-img mt-4" />
-      <p class="mt-2">Transport vom Apéro möglich, Shuttlebus nach Schaffhausen Bahnhof am Abend</p>
+      <p class="mt-2" data-de="Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30" data-en="Transfer to Osterfingen at approximately 5 p.m., shuttles to Schaffhausen railway station from 11.30 p.m.">Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30</p>
     </div>
   </div>
 `;
@@ -128,7 +128,7 @@ const contentGeschenke = `
 
   <div class="relative w-full md:w-3/4 mx-auto rounded-lg overflow-hidden shadow-lg">
     <img
-      src="images/Geschenke.jpg"
+      src="images/Geschenke.png"
       alt="Geschenke"
       class="w-full object-cover"
     />
