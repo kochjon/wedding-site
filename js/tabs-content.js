@@ -1,16 +1,19 @@
 // js/tabs-content.js
 
-// "Unsere Geschichte"
-const contentGeschichte = `
-  <h2 class="text-3xl mb-4 text-red-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
-    Unsere Geschichte
-  </h2>
-
+//Comments
+/*  
   <p class="text-gray-600 mb-10 text-center"
      data-de="Hier beginnt unsere Liebesgeschichte..."
      data-en="Here begins our love story...">
     Hier beginnt unsere Liebesgeschichte...
   </p>
+*/
+
+// "Unsere Geschichte"
+const contentGeschichte = `
+  <h2 class="text-3xl mb-10 text-red-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
+    Unsere Geschichte
+  </h2>
 
   <!-- Timeline -->
   <div class="flex timeline-wrapper">
