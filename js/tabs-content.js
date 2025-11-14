@@ -27,6 +27,8 @@ const contentGeschichte = `
       <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
       <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
       <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+	  <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+	  <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
     </div>
 
     <!-- Rechte Spalte -->
@@ -34,37 +36,67 @@ const contentGeschichte = `
 
       <!-- 1 -->
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
-        <img src="images/story-2019.jpg"
-             alt="Erstes Treffen"
+        <img src="images/Bumble_Match.jpg"
+             alt="Bumble Match"
              class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2019 · Erstes Treffen
+            Juli 2022 · Bumble Match
           </p>
           <p class="text-gray-700 text-base leading-relaxed">
-            Hier kannst du eure erste Begegnung beschreiben.
+            Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉
+          </p>
+        </div>
+      </div>
+	  
+	<!-- 2 -->
+      <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
+        <img src="images/Official.jpg"
+             alt="Es ist offiziell!"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            September 2022 · Es ist offiziell!
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺
+          </p>
+        </div>
+      </div>
+	  
+	<!-- 3 -->
+      <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
+        <img src="images/Layover.jpg"
+             alt="Erstes Layover"
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+            Januar 2023 · Erstes Layover
+          </p>
+          <p class="text-gray-700 text-base leading-relaxed">
+            Yeli ohne die Fliegerei kann man sich nicht vorstellen. Aus diesem Grund musste sie auch ihren neuen Partner auf Reisetauglichkeit prüfen und nahm ihn auf ein 4-Tages Layover nach Los Angeles mit. Heute kann sich Joni ein Leben ohne die gemeinsamen Ausflüge nicht mehr vorstellen 😃
           </p>
         </div>
       </div>
 
-      <!-- 2 -->
+      <!-- 4 -->
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
-        <img src="images/story-2020.jpg"
+        <img src="images/Australia.jpg"
              alt="Erstes Abenteuer"
              class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2020 · Erstes Abenteuer
+            2020 · Erste Reise
           </p>
           <p class="text-gray-700 text-base leading-relaxed">
-            Beschreibe euer erstes gemeinsames Abenteuer oder einen besonderen Moment.
+            Gestartet mit dem Besuch bei Yeli's Freundin in Adelaide, startete ein Camper Trip durch Nord/Ost Australien. Eine unvergessliche Zeit die hoffentlich bald nochmals aufleben darf 🌍
           </p>
         </div>
       </div>
 
-      <!-- 3 -->
+      <!-- 5 -->
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
-        <img src="images/story-2022.jpg"
+        <img src="images/Wohnung.jpg"
              alt="Zusammengezogen"
              class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
@@ -72,14 +104,14 @@ const contentGeschichte = `
             2022 · Zusammengezogen
           </p>
           <p class="text-gray-700 text-base leading-relaxed">
-            Ein kleiner Text über euer gemeinsames Zuhause oder wichtige Schritte.
+            Mit dem Zusammenzug wurde die erste Hürde für eine gemeinsame Zukunft gemeistert. In Andelfingen haben wir den Kompromiss zwischen Traumwohnung, Arbeitsweg und Sozialem Umfeld gefunden 😍
           </p>
         </div>
       </div>
 
-      <!-- 4 -->
+      <!-- 6 -->
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
-        <img src="images/story-2025.jpg"
+        <img src="images/Verlobung.jpg"
              alt="Verlobung"
              class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
@@ -87,7 +119,7 @@ const contentGeschichte = `
             2025 · Verlobung 💍
           </p>
           <p class="text-gray-700 text-base leading-relaxed">
-            Hier kannst du den Antrag, den Ort und die Emotionen beschreiben.
+            Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬
           </p>
         </div>
       </div>
@@ -108,7 +140,9 @@ const contentDetails = `
       <p>Kirche Buchberg-Rüdlingen</p>
       <p>Dorfstrasse 2</p>
       <p>8455 Rüdlingen</p>
-      <img src="images/kirche.jpeg" alt="Kirche" class="details-img mt-4" />
+		<div class="flex justify-center mt-4 sm:justify-start">
+		  <img src="images/kirche.jpeg" alt="Kirche" class="details-img">
+		</div>
       <p class="mt-2" data-de="Besammlung 13:30, Start Trauung 14:00" data-en="Gathering at 1:30 p.m., wedding ceremony begins at 2:00 p.m.">Besammlung 13:30, Start Trauung 14:00</p>
     </div>
 
@@ -117,7 +151,9 @@ const contentDetails = `
       <p>Bergtrotte Osterfingen</p>
       <p>Trottenweg 38</p>
       <p>8218 Osterfingen</p>
-      <img src="images/empfang.jpeg" alt="Empfang" class="details-img mt-4" />
+		<div class="flex justify-center mt-4 sm:justify-start">
+		  <img src="images/empfang.jpeg" alt="Empfang" class="details-img mt"/>
+		</div>
       <p class="mt-2" data-de="Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30" data-en="Transfer to Osterfingen at approximately 5 p.m., shuttles to Schaffhausen railway station from 11.30 p.m.">Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30</p>
     </div>
   </div>
