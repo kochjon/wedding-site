@@ -43,9 +43,11 @@ const contentGeschichte = `
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             Juli 2022 · Bumble Match
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉
-          </p>
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉"
+			data-en="Like many couples today, we had the opportunity to get to know each other thanks to a dating app. Unlike many matches, however, it has been new and exciting for us every day since the very first day 😉">
+			Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉
+		  </p>
         </div>
       </div>
 	  
@@ -58,9 +60,11 @@ const contentGeschichte = `
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             September 2022 · Es ist offiziell!
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺
-          </p>
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺"
+			data-en="It quickly became official, with Joni having to introduce himself to Yeli's family first. In return, Yeli was allowed to join her new circle of friends with a “small” group of 30 people at the Oktoberfest in Stuttgart 🍺">
+			Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺
+		  </p>
         </div>
       </div>
 	  
@@ -73,8 +77,10 @@ const contentGeschichte = `
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             Januar 2023 · Erstes Layover
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Yeli ohne die Fliegerei kann man sich nicht vorstellen. Aus diesem Grund musste sie auch ihren neuen Partner auf Reisetauglichkeit prüfen und nahm ihn auf ein 4-Tages Layover nach Los Angeles mit. Heute kann sich Joni ein Leben ohne die gemeinsamen Ausflüge nicht mehr vorstellen 😃
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Yeli ohne die Fliegerei kann man sich nicht vorstellen. Aus diesem Grund musste sie auch ihren neuen Partner auf Reisetauglichkeit prüfen und nahm ihn auf ein 4-Tages Layover nach Los Angeles mit. Heute kann sich Joni ein Leben ohne die gemeinsamen Ausflüge nicht mehr vorstellen ✈️"
+			data-en="It's impossible to imagine Yeli without flying. That's why she had to test her new partner's suitability for travel and took him on a 4-day layover to Los Angeles. Today, Joni can no longer imagine life without their trips together ✈️">
+			Yeli ohne die Fliegerei kann man sich nicht vorstellen. Aus diesem Grund musste sie auch ihren neuen Partner auf Reisetauglichkeit prüfen und nahm ihn auf ein 4-Tages Layover nach Los Angeles mit. Heute kann sich Joni ein Leben ohne die gemeinsamen Ausflüge nicht mehr vorstellen ✈️
           </p>
         </div>
       </div>
@@ -88,8 +94,10 @@ const contentGeschichte = `
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2020 · Erste Reise
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Gestartet mit dem Besuch bei Yeli's Freundin in Adelaide, startete ein Camper Trip durch Nord/Ost Australien. Eine unvergessliche Zeit die hoffentlich bald nochmals aufleben darf 🌍
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Gestartet mit dem Besuch bei Yeli's Freundin Gaby in Adelaide, startete ein Camper Trip durch Süd/Ost Australien. Eine unvergessliche Zeit die hoffentlich bald nochmals aufleben darf 🌍"
+			data-en="Starting with a visit to Yeli's friend Gaby in Adelaide, we embarked on a camper trip through southern/eastern Australia. It was an unforgettable time that we hope to relive soon 🌍">
+			Gestartet mit dem Besuch bei Yeli's Freundin Gaby in Adelaide, startete ein Camper Trip durch Süd/Ost Australien. Eine unvergessliche Zeit die hoffentlich bald nochmals aufleben darf 🌍
           </p>
         </div>
       </div>
@@ -103,8 +111,10 @@ const contentGeschichte = `
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
             2022 · Zusammengezogen
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Mit dem Zusammenzug wurde die erste Hürde für eine gemeinsame Zukunft gemeistert. In Andelfingen haben wir den Kompromiss zwischen Traumwohnung, Arbeitsweg und Sozialem Umfeld gefunden 😍
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Mit dem Zusammenzug wurde die erste Hürde für eine gemeinsame Zukunft gemeistert. In Andelfingen haben wir den Kompromiss zwischen Traumwohnung, Arbeitsweg und Sozialem Umfeld gefunden 🏡"
+			data-en="By moving in together, we overcame the first hurdle to a shared future. In Andelfingen, we found the perfect compromise between our dream apartment, commute, and social environment 🏡">
+			Mit dem Zusammenzug wurde die erste Hürde für eine gemeinsame Zukunft gemeistert. In Andelfingen haben wir den Kompromiss zwischen Traumwohnung, Arbeitsweg und Sozialem Umfeld gefunden 🏡
           </p>
         </div>
       </div>
@@ -116,10 +126,12 @@ const contentGeschichte = `
              class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
         <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
           <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2025 · Verlobung 💍
+            2025 · Verlobung
           </p>
-          <p class="text-gray-700 text-base leading-relaxed">
-            Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬
+          <p class="text-gray-700 text-base leading-relaxed"
+            data-de="Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬💍"
+			data-en="Back in Los Angeles, we kept an eye out for good spots during a day trip. On Santa Catalina, the bison island, we finally got lucky! 🦬💍">
+			Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬💍
           </p>
         </div>
       </div>
