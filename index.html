@@ -92,19 +92,19 @@
 
 
   <!-- Header -->
-  <section class="text-center py-12 bg-white shadow-sm border-b border-red-200 relative">
-	<h1 class="flex flex-wrap justify-center items-center gap-3 mb-4 text-red-700">
+  <section class="text-center py-12 bg-white shadow-sm border-b border-green-200 relative">
+	<h1 class="flex flex-wrap justify-center items-center gap-3 mb-4 text-green-700">
 	  <span class="text-4xl sm:text-5xl font-light tracking-wide" data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
 	  <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
 
 	  <!-- Sprachwahl direkt rechts neben dem Titel -->
 	  <select onchange="switchLanguage(this.value)"
-			  class="ml-2 border border-gray-300 bg-white text-gray-700 text-sm px-2 py-1 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+			  class="ml-2 border border-gray-300 bg-white text-gray-700 text-sm px-2 py-1 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500">
 		<option value="de">DE</option>
 		<option value="en">EN</option>
 	  </select>
 	</h1>
-       <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen zu unserer Hochzeit" data-en="Welcome to our wedding">Herzlich willkommen zur schönsten Reise eures Lebens.</p>
+       <p class="text-lg text-gray-600 mb-4" data-de="Herzlich willkommen auf unserer Hochzeitseite" data-en="Welcome on our wedding page">Herzlich willkommen auf unserer Hochzeitseite.</p>
     <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September 12 2026 · Schaffhausen, Schweiz" data-en="September 12 2026 · Schaffhausen, Switzerland">September 12 2026 · Schaffhausen, Schweiz</p>
 	<div
 	  class="slideshow-container"
@@ -169,7 +169,7 @@
 
 <!-- Check-In (Hinweis + Bild + Test-Buttons) -->
 <section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-	<h2 class="text-3xl mb-4 text-red-700" data-de="Check-In" data-en="Check-In">Check-In</h2>
+	<h2 class="text-3xl mb-4 text-green-700" data-de="Check-In" data-en="Check-In">Check-In</h2>
 
 	<p class="text-gray-700 mb-6" data-de="Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung." data-en="Please scan the QR code on your invitation to check in.">
 	  Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung.
@@ -179,8 +179,8 @@
 
 	<!-- Test-Buttons (nur während Entwicklung) -->
 	<div class="flex flex-col md:flex-row justify-center gap-4 mt-4">
-	  <a href="trauung.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Trauung Test" data-en="Ceremony Test">Trauung Test</a>
-	  <a href="feier.html" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Feier Test" data-en="Reception Test">Feier Test</a>
+	  <a href="trauung.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Trauung Test" data-en="Ceremony Test">Trauung Test</a>
+	  <a href="feier.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Feier Test" data-en="Reception Test">Feier Test</a>
 	</div>
 	<p class="text-sm text-gray-400 mt-3 italic">(Diese Buttons sind nur für Testzwecke sichtbar)</p>
 </section>
@@ -213,10 +213,10 @@
     // Alle Tab-Buttons auf "inaktiv" setzen
     document.querySelectorAll(".tablink").forEach(btn => {
       btn.classList.remove(
-        "bg-red-600",
+        "bg-green-600",
         "text-white",
-        "md:text-red-600",
-        "border-red-600"
+        "md:text-green-600",
+        "border-green-600"
       );
       btn.classList.add(
         "bg-gray-100",
@@ -237,11 +237,11 @@
       "border-transparent"
     );
     clicked.classList.add(
-      "bg-red-600",
+      "bg-green-600",
       "text-white",
       "md:bg-transparent",
-      "md:text-red-600",
-      "border-red-600"
+      "md:text-green-600",
+      "border-green-600"
     );
 
     // Dynamischen Inhalt laden (aber Check-In ist statisch, also auslassen)

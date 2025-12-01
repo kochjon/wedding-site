@@ -247,10 +247,10 @@
 	</div>
 
       <!-- Absenden -->
-      <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition">Check-In abschließen</button>
+      <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Check-In abschließen</button>
     </form>
 
-    <a href="index.html" class="inline-block mt-6 text-red-700 underline" data-de="Zur Startseite" data-en="Back to Home">Zur Startseite</a>
+    <a href="index.html" class="inline-block mt-6 text-green-700 underline" data-de="Zur Startseite" data-en="Back to Home">Zur Startseite</a>
   </section>
 
 <!-- Dynamisches Script calling -->
@@ -281,10 +281,10 @@
     // Alle Tab-Buttons auf "inaktiv" setzen
     document.querySelectorAll(".tablink").forEach(btn => {
       btn.classList.remove(
-        "bg-red-600",
+        "bg-green-600",
         "text-white",
-        "md:text-red-600",
-        "border-red-600"
+        "md:text-green-600",
+        "border-green-600"
       );
       btn.classList.add(
         "bg-gray-100",
@@ -305,11 +305,11 @@
       "border-transparent"
     );
     clicked.classList.add(
-      "bg-red-600",
+      "bg-green-600",
       "text-white",
       "md:bg-transparent",
-      "md:text-red-600",
-      "border-red-600"
+      "md:text-green-600",
+      "border-green-600"
     );
 
     // Dynamischen Inhalt laden (aber Check-In ist statisch, also auslassen)

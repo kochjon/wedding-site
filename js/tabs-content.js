@@ -11,7 +11,7 @@
 
 // "Unsere Geschichte"
 const contentGeschichte = `
-  <h2 class="text-3xl mb-10 text-red-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
+  <h2 class="text-3xl mb-10 text-green-700 text-center" data-de="Unsere Geschichte" data-en="Our Story">
     Unsere Geschichte
   </h2>
 
@@ -20,15 +20,15 @@ const contentGeschichte = `
 
     <!-- Linke Spalte: Linie + Punkte -->
     <div class="relative w-12 flex-shrink-0">
-      <div class="absolute w-[2px] bg-red-500 timeline-line"></div>
+      <div class="absolute w-[2px] bg-green-500 timeline-line"></div>
 
       <!-- Punkte (werden per JS positioniert) -->
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
-      <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
-	  <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
-	  <div class="absolute w-4 h-4 rounded-full bg-red-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+      <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+	  <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
+	  <div class="absolute w-4 h-4 rounded-full bg-green-600 border-4 border-white shadow-md -translate-x-1/2 -translate-y-1/2 timeline-dot" style="left: 50%;"></div>
     </div>
 
     <!-- Rechte Spalte -->
@@ -38,14 +38,16 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Bumble_Match.jpg"
              alt="Bumble Match"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            Juli 2022 · Bumble Match
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+            data-de="Juli 2022 · Bumble Match"
+			data-en="July 2022 · Bumble Match">
+			Juli 2022 · Bumble Match
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
             data-de="Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉"
-			data-en="Like many couples today, we had the opportunity to get to know each other thanks to a dating app. Unlike many matches, however, it has been new and exciting for us every day since the very first day 😉">
+			data-en="Like many couples today, we had the opportunity to get to know each other thanks to a dating app. Unlike many matches, however, it has been new and exciting for us ever since 😉">
 			Wie viele paare heutzutage haben wir Dank einem Dating-App die Möglichkeit erhalten uns kennen zu lernen. Anders als bei vielen Matched es aber bei uns seit dem ersten Tag jedesmal auf s Neue 😉
 		  </p>
         </div>
@@ -55,9 +57,11 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Official.jpg"
              alt="Es ist offiziell!"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+			data-de="September 2022 · Es ist offiziell!"
+			data-en="September 2022 · It's official!">
             September 2022 · Es ist offiziell!
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
@@ -72,9 +76,11 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Layover.jpg"
              alt="Erstes Layover"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+			data-de="Januar 2023 · Erstes Layover"
+			data-en="January 2023 · First Layover">
             Januar 2023 · Erstes Layover
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
@@ -89,10 +95,12 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Australia.jpg"
              alt="Erstes Abenteuer"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2020 · Erste Reise
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+			data-de="Januar 2024 · Erste Reise"
+			data-en="January 2024 · First longer travel">
+            Januar 2024 · Erste Reise
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
             data-de="Gestartet mit dem Besuch bei Yeli's Freundin Gaby in Adelaide, startete ein Camper Trip durch Süd/Ost Australien. Eine unvergessliche Zeit die hoffentlich bald nochmals aufleben darf 🌍"
@@ -106,10 +114,12 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Wohnung.jpg"
              alt="Zusammengezogen"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2022 · Zusammengezogen
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+			data-de="September 2024 · Zusammengezogen"
+			data-en="September 2024 · Moved together">
+            September 2024 · Zusammengezogen
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
             data-de="Mit dem Zusammenzug wurde die erste Hürde für eine gemeinsame Zukunft gemeistert. In Andelfingen haben wir den Kompromiss zwischen Traumwohnung, Arbeitsweg und Sozialem Umfeld gefunden 🏡"
@@ -123,15 +133,17 @@ const contentGeschichte = `
       <div class="flex items-center gap-6 timeline-card flex-col-reverse md:flex-row md:text-left text-center">
         <img src="images/Verlobung.jpg"
              alt="Verlobung"
-             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-red-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-red-400 md:order-none order-2" />
-        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-red-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
-          <p class="text-xs uppercase tracking-wide text-red-700 font-semibold mb-2">
-            2025 · Verlobung
+             class="timeline-img w-20 h-20 rounded-full object-cover border-2 border-green-200 shadow-sm flex-shrink-0 transition-transform duration-300 hover:scale-150 hover:shadow-lg hover:border-green-400 md:order-none order-2" />
+        <div class="bg-white/70 backdrop-blur-sm rounded-lg shadow-sm border border-green-100 p-6 max-w-[80%] transition duration-300 hover:shadow-md md:max-w-[80%] max-w-full">
+          <p class="text-xs uppercase tracking-wide text-green-700 font-semibold mb-2"
+			data-de="August 2025 · Verlobung"
+			data-en="August 2025 · Engagement">
+            August 2025 · Verlobung
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
-            data-de="Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬💍"
-			data-en="Back in Los Angeles, we kept an eye out for good spots during a day trip. On Santa Catalina, the bison island, we finally got lucky! 🦬💍">
-			Zurück in Los Angeles konnte wurde bei einem Tagesausflug stetig nach guten Spot's ausschau gehalten. Auf Santa Catalina, der Bison Insel, wurde das Glück schlussendlich besiegelt! 🦬💍
+            data-de="Zurück in Los Angeles wurde nach einem geeigneten Ort für die Verlobung gesucht. Auf Santa Catalina, der Bison Insel, passte bei Sonnenuntergang die Stimmung! 🦬💍"
+			data-en="Back in Los Angeles, they searched for a suitable location for the engagement. On Santa Catalina, the bison island, the atmosphere was just right at sunset! 🦬💍">
+			Zurück in Los Angeles wurde nach einem geeigneten Ort für die Verlobung gesucht. Auf Santa Catalina, der Bison Insel, passte bei Sonnenuntergang die Stimmung! 🦬💍
           </p>
         </div>
       </div>
@@ -144,7 +156,7 @@ const contentGeschichte = `
 
 // "Details"
 const contentDetails = `
-  <h2 class="text-3xl mb-4 text-red-700 text-center" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
+  <h2 class="text-3xl mb-4 text-green-700 text-center" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
 
   <div class="flex flex-col md:flex-row justify-center gap-12 text-left">
     <div class="md:w-1/2 text-center md:text-left">
@@ -175,7 +187,7 @@ const contentDetails = `
 
 // "Geschenke"
 const contentGeschenke = `
-  <h2 class="text-3xl mb-6 text-red-700 text-center" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
+  <h2 class="text-3xl mb-6 text-green-700 text-center" data-de="Geschenke" data-en="Gifts">Geschenke</h2>
 
   <div class="relative w-full md:w-3/4 mx-auto rounded-lg overflow-hidden shadow-lg">
     <img
@@ -201,7 +213,7 @@ const contentGeschenke = `
           CH3408440259315192001
         </div>
         <button onclick="copyText('ibanText')"
-                class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
+                class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
           📋
         </button>
       </div>
@@ -215,7 +227,7 @@ const contentGeschenke = `
           Jonas Koch, Altweg 25, 8450 Rüdlingen
         </div>
         <button onclick="copyText('addressText')"
-                class="bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
+                class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
           📋
         </button>
       </div>
