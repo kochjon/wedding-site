@@ -13,59 +13,52 @@
   <script>
     // Sprachumschaltung wie auf den anderen Seiten
     let currentLang = 'de';
-    function switchLanguage(lang){
-      currentLang = lang;
-      document.querySelectorAll('[data-de]').forEach(el=>{
-        el.textContent = currentLang==='de' ? el.getAttribute('data-de') : el.getAttribute('data-en');
-      });
-      document.querySelectorAll('[data-de-placeholder]').forEach(el=>{
-        el.placeholder = currentLang==='de' ? el.getAttribute('data-de-placeholder') : el.getAttribute('data-en-placeholder');
-      });
-    }
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // optional: Sprache aus URL ?lang=en übernehmen
-      const params = new URLSearchParams(location.search);
-      const lang = params.get('lang');
-      if (lang === 'en') {
-        const sel = document.getElementById('langSelect');
-        if (sel) sel.value = 'en';
-        switchLanguage('en');
-      }
-    });
+	  function switchLanguage(lang) {
+		currentLang = lang;
+		document.querySelectorAll('[data-de]').forEach(el => {
+		  el.textContent = currentLang === 'de'
+			? el.getAttribute('data-de')
+			: el.getAttribute('data-en');
+		});
+		document.querySelectorAll('[data-de-placeholder]').forEach(el => {
+		  el.placeholder = currentLang === 'de'
+			? el.getAttribute('data-de-placeholder')
+			: el.getAttribute('data-en-placeholder');
+		});
+	  }
+
   </script>
 </head>
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800 font-sans min-h-screen">
 
-  <!-- Swiss-Logo + Sprachumschalter -->
-  <img src="images/swiss-logo.png" alt="Swiss Logo" class="swiss-logo" onerror="this.style.display='none';" />
-  <div class="lang-switch">
-    <select id="langSelect" onchange="switchLanguage(this.value)" class="border border-gray-300 bg-white px-3 py-1 rounded shadow-sm">
-      <option value="de">Deutsch</option>
-      <option value="en">English</option>
-    </select>
-  </div>
-
   <!-- Header (wie auf den anderen Seiten) -->
-  <header class="text-center py-12 bg-white shadow-sm border-b border-red-200">
-    <h1 class="text-5xl font-light tracking-wide mb-3 text-red-700 flex justify-center items-center gap-3">
+  <header class="text-center py-12 bg-white shadow-sm border-b border-green-200">
+    <h1 class="text-5xl font-light tracking-wide mb-3 text-green-700 flex justify-center items-center gap-3">
       <span data-de="Yeli & Joni" data-en="Yeli & Joni">Yeli & Joni</span>
       <img src="images/icon.png" alt="Flugzeug Icon" class="h-8 w-8 object-contain" />
+	  
+	  <!-- Sprachwahl direkt rechts neben dem Titel -->
+	  <select onchange="switchLanguage(this.value)"
+			  class="ml-2 border border-gray-300 bg-white text-gray-700 text-sm px-2 py-1 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+		<option value="de">DE</option>
+		<option value="en">EN</option>
+	  </select>
     </h1>
-    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September XX 2026 · Schaffhausen, Schweiz" data-en="September XX 2026 · Schaffhausen, Switzerland">
-      September XX 2026 · Schaffhausen, Schweiz
+    <p class="text-sm uppercase tracking-wide text-gray-500" data-de="September 12 2026 · Schaffhausen, Schweiz" data-en="September 12 2026 · Schaffhausen, Switzerland">
+      September 12 2026 · Schaffhausen, Schweiz
     </p>
   </header>
 
   <!-- Danke-Content -->
   <main class="max-w-3xl mx-auto px-6">
     <section class="mt-10 bg-white rounded-2xl shadow p-8 border border-gray-200 text-center">
-      <div class="mx-auto mb-5 w-16 h-16 rounded-full bg-red-50 flex items-center justify-center border border-red-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 text-red-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <div class="mx-auto mb-5 w-16 h-16 rounded-full bg-green-50 flex items-center justify-center border border-green-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9 text-green-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M9 12.75 7.25 11l-1.5 1.5L9 15.25l9-9L16.5 4l-7.5 7.5Z"/>
         </svg>
       </div>
 
-      <h2 class="text-3xl font-light text-red-700 mb-2" data-de="Vielen Dank für die Rückmeldung!" data-en="Thank you for your response!">
+      <h2 class="text-3xl font-light text-green-700 mb-2" data-de="Vielen Dank für die Rückmeldung!" data-en="Thank you for your response!">
         Vielen Dank für die Rückmeldung!
       </h2>
       <p class="text-gray-600 mb-6" data-de="Wir freuen uns, dich an unserem besonderen Tag zu sehen." data-en="We look forward to seeing you on our special day.">
@@ -73,7 +66,7 @@
       </p>
 
       <a href="index.html"
-         class="inline-block bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg transition">
+         class="inline-block bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg transition">
         <span data-de="Zurück zur Hauptseite" data-en="Back to Home">Zurück zur Hauptseite</span>
       </a>
     </section>
