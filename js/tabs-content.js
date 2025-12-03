@@ -66,7 +66,7 @@ const contentGeschichte = `
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
             data-de="Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺"
-			data-en="It quickly became official, with Joni having to introduce himself to Yeli's family first. In return, Yeli was allowed to join her new circle of friends with a “small” group of 30 people at the Oktoberfest in Stuttgart 🍺">
+			data-en="It quickly became official, with Joni having to introduce himself to Yeli's family first. In return, Yeli was allowed to join her new circle of friends with a “small�?group of 30 people at the Oktoberfest in Stuttgart 🍺">
 			Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺
 		  </p>
         </div>
@@ -153,7 +153,6 @@ const contentGeschichte = `
 `;
 
 
-
 // "Details"
 const contentDetails = `
   <h2 class="text-3xl mb-4 text-green-700 text-center" data-de="Hochzeitsdetails" data-en="Wedding Details">Hochzeitsdetails</h2>
@@ -181,6 +180,14 @@ const contentDetails = `
       <p class="mt-2" data-de="Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30" data-en="Transfer to Osterfingen at approximately 5 p.m., shuttles to Schaffhausen railway station from 11.30 p.m.">Verschiebung nach Osterfingen ca. 17:00, Shuttels nach Schaffhausen Bahnhof ab 23:30</p>
     </div>
   </div>
+`;
+
+
+// "Programm"
+const contentProgramm = `
+  <h2 class="text-3xl mb-6 text-green-700 text-center" data-de="Programm" data-en="Schedule">Programm</h2>
+  <h2 class="text-2xl mb-6 text-green-700 text-center" data-de="Wird noch festgelegt" data-en="To be defined">Wird noch festgelegt</h2>
+
 `;
 
 
@@ -240,6 +247,7 @@ const contentGeschenke = `
 const TAB_CONTENT_MAP = {
   "geschichte": contentGeschichte,
   "details": contentDetails,
+  "programm": contentProgramm,
   "geschenke": contentGeschenke,
 };
 
