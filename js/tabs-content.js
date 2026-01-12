@@ -231,7 +231,7 @@ const contentGeschenke = `
       <div class="flex justify-center items-center gap-2">
         <div id="addressText"
              class="bg-gray-100 border border-gray-300 rounded-md px-4 py-2 text-gray-800 select-all shadow-sm">
-          Jonas Koch, Altweg 25, 8450 Rüdlingen
+          Jonas Koch, Altweg 25, 8450 Andelfingen
         </div>
         <button onclick="copyText('addressText')"
                 class="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-2 rounded-md shadow transition">
