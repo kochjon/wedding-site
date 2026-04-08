@@ -405,40 +405,66 @@
       status.textContent = '';
 
       try {
-        const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`);
-        const data = await res.json();
+        // Beide Endpunkte parallel abfragen
+        const [imgRes, vidRes] = await Promise.all([
+          fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`).then(r => r.json()).catch(() => ({ resources: [] })),
+          fetch(`https://res.cloudinary.com/${CLOUD_NAME}/video/list/${TAG}.json`).then(r => r.json()).catch(() => ({ resources: [] }))
+        ]);
+
+        const images = (imgRes.resources || []).map(r => ({ ...r, resource_type: 'image' }));
+        const videos = (vidRes.resources || []).map(r => ({ ...r, resource_type: 'video' }));
+        const all = [...images, ...videos].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
         grid.innerHTML = '';
 
-        if (!data.resources || data.resources.length === 0) {
+        if (all.length === 0) {
           status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
           return;
         }
 
-        data.resources
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .forEach(img => {
-            const isVideo = img.resource_type === 'video';
-            const base = `https://res.cloudinary.com/${CLOUD_NAME}/${isVideo ? 'video' : 'image'}/upload`;
+        all.forEach(item => {
+            const isVideo = item.resource_type === 'video';
+            const pubId = item.public_id;
             const thumb = isVideo
-              ? `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/w_400,h_400,c_fill,q_auto,so_1/${img.public_id}.jpg`
-              : `${base}/w_400,h_400,c_fill,q_auto/${img.public_id}`;
-            const full = `${base}/q_auto/${img.public_id}${isVideo ? '' : ''}`;
-            const guestName = img.context?.custom?.guest_name || '';
+              ? `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/w_400,h_400,c_fill,f_jpg,q_auto/${pubId}.jpg`
+              : `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_400,h_400,c_fill,q_auto/${pubId}`;
+            const full = isVideo
+              ? `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/q_auto/${pubId}.mp4`
+              : `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto/${pubId}`;
+            const guestName = item.context?.custom?.guest_name || '';
 
             const wrap = document.createElement('div');
             wrap.className = 'gallery-img-wrap';
-            wrap.innerHTML = `
-              <img src="${thumb}" alt="${isVideo ? 'Video' : 'Hochzeitsfoto'}" loading="lazy" />
-              ${isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><span style="font-size:2.5rem;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.6))">▶️</span></div>` : ''}
-              <div class="gallery-overlay">
-                ${guestName ? `<span>📷 ${guestName}</span>` : ''}
-              </div>
-            `;
+
+            const thumbImg = document.createElement('img');
+            thumbImg.alt = isVideo ? 'Video' : 'Hochzeitsfoto';
+            thumbImg.loading = 'lazy';
+            thumbImg.src = thumb;
+            // Fallback: graues Placeholder-Bild wenn Thumbnail nicht lädt
+            thumbImg.onerror = () => {
+              thumbImg.onerror = null;
+              thumbImg.src = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/w_400,h_400,c_fill,f_jpg,q_auto,so_0/${pubId}.jpg`;
+            };
+
+            wrap.appendChild(thumbImg);
+
+            if (isVideo) {
+              const playIcon = document.createElement('div');
+              playIcon.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none';
+              playIcon.innerHTML = '<span style="font-size:2.5rem;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.6))">▶️</span>';
+              wrap.appendChild(playIcon);
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'gallery-overlay';
+            overlay.innerHTML = guestName ? `<span>📷 ${guestName}</span>` : '';
+            wrap.appendChild(overlay);
+
             wrap.addEventListener('click', () => openLightbox(full, guestName, isVideo));
             grid.appendChild(wrap);
           });
 
-        status.textContent = `${data.resources.length} Foto${data.resources.length !== 1 ? 's' : ''} bisher`;
+        status.textContent = `${all.length} Datei${all.length !== 1 ? 'en' : ''} bisher`;
       } catch(e) {
         grid.innerHTML = '';
         status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
