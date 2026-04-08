@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fotos – Yeli & Joni</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: #f8f7f4;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Upload Zone */
+    .upload-zone {
+      border: 1.5px dashed #86b89a;
+      border-radius: 1rem;
+      padding: 2.5rem 1.5rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      background: white;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      background: #f0f7f3;
+      border-color: #4a8c6a;
+    }
+
+    /* Preview Grid */
+    .preview-item {
+      position: relative;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #e8e6e1;
+    }
+    .preview-item img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .preview-remove {
+      position: absolute; top: 6px; right: 6px;
+      background: rgba(0,0,0,0.55);
+      color: white;
+      border: none; border-radius: 50%;
+      width: 26px; height: 26px;
+      font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+
+    /* Progress Bar */
+    .progress-bar-outer {
+      background: #e0ede6;
+      border-radius: 999px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: #4a8c6a;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* Gallery */
+    .gallery-img-wrap {
+      position: relative;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #e8e6e1;
+      cursor: pointer;
+    }
+    .gallery-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .gallery-img-wrap:hover img { transform: scale(1.04); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.2s;
+      display: flex; align-items: flex-end; padding: 8px;
+    }
+    .gallery-img-wrap:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay span {
+      color: white; font-size: 11px; font-family: 'Jost', sans-serif;
+    }
+
+    /* Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.88);
+      align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 90vw; max-height: 80vh;
+      border-radius: 0.5rem;
+      object-fit: contain;
+    }
+
+    /* Button */
+    .btn-primary {
+      background: #4a8c6a;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 0.65rem 1.75rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #3a7358; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { background: #9ec3b0; cursor: not-allowed; }
+
+    .input-field {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      background: white;
+      color: #374151;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-field:focus { border-color: #4a8c6a; box-shadow: 0 0 0 2px #e0ede6; }
+
+    /* Tab toggle */
+    .tab-toggle button {
+      padding: 0.4rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: white;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-toggle button.active {
+      background: #4a8c6a;
+      color: white;
+      border-color: #4a8c6a;
+    }
+
+    .status-msg {
+      font-size: 0.88rem;
+      min-height: 1.2rem;
+      text-align: center;
+    }
+
+    /* Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #e8e6e1 25%, #f0ede8 50%, #e8e6e1 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 0.75rem;
+      aspect-ratio: 1;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-green-100 shadow-sm py-4 px-6 flex items-center justify-between">
+    <a href="https://yeliandjoni.ch/" class="text-green-700 text-sm font-medium hover:underline flex items-center gap-1">
+      ← Zur Hauptseite
+    </a>
+    <h1 class="text-2xl text-green-700 tracking-wide" style="font-style: italic;">Yeli & Joni</h1>
+    <div class="w-24"></div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-10">
+
+    <!-- Title -->
+    <div class="text-center mb-8">
+      <h2 class="text-4xl text-gray-800 mb-2">Eure Fotos</h2>
+      <p class="text-gray-500 text-sm leading-relaxed">
+        Haltet eure schönsten Momente fest – ladet Fotos hoch,<br>die direkt in unserer gemeinsamen Galerie erscheinen. 📸
+      </p>
+    </div>
+
+    <!-- Tab Toggle -->
+    <div class="tab-toggle flex justify-center gap-3 mb-8">
+      <button class="active" onclick="showView('upload', this)">Foto hochladen</button>
+      <button onclick="showView('gallery', this)">Galerie ansehen</button>
+    </div>
+
+    <!-- ── UPLOAD VIEW ── -->
+    <div id="view-upload">
+
+      <!-- Name Input -->
+      <div class="mb-4">
+        <label class="block text-sm text-gray-600 mb-1 font-medium">Dein Name <span class="text-red-400">*</span></label>
+        <input id="guestName" type="text" class="input-field" placeholder="z.B. Sarah & Markus" maxlength="40" />
+      </div>
+
+      <!-- Upload Zone -->
+      <div class="upload-zone text-center mb-4" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+        <div class="text-4xl mb-2">🌿</div>
+        <p class="text-gray-700 font-medium mb-1">Bilder auswählen oder hierher ziehen</p>
+        <p class="text-gray-400 text-xs">JPG, PNG, HEIC · mehrere Bilder möglich · max. 10 MB pro Bild</p>
+        <input id="fileInput" type="file" accept="image/*" multiple class="hidden" onchange="handleFiles(this.files)" />
+      </div>
+
+      <!-- Preview -->
+      <div id="previewGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-4"></div>
+
+      <!-- Progress -->
+      <div id="progressWrap" class="hidden mb-4">
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+        <p id="progressLabel" class="text-xs text-gray-400 mt-1 text-center"></p>
+      </div>
+
+      <!-- Status -->
+      <p id="uploadStatus" class="status-msg text-gray-500 mb-4"></p>
+
+      <!-- Submit -->
+      <div class="text-center">
+        <button class="btn-primary" id="uploadBtn" onclick="startUpload()" disabled>
+          Fotos hochladen
+        </button>
+      </div>
+    </div>
+
+    <!-- ── GALLERY VIEW ── -->
+    <div id="view-gallery" class="hidden">
+      <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+      <p id="galleryStatus" class="status-msg text-gray-400 text-center mt-6"></p>
+    </div>
+
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Foto" />
+    <p id="lightboxCaption" class="text-white text-sm opacity-70"></p>
+    <p class="text-gray-400 text-xs">Tippen zum Schliessen</p>
+  </div>
+
+  <script>
+    // ══════════════════════════════════════════════
+    // ⚙️  CLOUDINARY KONFIGURATION – hier anpassen
+    // ══════════════════════════════════════════════
+    const CLOUD_NAME    = 'dr9neirts';    // z.B. 'yeliandjoni'
+    const UPLOAD_PRESET = 'wedding_upload';      // Unsigned Preset Name
+    const FOLDER        = 'yeli-joni-wedding';
+    // ══════════════════════════════════════════════
+
+    let selectedFiles = [];
+
+    // ── Tab-Wechsel ──
+    function showView(view, btn) {
+      document.getElementById('view-upload').classList.toggle('hidden', view !== 'upload');
+      document.getElementById('view-gallery').classList.toggle('hidden', view !== 'gallery');
+      document.querySelectorAll('.tab-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (view === 'gallery') loadGallery();
+    }
+
+    // ── Drag & Drop ──
+    const zone = document.getElementById('uploadZone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+
+    // ── Datei-Auswahl verarbeiten ──
+    function handleFiles(files) {
+      const allowed = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= 10 * 1024 * 1024);
+      selectedFiles = [...selectedFiles, ...allowed];
+      renderPreviews();
+      updateUploadBtn();
+    }
+
+    function renderPreviews() {
+      const grid = document.getElementById('previewGrid');
+      grid.innerHTML = '';
+      selectedFiles.forEach((file, i) => {
+        const url = URL.createObjectURL(file);
+        const div = document.createElement('div');
+        div.className = 'preview-item';
+        div.innerHTML = `
+          <img src="${url}" alt="Vorschau" />
+          <button class="preview-remove" onclick="removeFile(${i})">✕</button>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function removeFile(i) {
+      selectedFiles.splice(i, 1);
+      renderPreviews();
+      updateUploadBtn();
+    }
+
+    function updateUploadBtn() {
+      const hasName = document.getElementById('guestName').value.trim().length > 0;
+      document.getElementById('uploadBtn').disabled = !(selectedFiles.length > 0 && hasName);
+    }
+
+    document.getElementById('guestName').addEventListener('input', updateUploadBtn);
+
+    // ── Upload ──
+    async function startUpload() {
+      const name = document.getElementById('guestName').value.trim();
+      if (!name) { setStatus('Bitte gib deinen Namen ein.', 'red'); return; }
+      if (!selectedFiles.length) return;
+
+      const btn = document.getElementById('uploadBtn');
+      btn.disabled = true;
+      btn.textContent = 'Wird hochgeladen...';
+
+      document.getElementById('progressWrap').classList.remove('hidden');
+      const bar = document.getElementById('progressBar');
+      const label = document.getElementById('progressLabel');
+
+      let done = 0;
+      const total = selectedFiles.length;
+
+      for (const file of selectedFiles) {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('upload_preset', UPLOAD_PRESET);
+        fd.append('folder', FOLDER);
+        fd.append('context', `guest_name=${name}`);
+
+        try {
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+            method: 'POST', body: fd
+          });
+          await res.json();
+        } catch(e) {
+          console.error(e);
+        }
+
+        done++;
+        const pct = Math.round((done / total) * 100);
+        bar.style.width = pct + '%';
+        label.textContent = `${done} von ${total} Foto${total > 1 ? 's' : ''} hochgeladen`;
+      }
+
+      // Reset
+      selectedFiles = [];
+      document.getElementById('previewGrid').innerHTML = '';
+      document.getElementById('progressWrap').classList.add('hidden');
+      bar.style.width = '0%';
+      btn.textContent = 'Fotos hochladen';
+      setStatus(`✅ Danke, ${name}! Deine Fotos sind jetzt in der Galerie sichtbar.`, 'green');
+      updateUploadBtn();
+    }
+
+    function setStatus(msg, color) {
+      const el = document.getElementById('uploadStatus');
+      el.textContent = msg;
+      el.style.color = color === 'green' ? '#4a8c6a' : color === 'red' ? '#dc2626' : '#6b7280';
+      if (color === 'green') setTimeout(() => el.textContent = '', 6000);
+    }
+
+    // ── Galerie laden ──
+    async function loadGallery() {
+      const grid = document.getElementById('galleryGrid');
+      const status = document.getElementById('galleryStatus');
+      grid.innerHTML = Array(6).fill('<div class="skeleton"></div>').join('');
+      status.textContent = '';
+
+      try {
+        const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${FOLDER}.json`);
+        const data = await res.json();
+        grid.innerHTML = '';
+
+        if (!data.resources || data.resources.length === 0) {
+          status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
+          return;
+        }
+
+        data.resources
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .forEach(img => {
+            const base = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
+            const thumb = `${base}/w_400,h_400,c_fill,q_auto/${img.public_id}`;
+            const full  = `${base}/q_auto/${img.public_id}`;
+            const guestName = img.context?.custom?.guest_name || '';
+
+            const wrap = document.createElement('div');
+            wrap.className = 'gallery-img-wrap';
+            wrap.innerHTML = `
+              <img src="${thumb}" alt="Hochzeitsfoto" loading="lazy" />
+              <div class="gallery-overlay">
+                ${guestName ? `<span>📷 ${guestName}</span>` : ''}
+              </div>
+            `;
+            wrap.addEventListener('click', () => openLightbox(full, guestName));
+            grid.appendChild(wrap);
+          });
+
+        status.textContent = `${data.resources.length} Foto${data.resources.length !== 1 ? 's' : ''} bisher`;
+      } catch(e) {
+        grid.innerHTML = '';
+        status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
+      }
+    }
+
+    // ── Lightbox ──
+    function openLightbox(src, caption) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').textContent = caption ? `📷 ${caption}` : '';
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.getElementById('lightboxImg').src = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+</body>
+</html>
