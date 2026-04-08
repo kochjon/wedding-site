@@ -78,7 +78,7 @@ async function loadGallery() {
 
   try {
     const res = await fetch(
-      `https://res.cloudinary.com/${wedding_upload}/image/list/yeli-joni-wedding.json`
+      `https://res.cloudinary.com/${dr9neirts}/image/list/yeli-joni-wedding.json`
     );
     const data = await res.json();
     gallery.innerHTML = '';
@@ -91,7 +91,7 @@ async function loadGallery() {
     data.resources
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .forEach(img => {
-        const url = `https://res.cloudinary.com/${wedding_upload}/image/upload/${img.public_id}`;
+        const url = `https://res.cloudinary.com/${dr9neirts}/image/upload/${img.public_id}`;
         addPhotoToGallery(url, img.public_id);
       });
   } catch {
