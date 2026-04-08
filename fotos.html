@@ -216,7 +216,7 @@
       </div>
 
       <!-- Upload Zone -->
-      <div class="upload-zone text-center mb-4" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-zone text-center mb-4" id="uploadZone">
         <div class="text-4xl mb-2">🌿</div>
         <p class="text-gray-700 font-medium mb-1">Fotos & Videos auswählen oder hierher ziehen</p>
         <p class="text-gray-400 text-xs">JPG, PNG, HEIC, MP4, MOV · mehrere Dateien möglich · max. 100 MB pro Datei</p>
@@ -281,6 +281,12 @@
 
     // ── Drag & Drop ──
     const zone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+
+    zone.addEventListener('click', (e) => {
+      if (e.target !== fileInput) fileInput.click();
+    });
+
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
     zone.addEventListener('drop', e => {
