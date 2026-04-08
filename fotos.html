@@ -262,9 +262,10 @@
     // ══════════════════════════════════════════════
     // ⚙️  CLOUDINARY KONFIGURATION – hier anpassen
     // ══════════════════════════════════════════════
-    const CLOUD_NAME    = 'dr9neirts';    // z.B. 'yeliandjoni'
+    const CLOUD_NAME    = 'dr9neirts';    		 // Zu finden auf Cloudinary / Home
     const UPLOAD_PRESET = 'wedding_upload';      // Unsigned Preset Name
     const FOLDER        = 'yeli-joni-wedding';
+    const TAG           = 'yeli-joni';           // Tag für die Galerie-Abfrage
     // ══════════════════════════════════════════════
 
     let selectedFiles = [];
@@ -345,6 +346,7 @@
         fd.append('file', file);
         fd.append('upload_preset', UPLOAD_PRESET);
         fd.append('folder', FOLDER);
+        fd.append('tags', TAG);
         fd.append('context', `guest_name=${name}`);
 
         try {
@@ -387,7 +389,7 @@
       status.textContent = '';
 
       try {
-        const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${FOLDER}.json`);
+        const res = await fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`);
         const data = await res.json();
         grid.innerHTML = '';
 
