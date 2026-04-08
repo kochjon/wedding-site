@@ -202,7 +202,7 @@
 
     <!-- Tab Toggle -->
     <div class="tab-toggle flex justify-center gap-3 mb-8">
-      <button class="active" onclick="showView('upload', this)">Foto hochladen</button>
+      <button class="active" onclick="showView('upload', this)">Foto & Video hochladen</button>
       <button onclick="showView('gallery', this)">Galerie ansehen</button>
     </div>
 
@@ -218,9 +218,9 @@
       <!-- Upload Zone -->
       <div class="upload-zone text-center mb-4" id="uploadZone" onclick="document.getElementById('fileInput').click()">
         <div class="text-4xl mb-2">🌿</div>
-        <p class="text-gray-700 font-medium mb-1">Bilder auswählen oder hierher ziehen</p>
-        <p class="text-gray-400 text-xs">JPG, PNG, HEIC · mehrere Bilder möglich · max. 10 MB pro Bild</p>
-        <input id="fileInput" type="file" accept="image/*" multiple class="hidden" onchange="handleFiles(this.files)" />
+        <p class="text-gray-700 font-medium mb-1">Fotos & Videos auswählen oder hierher ziehen</p>
+        <p class="text-gray-400 text-xs">JPG, PNG, HEIC, MP4, MOV · mehrere Dateien möglich · max. 100 MB pro Datei</p>
+        <input id="fileInput" type="file" accept="image/*,video/*" multiple class="hidden" onchange="handleFiles(this.files)" />
       </div>
 
       <!-- Preview -->
@@ -290,7 +290,9 @@
 
     // ── Datei-Auswahl verarbeiten ──
     function handleFiles(files) {
-      const allowed = Array.from(files).filter(f => f.type.startsWith('image/') && f.size <= 10 * 1024 * 1024);
+      const allowed = Array.from(files).filter(f =>
+        (f.type.startsWith('image/') || f.type.startsWith('video/')) && f.size <= 100 * 1024 * 1024
+      );
       selectedFiles = [...selectedFiles, ...allowed];
       renderPreviews();
       updateUploadBtn();
@@ -301,12 +303,17 @@
       grid.innerHTML = '';
       selectedFiles.forEach((file, i) => {
         const url = URL.createObjectURL(file);
+        const isVideo = file.type.startsWith('video/');
         const div = document.createElement('div');
         div.className = 'preview-item';
-        div.innerHTML = `
-          <img src="${url}" alt="Vorschau" />
-          <button class="preview-remove" onclick="removeFile(${i})">✕</button>
-        `;
+        div.innerHTML = isVideo
+          ? `<video src="${url}" class="w-full h-full object-cover" muted playsinline></video>
+             <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+               <span style="font-size:2rem">▶️</span>
+             </div>
+             <button class="preview-remove" onclick="removeFile(${i})">✕</button>`
+          : `<img src="${url}" alt="Vorschau" />
+             <button class="preview-remove" onclick="removeFile(${i})">✕</button>`;
         grid.appendChild(div);
       });
     }
@@ -342,6 +349,7 @@
       const total = selectedFiles.length;
 
       for (const file of selectedFiles) {
+        const isVideo = file.type.startsWith('video/');
         const fd = new FormData();
         fd.append('file', file);
         fd.append('upload_preset', UPLOAD_PRESET);
@@ -349,8 +357,9 @@
         fd.append('tags', TAG);
         fd.append('context', `guest_name=${name}`);
 
+        const endpoint = isVideo ? 'video' : 'image';
         try {
-          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${endpoint}/upload`, {
             method: 'POST', body: fd
           });
           await res.json();
@@ -361,7 +370,8 @@
         done++;
         const pct = Math.round((done / total) * 100);
         bar.style.width = pct + '%';
-        label.textContent = `${done} von ${total} Foto${total > 1 ? 's' : ''} hochgeladen`;
+        const word = isVideo ? 'Video' : 'Foto';
+        label.textContent = `${done} von ${total} Datei${total > 1 ? 'en' : ''} hochgeladen`;
       }
 
       // Reset
@@ -369,8 +379,8 @@
       document.getElementById('previewGrid').innerHTML = '';
       document.getElementById('progressWrap').classList.add('hidden');
       bar.style.width = '0%';
-      btn.textContent = 'Fotos hochladen';
-      setStatus(`✅ Danke, ${name}! Deine Fotos sind jetzt in der Galerie sichtbar.`, 'green');
+      btn.textContent = 'Hochladen';
+      setStatus(`✅ Danke, ${name}! Deine Dateien sind jetzt in der Galerie sichtbar.`, 'green');
       updateUploadBtn();
     }
 
@@ -401,20 +411,24 @@
         data.resources
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           .forEach(img => {
-            const base = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
-            const thumb = `${base}/w_400,h_400,c_fill,q_auto/${img.public_id}`;
-            const full  = `${base}/q_auto/${img.public_id}`;
+            const isVideo = img.resource_type === 'video';
+            const base = `https://res.cloudinary.com/${CLOUD_NAME}/${isVideo ? 'video' : 'image'}/upload`;
+            const thumb = isVideo
+              ? `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/w_400,h_400,c_fill,q_auto,so_1/${img.public_id}.jpg`
+              : `${base}/w_400,h_400,c_fill,q_auto/${img.public_id}`;
+            const full = `${base}/q_auto/${img.public_id}${isVideo ? '' : ''}`;
             const guestName = img.context?.custom?.guest_name || '';
 
             const wrap = document.createElement('div');
             wrap.className = 'gallery-img-wrap';
             wrap.innerHTML = `
-              <img src="${thumb}" alt="Hochzeitsfoto" loading="lazy" />
+              <img src="${thumb}" alt="${isVideo ? 'Video' : 'Hochzeitsfoto'}" loading="lazy" />
+              ${isVideo ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><span style="font-size:2.5rem;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.6))">▶️</span></div>` : ''}
               <div class="gallery-overlay">
                 ${guestName ? `<span>📷 ${guestName}</span>` : ''}
               </div>
             `;
-            wrap.addEventListener('click', () => openLightbox(full, guestName));
+            wrap.addEventListener('click', () => openLightbox(full, guestName, isVideo));
             grid.appendChild(wrap);
           });
 
@@ -426,14 +440,38 @@
     }
 
     // ── Lightbox ──
-    function openLightbox(src, caption) {
-      document.getElementById('lightboxImg').src = src;
+    function openLightbox(src, caption, isVideo = false) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      let vid = document.getElementById('lightboxVideo');
+
+      if (isVideo) {
+        img.style.display = 'none';
+        if (!vid) {
+          vid = document.createElement('video');
+          vid.id = 'lightboxVideo';
+          vid.controls = true;
+          vid.autoplay = true;
+          vid.style.cssText = 'max-width:90vw;max-height:80vh;border-radius:0.5rem;';
+          lb.insertBefore(vid, img.nextSibling);
+        }
+        vid.src = src;
+        vid.style.display = 'block';
+      } else {
+        if (vid) { vid.style.display = 'none'; vid.src = ''; }
+        img.style.display = 'block';
+        img.src = src;
+      }
+
       document.getElementById('lightboxCaption').textContent = caption ? `📷 ${caption}` : '';
-      document.getElementById('lightbox').classList.add('open');
+      lb.classList.add('open');
     }
+
     function closeLightbox() {
       document.getElementById('lightbox').classList.remove('open');
       document.getElementById('lightboxImg').src = '';
+      const vid = document.getElementById('lightboxVideo');
+      if (vid) { vid.pause(); vid.src = ''; }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
   </script>
