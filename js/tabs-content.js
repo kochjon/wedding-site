@@ -66,7 +66,7 @@ const contentGeschichte = `
           </p>
           <p class="text-gray-700 text-base leading-relaxed"
             data-de="Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺"
-			data-en="It quickly became official, with Joni having to introduce himself to Yeli's family first. In return, Yeli was allowed to join her new circle of friends with a “small�?group of 30 people at the Oktoberfest in Stuttgart 🍺">
+			data-en="It quickly became official, with Joni having to introduce himself to Yeli's family first. In return, Yeli was allowed to join her new circle of friends with a “small” group of 30 people at the Oktoberfest in Stuttgart 🍺">
 			Schnell wurde es offiziell wobei Joni sich als erstes vor Yeli's Familie vorstellen musste. Im Gegenzug durfte Yeli mit einer "kleinen" Gruppe von 30 Leuten am Oktoberfest in Stuttgart in den neuen Freundeskreis einfinden 🍺
 		  </p>
         </div>
@@ -185,9 +185,15 @@ const contentDetails = `
 
 // "Programm"
 const contentProgramm = `
-  <h2 class="text-3xl mb-6 text-green-700 text-center" data-de="Programm" data-en="Schedule">Programm</h2>
-  <h2 class="text-2xl mb-6 text-green-700 text-center" data-de="Wird noch festgelegt" data-en="To be defined">Wird noch festgelegt</h2>
+  <h2 class="text-3xl mb-4 text-green-700 text-center" data-de="Trauung" data-en="Ceremony">Trauung</h2>
+  <div class="w-full md:w-3/4 mx-auto rounded-lg overflow-hidden shadow-lg mb-10">
+    <img src="images/Programm_Trauung.jpg" alt="Trauung" class="w-full object-cover" />
+  </div>
 
+  <h2 class="text-3xl mb-4 text-green-700 text-center" data-de="Abend" data-en="Evening">Abend</h2>
+  <div class="w-full md:w-3/4 mx-auto rounded-lg overflow-hidden shadow-lg">
+    <img src="images/Programm_Abend.jpg" alt="Abend" class="w-full object-cover" />
+  </div>
 `;
 
 
