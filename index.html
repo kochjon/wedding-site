@@ -31,6 +31,23 @@
 	.timeline-card.visible {
 	  opacity: 1;
 	}
+
+	/* ── Galerie-Tab (Cloudinary Ansicht) ── */
+	.gallery-img-wrap { position: relative; border-radius: 0.75rem; overflow: hidden; aspect-ratio: 1; background: #e8e6e1; cursor: pointer; }
+	.gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+	.gallery-img-wrap:hover img { transform: scale(1.04); }
+	.gallery-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 50%); opacity: 0; transition: opacity 0.2s; display: flex; align-items: flex-end; padding: 8px; }
+	.gallery-img-wrap:hover .gallery-overlay { opacity: 1; }
+	.gallery-overlay span { color: white; font-size: 11px; font-family: 'Jost', sans-serif; }
+
+	#lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; flex-direction: column; gap: 1rem; }
+	#lightbox.open { display: flex; }
+	#lightbox img, #lightbox video { max-width: 90vw; max-height: 80vh; border-radius: 0.5rem; object-fit: contain; }
+
+	.status-msg { font-size: 0.88rem; min-height: 1.2rem; text-align: center; }
+
+	.skeleton { background: linear-gradient(90deg, #e8e6e1 25%, #f0ede8 50%, #e8e6e1 75%); background-size: 200% 100%; animation: gallery-shimmer 1.4s infinite; border-radius: 0.75rem; aspect-ratio: 1; }
+	@keyframes gallery-shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   </style>
 
 <script>
@@ -163,10 +180,10 @@
 
 		<button
 		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
-		  onclick="openTab(event, 'rsvp')"
-		  data-de="Check-In"
-		  data-en="Check-In">
-		  Check-In
+		  onclick="openTab(event, 'galerie')"
+		  data-de="Galerie"
+		  data-en="Gallery">
+		  Galerie
 		</button>
 
 		<button
@@ -192,24 +209,30 @@
 
 <!-- Statische Einbindung -->
 
-<!-- Check-In (Hinweis + Bild + Test-Buttons) -->
-<section id="rsvp" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
-	<h2 class="text-3xl mb-4 text-green-700" data-de="Check-In" data-en="Check-In">Check-In</h2>
-
-	<p class="text-gray-700 mb-6" data-de="Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung." data-en="Please scan the QR code on your invitation to check in.">
-	  Bitte scannen Sie für den Check-In den QR-Code auf Ihrer Einladung.
+<!-- Galerie (Online-Galerie via Cloudinary, gleiche Quelle wie fotos.html – Upload nur auf der Fotos-Subpage) -->
+<section id="galerie" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+	<h2 class="text-3xl mb-2 text-green-700" data-de="Unsere Galerie" data-en="Our Gallery">Unsere Galerie</h2>
+	<p class="text-gray-500 mb-6 text-sm" data-de="Hier seht ihr alle Fotos & Videos, die unsere Gäste geteilt haben. 📸" data-en="Here you can see all the photos & videos our guests have shared. 📸">
+	  Hier seht ihr alle Fotos & Videos, die unsere Gäste geteilt haben. 📸
 	</p>
 
-	<img src="images/Boardingpass.png" alt="Boarding Pass" class="mx-auto rounded-lg shadow-md max-w-xl w-full mb-8" />
-
-	<!-- Test-Buttons (nur während Entwicklung)
-	<div class="flex flex-col md:flex-row justify-center gap-4 mt-4">
-	  <a href="trauung.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Trauung Test" data-en="Ceremony Test">Trauung Test</a>
-	  <a href="feier.html" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full shadow transition" data-de="Feier Test" data-en="Reception Test">Feier Test</a>
+	<div id="view-gallery">
+	  <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+	  <p id="galleryStatus" class="status-msg text-gray-400 text-center mt-6"></p>
 	</div>
-	<p class="text-sm text-gray-400 mt-3 italic">(Diese Buttons sind nur für Testzwecke sichtbar)</p> -->
-	
+
+	<p class="text-sm text-gray-400 mt-8">
+	  <a href="fotos.html" class="text-green-600 hover:text-green-700 hover:underline" data-de="📷 Eigene Fotos & Videos hochladen" data-en="📷 Upload your own photos & videos">📷 Eigene Fotos & Videos hochladen</a>
+	</p>
+
 </section>
+
+<!-- Lightbox für die Galerie -->
+<div id="lightbox" onclick="closeGalleryLightbox()">
+  <img id="lightboxImg" src="" alt="Foto" />
+  <p id="lightboxCaption" class="text-white text-sm opacity-70"></p>
+  <p class="text-gray-400 text-xs" data-de="Tippen zum Schliessen" data-en="Tap to close">Tippen zum Schliessen</p>
+</div>
 
 <!-- Dynamisches Script calling -->
 
@@ -226,6 +249,7 @@
 	
 <script src="js/globals.js"></script>
 <script src="js/tabs-content.js"></script>
+<script src="js/galerie.js" defer></script>
 <!-- <script src="js/fotos.js" defer></script> -->
 	
 <script>
@@ -275,9 +299,11 @@
       "border-green-600"
     );
 
-    // Dynamischen Inhalt laden (aber Check-In ist statisch, also auslassen)
-    if (tabName !== "rsvp") {
+    // Dynamischen Inhalt laden (aber Galerie ist statisch, also auslassen)
+    if (tabName !== "galerie") {
       injectTabContent(tabName, tabName);
+    } else {
+      loadGalleryGrid();
     }
   }
 
