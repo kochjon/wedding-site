@@ -1,15 +1,102 @@
 // js/galerie.js
-// Online-Galerie (Cloudinary) für den "Galerie"-Tab auf index.html.
-// Zeigt nur die Ansicht der bereits hochgeladenen Fotos & Videos.
-// Das Hochladen selbst passiert ausschliesslich auf der Subpage fotos.html –
-// beide Seiten teilen sich dieselbe Cloudinary-Quelle (gleicher Tag).
+// Galerie-Tab auf index.html:
+//  1) Albumkarten mit Links zu den Google-Fotos-Alben (GOOGLE_ALBUMS)
+//  2) Fotos & Videos, die Gäste früher über die Seite zu Cloudinary hochgeladen haben
 
 // ══════════════════════════════════════════════
-// ⚙️  CLOUDINARY KONFIGURATION – hier anpassen
+// ⚙️  GOOGLE FOTOS ALBEN – hier anpassen
 // ══════════════════════════════════════════════
-const GALLERY_CLOUD_NAME = 'dr9neirts';  // Zu finden auf Cloudinary / Home
-const GALLERY_TAG        = 'yeli-joni';  // Tag für die Galerie-Abfrage
+// cover:    Titelbild des Albums (Google-URL, Grösse über =w…-h… steuerbar)
+// fallback: lokales Ersatzbild, falls das Google-Bild nicht lädt
+// upload:   true = Gäste können in dieses Album eigene Fotos hinzufügen
+// url: null = Link fehlt noch → Karte zeigt "Folgt bald"
+const GOOGLE_ALBUMS = [
+  {
+    id: 'gaeste',
+    de: 'Gäste', en: 'Guests',
+    descDe: 'Eure Schnappschüsse – ladet hier eure eigenen Fotos & Videos hoch.',
+    descEn: 'Your snapshots – add your own photos & videos here.',
+    url: null, // TODO: Link zum Gäste-Album eintragen
+    cover: null,
+    fallback: 'images/kirche.jpeg',
+    upload: true
+  },
+  {
+    id: 'fotograf',
+    de: 'Fotograf', en: 'Photographer',
+    descDe: 'Die offiziellen Bilder unseres Fotografen.',
+    descEn: 'The official pictures from our photographer.',
+    url: 'https://photos.app.goo.gl/d7SEHkXyT48WBUou8',
+    cover: 'https://lh3.googleusercontent.com/pw/AP1GczN_3FvvMJhOk6suoKShywBYkahVHpd8rTtJxRcyno3NXTzqf9uObAspjAhq-vllynb-ZzevEuCmxoiF_JmGt6P0ACtsix7Brxa5Ve8cnVCI6H071Q=w900-h600-p-k',
+    fallback: 'images/Official.jpg'
+  },
+  {
+    id: 'drohne',
+    de: 'Drohne', en: 'Drone',
+    descDe: 'Unser Tag von oben.',
+    descEn: 'Our day from above.',
+    url: 'https://photos.app.goo.gl/4cU6wZuh3BprJiQG8',
+    cover: 'https://lh3.googleusercontent.com/pw/AP1GczNantZ55qdIjpsgHynDAnr6uPeSJ_jKxjMKpOYvQxqin0OwxbFnDE3IPRFkBrWruFWo6U6GswXvwjh-8dKHeZOyOeFOyAuOSUvdnjnuudyEX4R25No=w900-h600-p-k',
+    fallback: 'images/empfang.jpeg'
+  },
+  {
+    id: 'fotobox',
+    de: 'Fotobox', en: 'Photo Booth',
+    descDe: 'Die schönsten (und lustigsten) Bilder aus der Fotobox.',
+    descEn: 'The best (and funniest) shots from the photo booth.',
+    url: 'https://photos.app.goo.gl/PTJ7SUTtAZQV3qD87',
+    cover: 'https://lh3.googleusercontent.com/pw/AP1GczOX92RWJ2_HtFy6zJw8kpSTzcVxbwTZSnRwVFpIVuxtAbjGO-xmR77YUXH8-eaNpuaUjF37Y79PKYW8B6XJ1cXkPJAtYyIgPYlDBend6vHbgKxfzF4=w900-h600-p-k',
+    fallback: 'images/Programm_Abend.jpg'
+  }
+];
+
 // ══════════════════════════════════════════════
+// ⚙️  CLOUDINARY (frühere Gäste-Uploads, nur Anzeige)
+// ══════════════════════════════════════════════
+const GALLERY_CLOUD_NAME = 'dr9neirts';
+const GALLERY_TAG        = 'yeli-joni';
+// ══════════════════════════════════════════════
+
+function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
+// ── Albumkarten rendern ──
+function renderAlbums() {
+  const lang = (typeof currentLang !== 'undefined') ? currentLang : 'de';
+  const t = (de, en) => (lang === 'de' ? de : en);
+
+  // Upload-Hinweis (Gäste-Album)
+  const uploadBox = document.getElementById('guestUpload');
+  const guest = GOOGLE_ALBUMS.find(a => a.upload);
+  if (uploadBox && guest) {
+    uploadBox.innerHTML = guest.url
+      ? `<a href="${escAttr(guest.url)}" target="_blank" rel="noopener"
+            class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow transition"
+            data-de="📷 Eigene Fotos & Videos hinzufügen" data-en="📷 Add your own photos & videos">${t('📷 Eigene Fotos & Videos hinzufügen', '📷 Add your own photos & videos')}</a>
+         <p class="text-xs text-gray-400 mt-3" data-de="Öffnet das Gäste-Album in Google Fotos – dort auf „Fotos hinzufügen“ tippen (Google-Konto nötig)." data-en="Opens the guest album in Google Photos – tap “Add photos” there (Google account required).">${t('Öffnet das Gäste-Album in Google Fotos – dort auf „Fotos hinzufügen“ tippen (Google-Konto nötig).', 'Opens the guest album in Google Photos – tap “Add photos” there (Google account required).')}</p>`
+      : '';
+  }
+
+  const grid = document.getElementById('albumGrid');
+  if (!grid) return;
+  grid.innerHTML = GOOGLE_ALBUMS.map(a => {
+    const img = a.cover || a.fallback;
+    const inner = `
+      <div class="album-cover">
+        <img src="${escAttr(img)}" alt="${escAttr(t(a.de, a.en))}" loading="lazy" referrerpolicy="no-referrer"
+             onerror="if(this.dataset.fb!=='1'){this.dataset.fb='1';this.src='${escAttr(a.fallback)}';}" />
+        ${a.upload ? `<span class="album-badge" data-de="Mitmachen" data-en="Contribute">${t('Mitmachen', 'Contribute')}</span>` : ''}
+      </div>
+      <div class="p-4 text-left">
+        <h3 class="album-title text-2xl text-green-700" data-de="${escAttr(a.de)}" data-en="${escAttr(a.en)}">${t(a.de, a.en)}</h3>
+        <p class="text-sm text-gray-500 mt-1" data-de="${escAttr(a.descDe)}" data-en="${escAttr(a.descEn)}">${t(a.descDe, a.descEn)}</p>
+        <p class="text-sm mt-3 ${a.url ? 'text-green-600' : 'text-gray-400'}"
+           data-de="${a.url ? 'Album öffnen →' : 'Folgt bald'}" data-en="${a.url ? 'Open album →' : 'Coming soon'}">${a.url ? t('Album öffnen →', 'Open album →') : t('Folgt bald', 'Coming soon')}</p>
+      </div>`;
+    return a.url
+      ? `<a href="${escAttr(a.url)}" target="_blank" rel="noopener" class="album-card">${inner}</a>`
+      : `<div class="album-card opacity-70 cursor-default">${inner}</div>`;
+  }).join('');
+}
 
 // ── Galerie laden ──
 async function loadGalleryGrid() {
@@ -33,10 +120,12 @@ async function loadGalleryGrid() {
 
     grid.innerHTML = '';
 
+    const section = document.getElementById('cloudinarySection');
     if (all.length === 0) {
-      status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
+      if (section) section.classList.add('hidden');
       return;
     }
+    if (section) section.classList.remove('hidden');
 
     all.forEach(item => {
       const isVideo = item.resource_type === 'video';
@@ -80,10 +169,11 @@ async function loadGalleryGrid() {
       grid.appendChild(wrap);
     });
 
-    status.textContent = `${all.length} Datei${all.length !== 1 ? 'en' : ''} bisher`;
+    status.textContent = '';
   } catch (e) {
     grid.innerHTML = '';
-    status.textContent = 'Noch keine Fotos – seid die Ersten! 📸';
+    const section = document.getElementById('cloudinarySection');
+    if (section) section.classList.add('hidden');
   }
 }
 

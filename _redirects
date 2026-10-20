@@ -1,0 +1,10 @@
+# Alte Check-In- und Upload-Seiten (QR-Codes) auf die Galerie umleiten
+/trauung       /#galerie  301
+/trauung.html  /#galerie  301
+/feier         /#galerie  301
+/feier.html    /#galerie  301
+/thank-you     /#galerie  301
+/thank-you.html /#galerie 301
+/fotos         /#galerie  301
+/fotos.html    /#galerie  301
+/index_old.html /         301

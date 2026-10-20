@@ -44,6 +44,15 @@
 	#lightbox.open { display: flex; }
 	#lightbox img, #lightbox video { max-width: 90vw; max-height: 80vh; border-radius: 0.5rem; object-fit: contain; }
 
+	/* ── Albumkarten (Google Fotos) ── */
+	.album-card { display: block; background: #fff; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); transition: transform .25s ease, box-shadow .25s ease; }
+	a.album-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
+	.album-cover { position: relative; aspect-ratio: 3 / 2; background: #e8e6e1; overflow: hidden; }
+	.album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+	a.album-card:hover .album-cover img { transform: scale(1.04); }
+	.album-badge { position: absolute; top: .75rem; left: .75rem; background: rgba(21,128,61,.9); color: #fff; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: .25rem .6rem; border-radius: 999px; }
+	.album-title { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
 	.status-msg { font-size: 0.88rem; min-height: 1.2rem; text-align: center; }
 
 	.skeleton { background: linear-gradient(90deg, #e8e6e1 25%, #f0ede8 50%, #e8e6e1 75%); background-size: 200% 100%; animation: gallery-shimmer 1.4s infinite; border-radius: 0.75rem; aspect-ratio: 1; }
@@ -66,11 +75,7 @@
         ? el.getAttribute('data-de-placeholder')
         : el.getAttribute('data-en-placeholder');
     });
-  }
-
-  function toggleAllergies() {
-    const allergyBox = document.getElementById('allergyBox');
-    allergyBox.style.display = document.getElementById('allergyCheck').checked ? 'inline-block' : 'none';
+    if (typeof renderAlbums === 'function') renderAlbums();
   }
 
   function copyText(elementId) {
@@ -128,7 +133,7 @@
 		<option value="en">EN</option>
 	  </select>
 	</h1>
-    <p class="header-subtitle text-base text-gray-500 mb-2" data-de="Herzlich willkommen auf unserer Hochzeitseite" data-en="Welcome on our wedding page">Herzlich willkommen auf unserer Hochzeitseite.</p>
+    <p class="header-subtitle text-base text-gray-500 mb-2" data-de="Danke für einen unvergesslichen Tag!" data-en="Thank you for an unforgettable day!">Danke für einen unvergesslichen Tag!</p>
     <p class="text-xs uppercase tracking-widest text-gray-400" data-de="September 12 2026 · Schaffhausen, Schweiz" data-en="September 12 2026 · Schaffhausen, Switzerland">September 12 2026 · Schaffhausen, Schweiz</p>
 	<div
 	  class="slideshow-container"
@@ -156,6 +161,14 @@
 		
 		<button
 		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
+		  onclick="openTab(event, 'galerie')"
+		  data-de="Galerie"
+		  data-en="Gallery">
+		  Galerie
+		</button>
+		
+		<button
+		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
 		  onclick="openTab(event, 'geschichte')"
 		  data-de="Unsere Geschichte"
 		  data-en="Our Story">
@@ -178,13 +191,6 @@
 		  Programm
 		</button>
 
-		<button
-		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
-		  onclick="openTab(event, 'galerie')"
-		  data-de="Galerie"
-		  data-en="Gallery">
-		  Galerie
-		</button>
 
 		<button
 		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
@@ -194,37 +200,29 @@
 		  Geschenke
 		</button>
 		
-		<!-- Kann als Foto Tab verwendet werden, aktuell subpage /fotos
-		<button
-		  class="tablink flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-base text-gray-600 bg-gray-100 border-b-2 border-transparent transition-colors duration-300 md:rounded-none md:bg-transparent md:text-lg md:text-gray-700 md:border-b-2 md:border-transparent"
-		  onclick="openTab(event, 'fotos')"
-		  data-de="Fotos"
-		  data-en="Photos">
-		  Fotos
-		</button>
-		-->
 		
 	  </div>
 	</div>
 
 <!-- Statische Einbindung -->
 
-<!-- Galerie (Online-Galerie via Cloudinary, gleiche Quelle wie fotos.html – Upload nur auf der Fotos-Subpage) -->
-<section id="galerie" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center">
+<!-- Galerie: Google-Fotos-Alben + frühere Uploads (Cloudinary) -->
+<section id="galerie" class="tabcontent hidden p-6 md:p-8 max-w-5xl mx-auto text-center">
 	<h2 class="text-3xl mb-2 text-green-700" data-de="Unsere Galerie" data-en="Our Gallery">Unsere Galerie</h2>
-	<p class="text-gray-500 mb-6 text-sm" data-de="Hier seht ihr alle Fotos & Videos, die unsere Gäste geteilt haben. 📸" data-en="Here you can see all the photos & videos our guests have shared. 📸">
-	  Hier seht ihr alle Fotos & Videos, die unsere Gäste geteilt haben. 📸
+	<p class="text-gray-500 mb-6 text-sm max-w-xl mx-auto" data-de="Danke, dass ihr diesen Tag mit uns gefeiert habt! Hier findet ihr alle Fotos und Videos unserer Hochzeit." data-en="Thank you for celebrating this day with us! Here you can find all photos and videos of our wedding.">
+	  Danke, dass ihr diesen Tag mit uns gefeiert habt! Hier findet ihr alle Fotos und Videos unserer Hochzeit.
 	</p>
 
-	<div id="view-gallery">
+	<div id="guestUpload" class="mb-10"></div>
+
+	<div id="albumGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+
+	<div id="cloudinarySection" class="hidden mt-14">
+	  <h3 class="text-2xl mb-2 text-green-700" data-de="Über die Seite geteilt" data-en="Shared via this page">Über die Seite geteilt</h3>
+	  <p class="text-gray-500 mb-6 text-sm" data-de="Fotos & Videos, die ihr hier direkt hochgeladen habt." data-en="Photos & videos you uploaded directly on this page.">Fotos & Videos, die ihr hier direkt hochgeladen habt.</p>
 	  <div id="galleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
 	  <p id="galleryStatus" class="status-msg text-gray-400 text-center mt-6"></p>
 	</div>
-
-	<p class="text-sm text-gray-400 mt-8">
-	  <a href="fotos.html" class="text-green-600 hover:text-green-700 hover:underline" data-de="📷 Eigene Fotos & Videos hochladen" data-en="📷 Upload your own photos & videos">📷 Eigene Fotos & Videos hochladen</a>
-	</p>
-
 </section>
 
 <!-- Lightbox für die Galerie -->
@@ -244,13 +242,11 @@
 
 <section id="geschenke" class="tabcontent hidden p-8 max-w-3xl mx-auto text-center relative"></section>
 
-<!-- <section id="fotos" class="tabcontent hidden p-8 max-w-4xl mx-auto text-center"></section> -->
 
 	
 <script src="js/globals.js"></script>
 <script src="js/tabs-content.js"></script>
 <script src="js/galerie.js" defer></script>
-<!-- <script src="js/fotos.js" defer></script> -->
 	
 <script>
   function openTab(evt, tabName) {
@@ -303,6 +299,7 @@
     if (tabName !== "galerie") {
       injectTabContent(tabName, tabName);
     } else {
+      renderAlbums();
       loadGalleryGrid();
     }
   }
@@ -310,7 +307,9 @@
   document.addEventListener("DOMContentLoaded", () => {
     // NICHT vorgängig injecten!
     // Wir simulieren nur den Klick auf den ersten Tab.
-    const firstBtn = document.querySelector(".tablink");
+    const hash = location.hash.replace('#', '');
+    const hashBtn = hash && document.querySelector(`.tablink[onclick*="'${hash}'"]`);
+    const firstBtn = hashBtn || document.querySelector(".tablink");
     if (firstBtn) {
       firstBtn.click();
     }

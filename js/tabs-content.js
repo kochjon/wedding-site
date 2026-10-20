@@ -255,7 +255,6 @@ const TAB_CONTENT_MAP = {
   "details": contentDetails,
   "programm": contentProgramm,
   "geschenke": contentGeschenke,
-  //"fotos": "", // Inhalt wird von fotos.js direkt verwaltet
 };
 
 // Diese Funktion kannst du aufrufen, um Content in ein Ziel-Element einzusetzen
@@ -273,10 +272,4 @@ function injectTabContent(targetId, tabName) {
   if (tabName === "geschichte" && typeof initTimeline === "function") {
     initTimeline();
   }
-  
-/* Kann fals gewünscht als Foto Tab verwendet werden
-  if (tabName === "fotos" && typeof initFotos === "function") {
-	initFotos();
-  }
-*/  
 }
