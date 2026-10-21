@@ -26,8 +26,11 @@
 
   function createSlide(src, { radius, fit }) {
     const img = document.createElement("img");
-    img.src = src;
+    // Bild erst laden, wenn es (fast) an der Reihe ist – bei vielen Album-Fotos wichtig
+    img.dataset.src = src;
     img.alt = "";
+    img.referrerPolicy = "no-referrer";
+    img.decoding = "async";
     img.classList.add(SLIDE_CLASS);
 
     const s = img.style;
@@ -46,7 +49,14 @@
     return img;
   }
 
+  function loadSlide(slides, i) {
+    const el = slides[(i + slides.length) % slides.length];
+    if (el && !el.getAttribute("src") && el.dataset.src) el.src = el.dataset.src;
+  }
+
   function setVisible(slides, newIndex) {
+    loadSlide(slides, newIndex);
+    loadSlide(slides, newIndex + 1); // nächstes Bild vorladen
     slides.forEach((el, i) => {
       if (i === newIndex) {
         el.style.opacity = "1";
@@ -114,12 +124,32 @@
     return data;
   }
 
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
   async function buildSlides(container, opts) {
+    const sourceUrl = container.getAttribute("data-source-url");
     const indexJson = container.getAttribute("data-index-json");
     const fallbackCsv = container.getAttribute("data-fallback");
 
     let images = [];
-    if (indexJson) {
+
+    // 1) Bilder aus den Google-Fotos-Alben (Netlify Function /api/slideshow)
+    if (sourceUrl) {
+      try {
+        images = (await fetchJsonArray(sourceUrl)).filter(u => typeof u === "string" && u);
+      } catch (e) {
+        console.warn("[slideshow] Google-Fotos-Quelle nicht verfügbar (" + sourceUrl + "):", e);
+      }
+    }
+
+    // 2) Lokaler Ordner als Rückfall
+    if (!images.length && indexJson) {
       try {
         const list = await fetchJsonArray(indexJson);
         images = list.map(name =>
@@ -138,9 +168,26 @@
 
     if (!images.length) return [];
 
+    if (container.getAttribute("data-shuffle") === "true") shuffle(images);
+
     container.querySelectorAll("." + SLIDE_CLASS).forEach(n => n.remove());
     const slides = images.map(src => {
       const slide = createSlide(src, opts);
+      // Defekte Bilder (z.B. abgelaufene Google-Links) aus der Diashow entfernen
+      slide.addEventListener("error", () => {
+        const state = container[STATE_SYMBOL];
+        const list = state ? state.slides : slides;
+        const i = list.indexOf(slide);
+        if (i === -1 || list.length <= 1) return;
+        const wasVisible = state && i === state.index;
+        list.splice(i, 1);
+        slide.remove();
+        if (state) {
+          if (i < state.index) state.index--;
+          if (state.index >= list.length) state.index = 0;
+          if (wasVisible) setVisible(list, state.index);
+        }
+      });
       container.appendChild(slide);
       return slide;
     });

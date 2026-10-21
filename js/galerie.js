@@ -45,6 +45,16 @@ const GOOGLE_ALBUMS = [
     url: 'https://photos.app.goo.gl/PTJ7SUTtAZQV3qD87',
     cover: 'https://lh3.googleusercontent.com/pw/AP1GczOX92RWJ2_HtFy6zJw8kpSTzcVxbwTZSnRwVFpIVuxtAbjGO-xmR77YUXH8-eaNpuaUjF37Y79PKYW8B6XJ1cXkPJAtYyIgPYlDBend6vHbgKxfzF4=w900-h600-p-k',
     fallback: 'images/Programm_Abend.jpg'
+  },
+  {
+    id: 'video',
+    de: 'Hochzeitsvideo', en: 'Wedding Video',
+    descDe: 'Unser Tag als Film – zum Anschauen und Nacherleben.',
+    descEn: 'Our day as a film – to watch and relive.',
+    url: 'https://photos.app.goo.gl/Qna6mnz38Vpdhdto7',
+    cover: 'https://lh3.googleusercontent.com/pw/AP1GczMooQgFyAqHcyeIM0fFqGrhvCbWuxWHKfRdwHs_1awwbxRBBOgd4VeuKrykqLKNv3bRS43FEi30iwXxk_UoUpdS3nB11fB8WfpeCLZ5GPlvMdphtGs=w900-h600-p-k',
+    fallback: 'images/slideshow/bild1.jpg',
+    video: true
   }
 ];
 
@@ -76,12 +86,13 @@ function renderAlbums() {
         <img src="${escAttr(img)}" alt="${escAttr(t(a.de, a.en))}" loading="lazy" referrerpolicy="no-referrer"
              onerror="if(this.dataset.fb!=='1'){this.dataset.fb='1';this.src='${escAttr(a.fallback)}';}" />
         ${a.upload ? `<span class="album-badge" data-de="Mitmachen" data-en="Contribute">${t('Mitmachen', 'Contribute')}</span>` : ''}
+        ${a.video ? `<span class="album-play" aria-hidden="true">▶</span>` : ''}
       </div>
       <div class="p-4 text-left">
         <h3 class="album-title text-2xl text-green-700" data-de="${escAttr(a.de)}" data-en="${escAttr(a.en)}">${t(a.de, a.en)}</h3>
         <p class="text-sm text-gray-500 mt-1" data-de="${escAttr(a.descDe)}" data-en="${escAttr(a.descEn)}">${t(a.descDe, a.descEn)}</p>
         <p class="text-sm mt-3 ${a.url ? 'text-green-600' : 'text-gray-400'}"
-           data-de="${a.url ? 'Album öffnen →' : 'Folgt bald'}" data-en="${a.url ? 'Open album →' : 'Coming soon'}">${a.url ? t('Album öffnen →', 'Open album →') : t('Folgt bald', 'Coming soon')}</p>
+           data-de="${!a.url ? 'Folgt bald' : a.video ? 'Video ansehen →' : 'Album öffnen →'}" data-en="${!a.url ? 'Coming soon' : a.video ? 'Watch video →' : 'Open album →'}">${!a.url ? t('Folgt bald', 'Coming soon') : a.video ? t('Video ansehen →', 'Watch video →') : t('Album öffnen →', 'Open album →')}</p>
       </div>`;
     return a.url
       ? `<a href="${escAttr(a.url)}" target="_blank" rel="noopener" class="album-card">${inner}</a>`
