@@ -8,7 +8,7 @@
 // images/slideshow/index.json zurück.
 //
 // ⚙️ Alben für die Diashow – bei Bedarf an js/galerie.js (GOOGLE_ALBUMS) angleichen.
-//    Das Hochzeitsvideo-Album ist bewusst nicht dabei.
+//    Das Hochzeitsvideo-Album ist bewusst nicht dabei; Videos in den übrigen Alben werden ausgefiltert.
 const ALBUMS = [
   "https://photos.app.goo.gl/d7SEHkXyT48WBUou8", // Fotograf
   "https://photos.app.goo.gl/vMischDK7voexfyL6", // Gäste
@@ -22,6 +22,9 @@ const SIZE = "=w1600-h1200";
 // Einträge haben in den Seitendaten die Form ["https://lh3.googleusercontent.com/pw/…",breite,höhe,…]
 const ITEM_RE = /\["(https:\/\/lh3\.googleusercontent\.com\/pw\/[A-Za-z0-9_-]+)",(\d+),(\d+)/g;
 
+// Videos tragen in ihren Metadaten den Schlüssel "76647426" (Dauer, Auflösung, Stream-URL).
+const VIDEO_MARKER = '"76647426":';
+
 async function fetchAlbum(url) {
   const res = await fetch(url, {
     redirect: "follow",
@@ -32,9 +35,20 @@ async function fetchAlbum(url) {
   });
   if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
   const html = await res.text();
+  const matches = [...html.matchAll(ITEM_RE)];
   const urls = [];
-  for (const m of html.matchAll(ITEM_RE)) urls.push(m[1]);
-  return urls;
+  const videos = new Set();
+  matches.forEach((m, i) => {
+    // Abschnitt dieses Eintrags bis zum Ende seines Metadaten-Objekts ("}]")
+    const end = i + 1 < matches.length ? matches[i + 1].index : m.index + 8000;
+    let seg = html.slice(m.index, end);
+    const close = seg.indexOf("}]");
+    if (close > 0) seg = seg.slice(0, close);
+    if (seg.includes(VIDEO_MARKER)) videos.add(m[1]);
+    urls.push(m[1]);
+  });
+  // Videos überall ausfiltern (auch falls das Titelbild ein Video ist)
+  return urls.filter(u => !videos.has(u));
 }
 
 export default async () => {

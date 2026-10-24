@@ -21,37 +21,70 @@
     if (!cs.overflow) cs.overflow = "hidden";
     if (!cs.borderRadius) cs.borderRadius = radius + "px";
     if (!cs.boxShadow) cs.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
-    if (!cs.height) cs.height = height + "px";
+    // Höhe nur setzen, wenn explizit angegeben – sonst regelt das CSS (aspect-ratio)
+    if (!cs.height && height) cs.height = height + "px";
   }
 
+  // Eine Folie = Wrapper mit unscharfem Hintergrund (füllt die Fläche) und dem
+  // vollständig sichtbaren Bild im Vordergrund (object-fit: contain) – so werden
+  // Hochformat-Bilder nicht mehr oben/unten abgeschnitten (Köpfe!).
   function createSlide(src, { radius, fit }) {
+    const wrap = document.createElement("div");
+    wrap.dataset.src = src; // erst laden, wenn das Bild (fast) an der Reihe ist
+    wrap.classList.add(SLIDE_CLASS);
+
+    const w = wrap.style;
+    w.position = "absolute";
+    w.inset = "0";
+    w.overflow = "hidden";
+    w.borderRadius = radius + "px";
+    w.opacity = "0";
+    w.transition = "opacity 400ms ease";
+    w.pointerEvents = "none";
+    w.zIndex = "1";
+    w.background = "#f3f1ee";
+
     const img = document.createElement("img");
-    // Bild erst laden, wenn es (fast) an der Reihe ist – bei vielen Album-Fotos wichtig
-    img.dataset.src = src;
     img.alt = "";
     img.referrerPolicy = "no-referrer";
     img.decoding = "async";
-    img.classList.add(SLIDE_CLASS);
-
     const s = img.style;
     s.position = "absolute";
     s.inset = "0";
     s.width = "100%";
     s.height = "100%";
     s.objectFit = fit;
-    s.borderRadius = radius + "px";
-    s.opacity = "0";
-    s.transition = "opacity 250ms ease";
-    s.pointerEvents = "none";
-	s.zIndex = "1";
+    s.objectPosition = "center 30%"; // falls "cover": eher oben anschneiden als Köpfe
 
-    img.setAttribute("aria-hidden", "true");
-    return img;
+    if (fit === "contain") {
+      const bg = document.createElement("img");
+      bg.alt = "";
+      bg.referrerPolicy = "no-referrer";
+      bg.decoding = "async";
+      bg.setAttribute("aria-hidden", "true");
+      bg.dataset.role = "bg";
+      const b = bg.style;
+      b.position = "absolute";
+      b.inset = "0";
+      b.width = "100%";
+      b.height = "100%";
+      b.objectFit = "cover";
+      b.filter = "blur(24px) brightness(0.85)";
+      b.transform = "scale(1.15)";
+      wrap.appendChild(bg);
+    }
+    img.dataset.role = "main";
+    wrap.appendChild(img);
+
+    wrap.setAttribute("aria-hidden", "true");
+    return wrap;
   }
 
   function loadSlide(slides, i) {
     const el = slides[(i + slides.length) % slides.length];
-    if (el && !el.getAttribute("src") && el.dataset.src) el.src = el.dataset.src;
+    if (!el || el.dataset.loaded === "1" || !el.dataset.src) return;
+    el.dataset.loaded = "1";
+    el.querySelectorAll("img").forEach(img => { img.src = el.dataset.src; });
   }
 
   function setVisible(slides, newIndex) {
@@ -174,7 +207,7 @@
     const slides = images.map(src => {
       const slide = createSlide(src, opts);
       // Defekte Bilder (z.B. abgelaufene Google-Links) aus der Diashow entfernen
-      slide.addEventListener("error", () => {
+      slide.querySelector('img[data-role="main"]').addEventListener("error", () => {
         const state = container[STATE_SYMBOL];
         const list = state ? state.slides : slides;
         const i = list.indexOf(slide);
@@ -275,7 +308,7 @@
     container.dataset.slideshowInitialized = "1";
 
     const interval = parseInt(container.getAttribute("data-interval") || "4000", 10);
-    const height = parseInt(container.getAttribute("data-height") || "350", 10);
+    const height = parseInt(container.getAttribute("data-height") || "0", 10);
     const radius = parseInt(container.getAttribute("data-radius") || "16", 10);
     const fit = (container.getAttribute("data-fit") || "cover").toLowerCase();
 
