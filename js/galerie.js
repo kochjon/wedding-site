@@ -4,7 +4,9 @@
 // ══════════════════════════════════════════════
 // ⚙️  GOOGLE FOTOS ALBEN – hier anpassen
 // ══════════════════════════════════════════════
-// cover:    Titelbild des Albums (Google-URL, Grösse über =w…-h… steuerbar)
+// cover:    Titelbild des Albums (Google-URL, Grösse über =w…-h… steuerbar). Wird beim Laden
+//           automatisch durch das aktuelle Cover aus Google Fotos ersetzt (/api/covers) –
+//           der Eintrag hier dient nur noch als Startbild bzw. Rückfall.
 // fallback: lokales Ersatzbild, falls das Google-Bild nicht lädt
 // upload:   true = Gäste können in dieses Album eigene Fotos hinzufügen
 // url: null = Link fehlt noch → Karte zeigt "Folgt bald"
@@ -83,7 +85,7 @@ function renderAlbums() {
     const img = a.cover || a.fallback;
     const inner = `
       <div class="album-cover">
-        <img src="${escAttr(img)}" alt="${escAttr(t(a.de, a.en))}" loading="lazy" referrerpolicy="no-referrer"
+        <img src="${escAttr(img)}" data-album-id="${escAttr(a.id)}" alt="${escAttr(t(a.de, a.en))}" loading="lazy" referrerpolicy="no-referrer"
              onerror="if(this.dataset.fb!=='1'){this.dataset.fb='1';this.src='${escAttr(a.fallback)}';}" />
         ${a.upload ? `<span class="album-badge" data-de="Mitmachen" data-en="Contribute">${t('Mitmachen', 'Contribute')}</span>` : ''}
         ${a.video ? `<span class="album-play" aria-hidden="true">▶</span>` : ''}
@@ -98,4 +100,39 @@ function renderAlbums() {
       ? `<a href="${escAttr(a.url)}" target="_blank" rel="noopener" class="album-card">${inner}</a>`
       : `<div class="album-card opacity-70 cursor-default">${inner}</div>`;
   }).join('');
+}
+
+// ── Aktuelle Albumcover aus Google Fotos laden ──
+// Die Netlify Function /api/covers liest das in Google Fotos gesetzte Titelbild jedes Albums.
+// Neues Cover erst einsetzen, wenn es fertig geladen ist (kein Flackern, kein kaputtes Bild).
+async function loadLiveCovers() {
+  let covers;
+  try {
+    const res = await fetch('/api/covers');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    covers = await res.json();
+  } catch (e) {
+    console.warn('[galerie] Albumcover konnten nicht geladen werden – nutze eingetragene Cover:', e);
+    return;
+  }
+  GOOGLE_ALBUMS.forEach(a => {
+    const url = covers && covers[a.id];
+    if (typeof url !== 'string' || !/^https:\/\/lh3\.googleusercontent\.com\//.test(url) || url === a.cover) return;
+    const probe = new Image();
+    probe.referrerPolicy = 'no-referrer';
+    probe.onload = () => {
+      a.cover = url; // auch für spätere Neu-Renderings (Sprachwechsel)
+      document.querySelectorAll(`img[data-album-id="${a.id}"]`).forEach(img => {
+        img.dataset.fb = '';
+        img.src = url;
+      });
+    };
+    probe.src = url;
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadLiveCovers);
+} else {
+  loadLiveCovers();
 }

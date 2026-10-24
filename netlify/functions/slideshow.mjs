@@ -6,15 +6,12 @@
 // zieht die Bild-URLs aus den eingebetteten Daten. Das ist inoffiziell – ändert Google das
 // Seitenformat, liefert die Function eine leere Liste und die Diashow fällt automatisch auf
 // images/slideshow/index.json zurück.
-//
-// ⚙️ Alben für die Diashow – bei Bedarf an js/galerie.js (GOOGLE_ALBUMS) angleichen.
+
+import { ALBUMS as ALL_ALBUMS, fetchAlbumPage } from "../lib/albums.mjs";
+
+// ⚙️ Alben für die Diashow: in netlify/lib/albums.mjs (slideshow: true).
 //    Das Hochzeitsvideo-Album ist bewusst nicht dabei; Videos in den übrigen Alben werden ausgefiltert.
-const ALBUMS = [
-  "https://photos.app.goo.gl/d7SEHkXyT48WBUou8", // Fotograf
-  "https://photos.app.goo.gl/vMischDK7voexfyL6", // Gäste
-  "https://photos.app.goo.gl/4cU6wZuh3BprJiQG8", // Drohnenaufnahmen
-  "https://photos.app.goo.gl/PTJ7SUTtAZQV3qD87", // Fotobox
-];
+const ALBUMS = ALL_ALBUMS.filter(a => a.slideshow).map(a => a.url);
 
 // Grösse der ausgelieferten Bilder (Google skaliert serverseitig)
 const SIZE = "=w1600-h1200";
@@ -26,15 +23,7 @@ const ITEM_RE = /\["(https:\/\/lh3\.googleusercontent\.com\/pw\/[A-Za-z0-9_-]+)"
 const VIDEO_MARKER = '"76647426":';
 
 async function fetchAlbum(url) {
-  const res = await fetch(url, {
-    redirect: "follow",
-    headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36",
-      "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
-    },
-  });
-  if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
-  const html = await res.text();
+  const html = await fetchAlbumPage(url);
   const matches = [...html.matchAll(ITEM_RE)];
   const urls = [];
   const videos = new Set();
