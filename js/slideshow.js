@@ -227,6 +227,50 @@
     return slides;
   }
 
+  const BUTTON_CSS = `
+    .slideshow-nav {
+      position: absolute; top: 50%; z-index: 2;
+      width: 44px; height: 44px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.6); border-radius: 9999px;
+      background: rgba(255,255,255,0.72);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      color: #3f3f46;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+      transform: translateY(-50%);
+      opacity: 0.85;
+      transition: opacity 200ms ease, transform 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
+    }
+    .slideshow-nav.slideshow-prev { left: 14px; }
+    .slideshow-nav.slideshow-next { right: 14px; }
+    .slideshow-nav svg { display: block; }
+    .slideshow-nav.slideshow-prev svg { margin-right: 2px; }
+    .slideshow-nav.slideshow-next svg { margin-left: 2px; }
+    .slideshow-nav:hover { background: rgba(255,255,255,0.95); box-shadow: 0 4px 14px rgba(0,0,0,0.18); transform: translateY(-50%) scale(1.06); }
+    .slideshow-nav:active { transform: translateY(-50%) scale(0.96); }
+    .slideshow-nav:focus-visible { outline: 2px solid #15803d; outline-offset: 2px; opacity: 1; }
+    /* Desktop: Pfeile dezent, beim Überfahren der Diashow voll sichtbar */
+    @media (hover: hover) and (pointer: fine) {
+      [data-slideshow] .slideshow-nav { opacity: 0.55; }
+      [data-slideshow]:hover .slideshow-nav { opacity: 1; }
+    }
+    @media (max-width: 639px) {
+      .slideshow-nav { width: 36px; height: 36px; }
+      .slideshow-nav svg { width: 18px; height: 18px; }
+      .slideshow-nav.slideshow-prev { left: 10px; }
+      .slideshow-nav.slideshow-next { right: 10px; }
+    }
+  `;
+
+  function injectButtonStyles() {
+    if (document.getElementById("slideshow-nav-styles")) return;
+    const style = document.createElement("style");
+    style.id = "slideshow-nav-styles";
+    style.textContent = BUTTON_CSS;
+    document.head.appendChild(style);
+  }
+
   function setupButtons(container) {
 	  // Container muss Bezugspunkt sein
 	  if (getComputedStyle(container).position === "static") {
@@ -256,29 +300,14 @@
 	  prevBtn.type = "button";
 	  nextBtn.type = "button";
 
-	  // Basisstyles direkt am Element (robust gegen fehlendes CSS)
-	  [prevBtn, nextBtn].forEach((btn) => {
-		const s = btn.style;
-		s.position = "absolute";
-		s.top = "50%";
-		s.transform = "translateY(-50%)";
-		s.background = "rgba(0,0,0,0.4)";
-		s.color = "#fff";
-		s.border = "none";
-		s.fontSize = "24px";
-		s.width = "40px";
-		s.height = "40px";
-		s.borderRadius = "50%";
-		s.cursor = "pointer";
-		s.zIndex = "2";
-		s.display = "inline-flex";
-		s.alignItems = "center";
-		s.justifyContent = "center";
-		s.userSelect = "none";
-	  });
-	  // Links/rechts innen am Rand
-	  prevBtn.style.left = "10px";
-	  nextBtn.style.right = "10px";
+	  // Gestaltung über injiziertes CSS (Hover/Fokus/Mobile lassen sich inline nicht abbilden)
+	  injectButtonStyles();
+	  const CHEVRON_LEFT = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+	  const CHEVRON_RIGHT = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+	  prevBtn.innerHTML = CHEVRON_LEFT;
+	  nextBtn.innerHTML = CHEVRON_RIGHT;
+	  prevBtn.classList.add("slideshow-nav");
+	  nextBtn.classList.add("slideshow-nav");
 
 	  // Klick-Handler (Default unterdrücken + Wechsel + Timer-Reset)
 	  prevBtn.addEventListener("click", (e) => {
